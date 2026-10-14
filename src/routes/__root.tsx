@@ -111,13 +111,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
       <head>
         <HeadContent />
         <script
-          // Apply a saved dark-mode choice before first paint (light is the default).
+          // Dark is the default; switch to light before first paint only if the visitor chose it.
           dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem("daniela-theme")==="dark"){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark"}}catch(e){}`,
+            __html: `try{if(localStorage.getItem("daniela-theme")==="light"){document.documentElement.classList.remove("dark");document.documentElement.style.colorScheme="light"}}catch(e){}`,
           }}
         />
       </head>

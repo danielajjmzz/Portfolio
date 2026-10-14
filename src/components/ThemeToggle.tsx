@@ -6,10 +6,10 @@ const STORAGE_KEY = "daniela-theme";
 type ThemeChoice = "light" | "dark";
 
 function getPreferredTheme(): ThemeChoice {
-  if (typeof window === "undefined") return "light";
+  if (typeof window === "undefined") return "dark";
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  // Light is the default theme; dark only when the visitor has switched to it.
-  return stored === "dark" ? "dark" : "light";
+  // Dark is the default theme; light only when the visitor has switched to it.
+  return stored === "light" ? "light" : "dark";
 }
 
 function applyTheme(theme: ThemeChoice) {
@@ -18,7 +18,7 @@ function applyTheme(theme: ThemeChoice) {
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<ThemeChoice>("light");
+  const [theme, setTheme] = useState<ThemeChoice>("dark");
 
   useEffect(() => {
     const preferred = getPreferredTheme();

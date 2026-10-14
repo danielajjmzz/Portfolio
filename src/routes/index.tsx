@@ -75,11 +75,11 @@ function Home() {
         body="UI/UX designer and Computer Science student working at the intersection of people, design, and technology. If you're building something for a real community, I'd like to hear about it."
         aside={
           <img
-            src="/images/portrait-placeholder.jpg"
+            src="/images/portrait.jpg"
             alt="Daniela Jimenez"
-            width={900}
+            width={800}
             height={1200}
-            className="h-full w-full rounded-frame border border-border object-cover"
+            className="h-full w-full rounded-frame border border-border object-cover object-[50%_20%]"
           />
         }
         actions={
