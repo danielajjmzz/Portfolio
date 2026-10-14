@@ -58,8 +58,17 @@ export const visualWork: VisualEntry[] = [
     .concat(photoPlaceholders).map((entry) => ({ ...entry, category: "Photography" as const })),
 ];
 
-export const INITIAL_VISUAL_COUNT = 8;
-export function selectVisualWork(filter: VisualFilter, expanded = false) {
+/** Columns in the Visual work grid: 2 on small screens, 4 from the `lg` breakpoint. */
+export const VISUAL_COLUMNS = { compact: 2, wide: 4 } as const;
+/** Collapsed view shows exactly one row, so the limit matches the column count. */
+export const visualRowLimit = (wide: boolean) => (wide ? VISUAL_COLUMNS.wide : VISUAL_COLUMNS.compact);
+
+export function selectVisualWork(filter: VisualFilter, expanded = false, limit: number = VISUAL_COLUMNS.wide) {
   const matching = visualWork.filter((entry) => filter === "All" || entry.category === filter);
-  return { entries: expanded ? matching : matching.slice(0, INITIAL_VISUAL_COUNT), hasMore: !expanded && matching.length > INITIAL_VISUAL_COUNT };
+  const canExpand = matching.length > limit;
+  return {
+    entries: expanded ? matching : matching.slice(0, limit),
+    hasMore: !expanded && canExpand,
+    canCollapse: expanded && canExpand,
+  };
 }

@@ -2,6 +2,8 @@
 
 - [ ] Compact Projects into Case studies, Teaching, and filtered Visual work
 - [ ] Verify sticky navigation, lightbox, filters, reveal-more, and responsive grids
+- [x] Make Visual work filters a second sticky bar under the section nav
+- [x] Collapse Visual work to one row with Show more / Show less
 
 - [x] Update Contact availability text
 - [x] Remove Home tagline and Facts About Me

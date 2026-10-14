@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { caseStudies, teaching, visualWork, selectVisualWork } from "./projects-page";
+import { caseStudies, teaching, visualWork, selectVisualWork, visualRowLimit } from "./projects-page";
 
 describe("Projects-page curation", () => {
   test("shows three case studies in the requested order", () => {
@@ -13,11 +13,25 @@ describe("Projects-page curation", () => {
       assert.equal(visualWork.some((entry) => entry.title === title), false);
     }
   });
-  test("initially shows eight visual items and reveals the remainder", () => {
-    assert.equal(selectVisualWork("All").entries.length, 8);
-    assert.equal(selectVisualWork("All").hasMore, true);
-    assert.ok(selectVisualWork("All", true).entries.length > 8);
-    assert.equal(selectVisualWork("All", true).hasMore, false);
+  test("collapsed view shows one row: four items wide, two items compact", () => {
+    assert.equal(visualRowLimit(true), 4);
+    assert.equal(visualRowLimit(false), 2);
+    assert.equal(selectVisualWork("All", false, visualRowLimit(true)).entries.length, 4);
+    assert.equal(selectVisualWork("All", false, visualRowLimit(false)).entries.length, 2);
+    assert.equal(selectVisualWork("All", false, 4).hasMore, true);
+    assert.equal(selectVisualWork("All", false, 4).canCollapse, false);
+  });
+  test("show more reveals every item and offers show less", () => {
+    const all = visualWork.length;
+    const expanded = selectVisualWork("All", true, 4);
+    assert.equal(expanded.entries.length, all);
+    assert.equal(expanded.hasMore, false);
+    assert.equal(expanded.canCollapse, true);
+  });
+  test("no toggle when a filter fits in one row", () => {
+    const physical = selectVisualWork("Physical designs", false, 4);
+    assert.equal(physical.hasMore, false);
+    assert.equal(selectVisualWork("Physical designs", true, 4).canCollapse, false);
   });
   test("filters visual work without including teaching", () => {
     assert.equal(selectVisualWork("Physical designs").entries.length, 4);

@@ -130,7 +130,7 @@ const navItems = [
 
 function SiteHeader() {
   return (
-    <header className="hairline-b sticky top-0 z-30 bg-header/95 backdrop-blur-[2px]">
+    <header id="site-header" className="hairline-b sticky top-0 z-30 bg-header/95 backdrop-blur-[2px]">
       <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-4 sm:flex sm:justify-between md:px-8">
         <Link to="/" className="flex min-w-0 items-center gap-3">
           <img

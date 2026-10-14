@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
-import { caseStudies, teaching, visualFilters, selectVisualWork, type VisualFilter } from "@/data/projects-page";
+import { caseStudies, teaching, visualFilters, selectVisualWork, visualRowLimit, type VisualFilter } from "@/data/projects-page";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/projects/")({
@@ -35,12 +35,59 @@ function SectionHeading({ id, title, label }: { id: string; title: string; label
   </div>;
 }
 
+const WIDE_QUERY = "(min-width: 1024px)";
+/** True at the `lg` breakpoint, where the Visual work grid has four columns. */
+function useIsWide() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const query = window.matchMedia(WIDE_QUERY);
+      query.addEventListener("change", onChange);
+      return () => query.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(WIDE_QUERY).matches,
+    () => true,
+  );
+}
+
+const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 function ProjectsIndex() {
   const [activeSection, setActiveSection] = useState<string>("case-studies");
   const [filter, setFilter] = useState<VisualFilter>("All");
   const [expanded, setExpanded] = useState(false);
   const [preview, setPreview] = useState<Preview | null>(null);
-  const visible = selectVisualWork(filter, expanded);
+  const isWide = useIsWide();
+  const visible = selectVisualWork(filter, expanded, visualRowLimit(isWide));
+  const filterBarRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  // The filter bar sticks directly under the site header + section nav, whose heights vary by breakpoint.
+  const [filterTop, setFilterTop] = useState<number | null>(null);
+
+  useEffect(() => {
+    const header = document.getElementById("site-header");
+    const nav = document.getElementById("project-section-nav");
+    if (!header || !nav) return;
+    const measure = () => setFilterTop(header.offsetHeight + nav.offsetHeight - 1);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    observer.observe(nav);
+    return () => observer.disconnect();
+  }, []);
+
+  /** If the grid's top has scrolled under the sticky bars, bring it back into view. */
+  const revealGridTop = () => {
+    requestAnimationFrame(() => {
+      const grid = gridRef.current;
+      const bar = filterBarRef.current;
+      if (!grid || !bar) return;
+      const barBottom = bar.getBoundingClientRect().bottom;
+      const gridTop = grid.getBoundingClientRect().top;
+      if (gridTop < barBottom) {
+        window.scrollTo({ top: window.scrollY + gridTop - barBottom - 16, behavior: prefersReducedMotion() ? "instant" : "smooth" });
+      }
+    });
+  };
 
   useEffect(() => {
     let frame = 0;
@@ -75,7 +122,7 @@ function ProjectsIndex() {
           {sections.map((section) => <Button key={section.id} asChild variant="outline" className={chipStyle(activeSection === section.id)}>
             <a href={`#${section.id}`} aria-current={activeSection === section.id ? "location" : undefined} onClick={(event) => {
               event.preventDefault();
-              document.getElementById(section.id)?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
+              document.getElementById(section.id)?.scrollIntoView({ behavior: prefersReducedMotion() ? "instant" : "smooth", block: "start" });
               window.history.replaceState(null, "", `#${section.id}`);
             }}>{section.title}<span className={cn("text-xs", activeSection === section.id ? "text-primary-foreground/70" : "text-muted-foreground")}>{section.count}</span></a>
           </Button>)}
@@ -122,10 +169,17 @@ function ProjectsIndex() {
 
         <section id="visual" aria-labelledby="visual-heading" className="scroll-mt-40">
           <SectionHeading id="visual-heading" title="Visual work" label="Physical · document · photography" />
-          <div role="group" aria-label="Filter visual work" className="-mx-5 mb-6 flex gap-2 overflow-x-auto px-5 pb-1 md:mx-0 md:px-0">
-            {visualFilters.map((item) => <Button key={item} variant="outline" aria-pressed={filter === item} className={chipStyle(filter === item)} onClick={() => { setFilter(item); setExpanded(false); }}>{item}</Button>)}
+          {/* Second sticky bar: stays under the section nav while scrolling through Visual work, then leaves with the section. */}
+          <div
+            ref={filterBarRef}
+            style={filterTop === null ? undefined : { top: filterTop }}
+            className="hairline-b sticky top-[130px] z-10 mb-6 bg-background sm:top-[140px]"
+          >
+            <div role="group" aria-label="Filter visual work" className="-mx-5 flex gap-2 overflow-x-auto px-5 py-3 md:mx-0 md:px-0">
+              {visualFilters.map((item) => <Button key={item} variant="outline" aria-pressed={filter === item} className={chipStyle(filter === item)} onClick={() => { setFilter(item); setExpanded(false); revealGridTop(); }}>{item}</Button>)}
+            </div>
           </div>
-          <div aria-live="polite" className="grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-4 lg:gap-x-6">
+          <div ref={gridRef} id="visual-grid" aria-live="polite" className="grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-4 lg:gap-x-6">
             {visible.entries.map((entry) => <article key={entry.id} className="min-w-0">
               <Button variant="ghost" aria-label={`View ${entry.title}`} className="hairline block h-auto w-full overflow-hidden rounded-sm bg-card p-0 hover:bg-card" onClick={() => setPreview(entry)}>
                 <img src={entry.image} alt={`${entry.title} — ${entry.category.toLowerCase()} preview`} width={600} height={600} loading="lazy" className="aspect-square w-full object-cover" />
@@ -133,7 +187,17 @@ function ProjectsIndex() {
               <h3 className="mt-3 text-lg leading-tight">{entry.title}</h3>
             </article>)}
           </div>
-          {visible.hasMore && <div className="mt-8 flex justify-center"><Button variant="outline" className="rounded-sm shadow-none" onClick={() => setExpanded(true)}>Show more visual work</Button></div>}
+          {(visible.hasMore || visible.canCollapse) && <div className="mt-8 flex justify-center">
+            <Button
+              variant="outline"
+              aria-expanded={expanded}
+              aria-controls="visual-grid"
+              className="rounded-sm shadow-none"
+              onClick={() => {
+                if (expanded) { setExpanded(false); revealGridTop(); } else setExpanded(true);
+              }}
+            >{expanded ? "Show less visual work" : "Show more visual work"}</Button>
+          </div>}
         </section>
       </div>
 
