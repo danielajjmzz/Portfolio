@@ -241,7 +241,7 @@ export function SkillsExplorer() {
               <Icon
                 role="img"
                 aria-label={alt}
-                className="h-6 w-6 text-primary"
+                className="h-6 w-6 text-link"
                 strokeWidth={1.4}
               />
             </span>

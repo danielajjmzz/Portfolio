@@ -26,7 +26,7 @@ const sections = [
 type Preview = { title: string; image: string; description: string };
 const chipStyle = (active: boolean) => cn(
   "hairline h-9 shrink-0 rounded-sm px-3 text-sm shadow-none sm:px-4",
-  active ? "border-primary bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground" : "bg-transparent text-muted-foreground hover:border-primary hover:bg-transparent hover:text-primary",
+  active ? "border-primary bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground" : "bg-transparent text-muted-foreground hover:border-primary hover:bg-transparent hover:text-link",
 );
 
 function SectionHeading({ id, title, label }: { id: string; title: string; label: string }) {
@@ -92,14 +92,14 @@ function ProjectsIndex() {
                   <img src={project.coverImage} alt={project.title} width={900} height={600} loading={index === 0 ? "eager" : "lazy"} className="aspect-[3/2] w-full object-cover" />
                 </Link>
                 {(project.repo_url || project.live_url) && <div className="absolute right-3 top-3 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none [@media(hover:none)]:opacity-100">
-                  {project.repo_url && <Button asChild variant="outline" size="icon" className="border-media-icon/60 bg-media-scrim text-media-icon hover:bg-media-scrim hover:text-ochre"><a href={project.repo_url} aria-label="GitHub repository" target="_blank" rel="noreferrer"><Github /></a></Button>}
-                  {project.live_url && <Button asChild variant="outline" size="icon" className="border-media-icon/60 bg-media-scrim text-media-icon hover:bg-media-scrim hover:text-ochre"><a href={project.live_url} aria-label="Live website" target="_blank" rel="noreferrer"><ExternalLink /></a></Button>}
+                  {project.repo_url && <Button asChild variant="outline" size="icon" className="border-media-icon/60 bg-media-scrim text-media-icon hover:bg-media-scrim hover:text-primary"><a href={project.repo_url} aria-label="GitHub repository" target="_blank" rel="noreferrer"><Github /></a></Button>}
+                  {project.live_url && <Button asChild variant="outline" size="icon" className="border-media-icon/60 bg-media-scrim text-media-icon hover:bg-media-scrim hover:text-primary"><a href={project.live_url} aria-label="Live website" target="_blank" rel="noreferrer"><ExternalLink /></a></Button>}
                 </div>}
               </div>
               <p className="label-tech mt-4">{project.meta}</p>
               <h3 className="mt-2 leading-tight"><Link to="/projects/$slug" params={{ slug: project.slug }}>{project.title}</Link></h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{project.summary}</p>
-              <Link to="/projects/$slug" params={{ slug: project.slug }} className="mt-4 inline-flex items-center gap-2 text-sm text-primary">Read the case study <ArrowRight className="size-4" aria-hidden="true" /></Link>
+              <Link to="/projects/$slug" params={{ slug: project.slug }} className="mt-4 inline-flex items-center gap-2 text-sm text-link">Read the case study <ArrowRight className="size-4" aria-hidden="true" /></Link>
             </article>)}
           </div>
         </section>
@@ -114,7 +114,7 @@ function ProjectsIndex() {
                 <dl className="mt-4 grid grid-cols-[2.75rem_minmax(0,1fr)] gap-x-3 gap-y-3 text-xs leading-relaxed">
                   {[["For", entry.audience], ["Made", entry.made], ["Result", entry.result]].map(([label, value]) => <div key={label} className="contents"><dt className="text-muted-foreground">{label}</dt><dd>{value}</dd></div>)}
                 </dl>
-                {entry.href ? <a href={entry.href} className="mt-5 inline-flex items-center gap-2 text-sm text-primary">See the lesson <ArrowRight className="size-4" aria-hidden="true" /></a> : <Button variant="link" className="mt-5 h-auto p-0 font-normal text-primary" onClick={() => setPreview(entry)}>See the lesson <ArrowRight aria-hidden="true" /></Button>}
+                {entry.href ? <a href={entry.href} className="mt-5 inline-flex items-center gap-2 text-sm text-link">See the lesson <ArrowRight className="size-4" aria-hidden="true" /></a> : <Button variant="link" className="mt-5 h-auto p-0 font-normal text-link" onClick={() => setPreview(entry)}>See the lesson <ArrowRight aria-hidden="true" /></Button>}
               </div>
             </article>)}
           </div>

@@ -146,7 +146,7 @@ export function DesignMediaCarousel({ entry, autoplay = false }: DesignMediaCaro
                     asChild
                     variant="outline"
                     size="icon"
-                    className="hairline h-9 w-9 rounded-sm border-media-icon/60 bg-media-scrim text-media-icon shadow-none transition-[color,transform,border-color] hover:scale-105 hover:border-ochre hover:bg-media-scrim hover:text-ochre focus-visible:ring-2 focus-visible:ring-ring"
+                    className="hairline h-9 w-9 rounded-sm border-media-icon/60 bg-media-scrim text-media-icon shadow-none transition-[color,transform,border-color] hover:scale-105 hover:border-primary hover:bg-media-scrim hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <a href={href} aria-label={label}>
                       <Icon aria-hidden className="h-4 w-4" />
@@ -169,7 +169,7 @@ export function DesignMediaCarousel({ entry, autoplay = false }: DesignMediaCaro
             onClick={() => api?.scrollPrev()}
             aria-label="Previous slide"
             className={cn(
-              "hairline absolute left-3 top-1/2 z-20 h-8 w-8 -translate-y-1/2 rounded-sm border-media-icon/60 bg-media-scrim text-media-icon shadow-none hover:border-ochre hover:bg-media-scrim hover:text-ochre",
+              "hairline absolute left-3 top-1/2 z-20 h-8 w-8 -translate-y-1/2 rounded-sm border-media-icon/60 bg-media-scrim text-media-icon shadow-none hover:border-primary hover:bg-media-scrim hover:text-primary",
               controlVisibility,
             )}
           >
@@ -182,7 +182,7 @@ export function DesignMediaCarousel({ entry, autoplay = false }: DesignMediaCaro
             onClick={() => api?.scrollNext()}
             aria-label="Next slide"
             className={cn(
-              "hairline absolute right-3 top-1/2 z-20 h-8 w-8 -translate-y-1/2 rounded-sm border-media-icon/60 bg-media-scrim text-media-icon shadow-none hover:border-ochre hover:bg-media-scrim hover:text-ochre",
+              "hairline absolute right-3 top-1/2 z-20 h-8 w-8 -translate-y-1/2 rounded-sm border-media-icon/60 bg-media-scrim text-media-icon shadow-none hover:border-primary hover:bg-media-scrim hover:text-primary",
               controlVisibility,
             )}
           >

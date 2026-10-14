@@ -130,7 +130,7 @@ const navItems = [
 
 function SiteHeader() {
   return (
-    <header className="hairline-b sticky top-0 z-30 bg-background/95 backdrop-blur-[2px]">
+    <header className="hairline-b sticky top-0 z-30 bg-header/95 backdrop-blur-[2px]">
       <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-4 sm:flex sm:justify-between md:px-8">
         <Link to="/" className="flex min-w-0 items-center gap-3">
           <img
@@ -157,9 +157,9 @@ function SiteHeader() {
                 key={item.to}
                 to={item.to}
                 activeOptions={{ exact: item.to === "/" }}
-                className="nav-underline text-muted-foreground transition-colors hover:text-primary"
+                className="nav-underline text-muted-foreground transition-colors hover:text-link"
                 activeProps={{
-                  className: "text-primary",
+                  className: "text-link",
                 }}
               >
                 {item.label}
@@ -175,22 +175,22 @@ function SiteHeader() {
 
 function SiteFooter() {
   return (
-    <footer className="hairline-t mt-24">
-      <div className="mx-auto grid max-w-6xl gap-4 px-5 py-10 text-sm text-muted-foreground sm:flex sm:items-end sm:justify-between md:px-8">
+    <footer className="mt-24 bg-primary text-primary-foreground">
+      <div className="mx-auto grid max-w-6xl gap-4 px-5 py-10 text-sm sm:flex sm:items-end sm:justify-between md:px-8">
         <div>
-          <p className="font-display text-3xl leading-none text-foreground">
+          <p className="font-display text-3xl leading-none">
             Let's build something
           </p>
           <p className="mt-2">
             <a
               href="mailto:danielajjmzz@gmail.com"
-              className="text-primary hover:text-brick"
+              className="underline decoration-1 underline-offset-4 hover:decoration-2"
             >
               danielajjmzz@gmail.com
             </a>
           </p>
         </div>
-        <p className="label-tech">
+        <p className="text-xs tracking-[0.06em] text-primary-foreground/80">
           Chicago, Illinois · © {new Date().getFullYear()}
         </p>
       </div>

@@ -60,7 +60,7 @@ function Contact() {
                 href={link.href}
                 target={link.label === "LinkedIn" ? "_blank" : undefined}
                 rel={link.label === "LinkedIn" ? "noreferrer" : undefined}
-                className="font-display text-2xl text-primary transition-colors hover:text-brick"
+                className="font-display text-2xl text-link transition-colors hover:text-foreground"
               >
                 {link.value}
               </a>
@@ -77,7 +77,7 @@ function Contact() {
         </p>
         <a
           href="#"
-          className="mt-6 inline-flex items-center gap-2 rounded-sm bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-brick"
+          className="mt-6 inline-flex items-center gap-2 rounded-sm bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           Download resume
           <span aria-hidden>↓</span>

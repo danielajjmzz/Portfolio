@@ -134,14 +134,14 @@ function Home() {
                 <div className="mt-6 flex flex-wrap items-center gap-4">
                   <Link
                     to="/contact"
-                    className="inline-flex items-center gap-2 rounded-sm bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-brick"
+                    className="inline-flex items-center gap-2 rounded-sm bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
                   >
                     Get in touch
                     <span aria-hidden>→</span>
                   </Link>
                   <Link
                     to="/projects"
-                    className="hairline inline-flex items-center rounded-sm px-6 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
+                    className="hairline inline-flex items-center rounded-sm px-6 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-link"
                   >
                     View all projects
                   </Link>

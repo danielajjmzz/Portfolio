@@ -42,7 +42,7 @@ export function ThemeToggle() {
         window.localStorage.setItem(STORAGE_KEY, nextTheme);
         applyTheme(nextTheme);
       }}
-      className="h-9 w-9 rounded-sm border-rule bg-background text-foreground shadow-none hover:border-primary hover:bg-secondary hover:text-primary"
+      className="h-9 w-9 rounded-sm border-rule bg-background text-foreground shadow-none hover:border-primary hover:bg-secondary hover:text-link"
     >
       {theme === "dark" ? (
         <Sun aria-hidden className="h-4 w-4" strokeWidth={1.6} />

@@ -49,7 +49,7 @@ function ProjectNotFound() {
       <p className="mt-4 text-muted-foreground">
         The case study you're looking for may have been renamed.
       </p>
-      <Link to="/projects" className="mt-8 inline-block text-primary">
+      <Link to="/projects" className="mt-8 inline-block text-link">
         ← Back to projects
       </Link>
     </section>
@@ -78,7 +78,7 @@ function SubNav({ className }: { className?: string }) {
         <a
           key={s.id}
           href={`#${s.id}`}
-          className="hairline shrink-0 rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+          className="hairline shrink-0 rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-link"
         >
           {s.label}
         </a>
@@ -147,7 +147,7 @@ function ProjectDetail() {
       </div>
 
       <article className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20">
-        <Link to="/projects" className="label-tech hover:text-primary">
+        <Link to="/projects" className="label-tech hover:text-link">
           ← Projects
         </Link>
 
@@ -196,10 +196,10 @@ function ProjectDetail() {
 
         <SectionRule className="mt-16" />
         <div className="mt-6 grid gap-4 sm:flex sm:items-center sm:justify-between">
-          <Link to="/projects" className="text-primary hover:text-brick">
+          <Link to="/projects" className="text-link hover:text-foreground">
             ← Back to all projects
           </Link>
-          <Link to="/contact" className="label-tech hover:text-primary">
+          <Link to="/contact" className="label-tech hover:text-link">
             Work with me →
           </Link>
         </div>

@@ -6,8 +6,9 @@
 
 /*
  * Design system — blueprint / technical drawing.
- * Palette: warm plaster white, charcoal-blue ink, Talavera cobalt,
- * Chicago-brick oxide red, muted ochre gold (sparing).
+ * Light: cool off-white, near-black navy text, hot pink (#FF5783),
+ * deeper pink (#C81E52) for links and small text.
+ * Dark: soft black, warm white text, baby pink (#F5C4D3).
  */
 
 @theme inline {
@@ -35,9 +36,10 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-brick: var(--brick);
-  --color-brick-foreground: var(--brick-foreground);
-  --color-ochre: var(--ochre);
+  --color-primary-hover: var(--primary-hover);
+  --color-link: var(--link);
+  --color-dimmed: var(--dimmed);
+  --color-header: var(--header);
   --color-media-icon: var(--media-icon);
   --color-media-scrim: var(--media-scrim);
   --color-destructive: var(--destructive);
@@ -50,64 +52,63 @@
 
 :root {
   --radius: 2px;
-  /* #F1ECE1 warm plaster white */
-  --background: oklch(0.939 0.019 88.2);
-  /* #1C1F26 deep charcoal-blue */
-  --foreground: oklch(0.245 0.014 264.5);
-  --card: oklch(0.962 0.014 88.2);
-  --card-foreground: oklch(0.245 0.014 264.5);
-  --popover: oklch(0.962 0.014 88.2);
-  --popover-foreground: oklch(0.245 0.014 264.5);
-  /* #274472 Talavera cobalt */
-  --primary: oklch(0.383 0.086 261.5);
-  --primary-foreground: oklch(0.962 0.014 88.2);
-  --secondary: oklch(0.905 0.021 88.2);
-  --secondary-foreground: oklch(0.245 0.014 264.5);
-  --muted: oklch(0.905 0.021 88.2);
-  --muted-foreground: oklch(0.475 0.017 264.5);
-  --accent: oklch(0.383 0.086 261.5);
-  --accent-foreground: oklch(0.962 0.014 88.2);
-  /* #A8452F Chicago-brick oxide red */
-  --brick: oklch(0.487 0.132 33.5);
-  --brick-foreground: oklch(0.962 0.014 88.2);
-  /* #C98A2B muted ochre gold */
-  --ochre: oklch(0.669 0.121 73.5);
-  --destructive: oklch(0.487 0.132 33.5);
-  --destructive-foreground: oklch(0.962 0.014 88.2);
-  --border: oklch(0.245 0.014 264.5 / 18%);
-  --rule: oklch(0.245 0.014 264.5 / 22%);
-  --input: oklch(0.245 0.014 264.5 / 28%);
-  --ring: oklch(0.383 0.086 261.5);
-  --media-icon: oklch(0.962 0.014 88.2);
-  --media-scrim: oklch(0.245 0.014 264.5 / 48%);
+  /* Light mode — cool off-white + hot pink */
+  --background: #f7f8fa; /* page background, cool off-white */
+  --foreground: #21242c; /* main text, near-black navy */
+  --card: #ffffff; /* cards, popups */
+  --card-foreground: #21242c;
+  --popover: #ffffff;
+  --popover-foreground: #21242c;
+  --header: #ffffff; /* header bar */
+  --primary: #ff5783; /* hot pink: buttons, active tabs/chips, footer band, accent dots */
+  --primary-foreground: #21242c; /* text on pink */
+  --primary-hover: #ff7a9c;
+  --link: #c81e52; /* links + small pink text (hot pink is too light for small text) */
+  --secondary: #ffebf2; /* pale pink panels, tags, placeholders */
+  --secondary-foreground: #21242c;
+  --muted: #ffebf2;
+  --muted-foreground: #6e7076; /* captions, dates */
+  --dimmed: #6e7076;
+  --accent: #ffebf2;
+  --accent-foreground: #21242c;
+  --destructive: #c81e52;
+  --destructive-foreground: #ffffff;
+  --border: rgb(33 36 44 / 10%);
+  --rule: rgb(33 36 44 / 14%);
+  --input: rgb(33 36 44 / 16%);
+  --ring: #c81e52;
+  --media-icon: #ffffff;
+  --media-scrim: rgb(33 36 44 / 55%); /* darkens photos under white text */
 }
 
 .dark {
-  --background: oklch(0.168 0.013 264.5);
-  --foreground: oklch(0.932 0.018 88.2);
-  --card: oklch(0.205 0.014 264.5);
-  --card-foreground: oklch(0.932 0.018 88.2);
-  --popover: oklch(0.205 0.014 264.5);
-  --popover-foreground: oklch(0.932 0.018 88.2);
-  --primary: oklch(0.679 0.113 261.5);
-  --primary-foreground: oklch(0.168 0.013 264.5);
-  --secondary: oklch(0.255 0.016 264.5);
-  --secondary-foreground: oklch(0.932 0.018 88.2);
-  --muted: oklch(0.255 0.016 264.5);
-  --muted-foreground: oklch(0.745 0.018 88.2);
-  --accent: oklch(0.679 0.113 261.5);
-  --accent-foreground: oklch(0.168 0.013 264.5);
-  --brick: oklch(0.638 0.139 33.5);
-  --brick-foreground: oklch(0.168 0.013 264.5);
-  --ochre: oklch(0.771 0.128 73.5);
-  --destructive: oklch(0.638 0.139 33.5);
-  --destructive-foreground: oklch(0.168 0.013 264.5);
-  --border: oklch(0.932 0.018 88.2 / 18%);
-  --rule: oklch(0.932 0.018 88.2 / 22%);
-  --input: oklch(0.932 0.018 88.2 / 28%);
-  --ring: oklch(0.679 0.113 261.5);
-  --media-icon: oklch(0.962 0.014 88.2);
-  --media-scrim: oklch(0.145 0.014 264.5 / 56%);
+  /* Dark mode — soft black + baby pink */
+  --background: #151515; /* soft black */
+  --foreground: #f5f2f3; /* warm white */
+  --card: #1e1e1e; /* cards, popups, menus */
+  --card-foreground: #f5f2f3;
+  --popover: #1e1e1e;
+  --popover-foreground: #f5f2f3;
+  --header: #151515;
+  --primary: #f5c4d3; /* baby pink: buttons, links, active tabs, pink cards */
+  --primary-foreground: #151515; /* text on pink */
+  --primary-hover: #f9d7e2;
+  --link: #f5c4d3;
+  --secondary: #232323; /* subtle panels, placeholders, tags, hover fills */
+  --secondary-foreground: #f5f2f3;
+  --muted: #232323;
+  --muted-foreground: #b4aeb1;
+  --dimmed: #8a8587; /* inactive items in big word lists */
+  --accent: #232323;
+  --accent-foreground: #f5f2f3;
+  --destructive: #f28b9b;
+  --destructive-foreground: #151515;
+  --border: rgb(245 242 243 / 16%);
+  --rule: rgb(245 242 243 / 20%);
+  --input: rgb(245 242 243 / 24%);
+  --ring: #f5c4d3;
+  --media-icon: #f5f2f3;
+  --media-scrim: rgb(21 21 21 / 60%);
 }
 
 @layer base {
@@ -208,7 +209,7 @@
     bottom: -3px;
     height: 1px;
     width: 100%;
-    background: var(--color-primary);
+    background: var(--color-link);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
