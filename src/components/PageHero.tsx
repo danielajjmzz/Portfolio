@@ -16,10 +16,12 @@ export function AccentHeading({ text, className }: { text: string; className?: s
 }
 
 /**
- * Top section shared by every page: identical height (300px content + 48px padding),
- * content vertically centered — a small muted line, a 56px heading, one line of body text.
- * Pass `aside` (Home's portrait) to place a 200px column on the left that stretches
- * to the text column's full height; `actions` sit at the bottom of the text column.
+ * Top section shared by every page: 48px top/bottom padding, a small muted line,
+ * a 56px heading and one line of body text.
+ * Pass `aside` (Home's portrait) for the taller variant: 300px of content with a 200px
+ * column on the left stretching to the text column's full height; `actions` sit at the
+ * bottom of the text column. Without an aside (Projects, Contact) the section is only as
+ * tall as its text, so both of those pages share the same compact top section.
  */
 export function PageHero({
   eyebrow,
@@ -40,8 +42,8 @@ export function PageHero({
     <section className={cn("py-12", className)}>
       <div
         className={cn(
-          "mx-auto grid max-w-6xl px-5 md:min-h-[300px] md:px-8",
-          aside ? "gap-8 md:grid-cols-[200px_minmax(0,1fr)] md:gap-10" : "",
+          "mx-auto grid max-w-6xl px-5 md:px-8",
+          aside ? "gap-8 md:min-h-[300px] md:grid-cols-[200px_minmax(0,1fr)] md:gap-10" : "",
         )}
       >
         {aside && <div className="w-[200px] max-md:h-[260px] md:h-full">{aside}</div>}
