@@ -1,4 +1,4 @@
-import { designs, documentDesigns, photography, type DesignEntry } from "./designs";
+import { designs, documentDesigns, photography, type DesignEntry, type MediaItem } from "./designs";
 import { sortedProjects } from "./projects";
 
 const realEstate = sortedProjects.find((project) => project.slug === "real-estate-database");
@@ -29,10 +29,31 @@ export const caseStudies = [
     : []),
 ];
 
+const PLACEHOLDER_IMAGE = "/images/placeholder.jpg";
+
+/** Three placeholder photos so every card has a working carousel until real photos are added. */
+const placeholderMedia = (title: string): MediaItem[] =>
+  [1, 2, 3].map((number) => ({
+    type: "image" as const,
+    src: PLACEHOLDER_IMAGE,
+    alt: `${title} placeholder photo ${number}`,
+  }));
+
+/**
+ * Link placeholders: "#" shows the icon as "coming soon" on every card for now.
+ * Replace with a real URL to make it clickable, or delete the field to hide that icon.
+ */
+const placeholderLinks = { repoUrl: "#", liveUrl: "#", artifactUrl: "#" };
+
 export interface TeachingEntry {
   id: string;
   title: string;
   image: string;
+  media: MediaItem[];
+  repoUrl?: string;
+  liveUrl?: string;
+  artifactUrl?: string;
+  artifactLabel?: string;
   audience: string;
   made: string;
   result: string;
@@ -46,7 +67,9 @@ export const teaching: TeachingEntry[] = [
   {
     id: "teaching-lesson",
     title: "[Lesson / workshop title]",
-    image: "/images/placeholder.jpg",
+    image: PLACEHOLDER_IMAGE,
+    media: placeholderMedia("Lesson or workshop"),
+    ...placeholderLinks,
     audience: "[Audience / program]",
     made: "[What students built]",
     result: "[One learning outcome]",
@@ -56,7 +79,11 @@ export const teaching: TeachingEntry[] = [
   {
     id: "teaching-process",
     title: "Workshop Process Documentation",
-    image: documentation?.image ?? "/images/placeholder.jpg",
+    image: documentation?.image ?? PLACEHOLDER_IMAGE,
+    media: documentation?.media.length ? documentation.media : placeholderMedia("Workshop process"),
+    repoUrl: documentation?.repoUrl ?? "#",
+    liveUrl: documentation?.liveUrl ?? "#",
+    artifactUrl: documentation?.artifactUrl ?? "#",
     audience: "Exelon Summer Institute students",
     made: "Sketches, tests, and revised maker projects",
     result: "[One learning outcome]",
@@ -65,7 +92,11 @@ export const teaching: TeachingEntry[] = [
   {
     id: "teaching-showcase",
     title: "Student Showcase Moments",
-    image: showcase?.image ?? "/images/placeholder.jpg",
+    image: showcase?.image ?? PLACEHOLDER_IMAGE,
+    media: showcase?.media.length ? showcase.media : placeholderMedia("Student showcase"),
+    repoUrl: showcase?.repoUrl ?? "#",
+    liveUrl: showcase?.liveUrl ?? "#",
+    artifactUrl: showcase?.artifactUrl ?? "#",
     audience: "Exelon Summer Institute students",
     made: "Final demos and portfolio reviews",
     result: "[One learning outcome]",
@@ -89,8 +120,9 @@ const photoPlaceholders: DesignEntry[] = ["[Photography study 2]", "[Photography
   (title, index) => ({
     id: `photo-placeholder-${index + 1}`,
     title,
-    image: "/images/placeholder.jpg",
-    media: [],
+    image: PLACEHOLDER_IMAGE,
+    media: placeholderMedia(title),
+    ...placeholderLinks,
     description: "Placeholder — photograph and accompanying description coming soon.",
     order: index + 4,
   }),
@@ -105,8 +137,8 @@ export const visualWork: VisualEntry[] = [
     .map((entry) => ({ ...entry, category: "Photography" as const })),
 ];
 
-/** Visual work shows this many items before "Show more". */
-export const VISUAL_INITIAL_COUNT = 8;
+/** Visual work shows one row of four before "Show more". */
+export const VISUAL_INITIAL_COUNT = 4;
 
 export function selectVisualWork(
   filter: VisualFilter,

@@ -1,30 +1,64 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ExternalLink, FileCheck2, Github } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ExternalLink,
+  FileCheck2,
+  Github,
+  type LucideIcon,
+} from "lucide-react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import type { DesignEntry, LessonEntry, MediaItem } from "@/data/designs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import type { MediaItem } from "@/data/designs";
 import { cn } from "@/lib/utils";
 
+/** Anything with photos and optional links: visual work entries and teaching cards. */
+export interface MediaEntry {
+  title: string;
+  media: MediaItem[];
+  repoUrl?: string;
+  liveUrl?: string;
+  artifactUrl?: string;
+  artifactLabel?: string;
+}
+
 type DesignMediaCarouselProps = {
-  entry: DesignEntry | LessonEntry;
+  entry: MediaEntry;
+  /** Aspect ratio class for each slide, e.g. "aspect-square" or "aspect-[16/10]". */
+  aspect?: string;
+  /** "hover" shows controls on hover/focus (cards); "always" keeps them visible (expanded view). */
+  controls?: "hover" | "always";
+  /** "cover" crops to fill (cards); "contain" shows the whole image (expanded view). */
+  fit?: "cover" | "contain";
+  /** When set, clicking a photo calls this (cards open the expanded view). */
+  onOpen?: () => void;
   autoplay?: boolean;
+  className?: string;
 };
 
-const controlVisibility =
-  "opacity-0 transition-opacity duration-200 group-hover/media:opacity-100 group-focus-within/media:opacity-100 motion-reduce:transition-none [@media(hover:none)]:opacity-100";
+/** A link counts as "coming soon" until it has a real URL; "#" is the placeholder in the data. */
+const isPlaceholder = (href: string) => href.trim() === "#";
 
-function MediaSlide({ item, videoRef }: { item: MediaItem; videoRef?: (node: HTMLVideoElement | null) => void }) {
+const controlButton =
+  "flex items-center justify-center border border-media-icon/50 bg-media-scrim text-media-icon backdrop-blur-[2px] transition-[color,border-color,transform] hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary";
+
+function MediaSlide({
+  item,
+  fit,
+  aspect,
+  videoRef,
+}: {
+  item: MediaItem;
+  fit: "cover" | "contain";
+  aspect: string;
+  videoRef?: (node: HTMLVideoElement | null) => void;
+}) {
+  const media = cn("w-full", aspect, fit === "cover" ? "object-cover" : "object-contain");
   if (item.type === "video") {
     return (
       <video
@@ -36,29 +70,34 @@ function MediaSlide({ item, videoRef }: { item: MediaItem; videoRef?: (node: HTM
         playsInline
         controls
         preload="metadata"
-        className="aspect-[3/2] w-full object-cover"
+        className={media}
       />
     );
   }
-
   return (
-    <img
-      src={item.src}
-      alt={item.alt}
-      width={1200}
-      height={800}
-      loading="lazy"
-      className="aspect-[3/2] w-full object-cover"
-    />
+    <img src={item.src} alt={item.alt} width={1200} height={800} loading="lazy" className={media} />
   );
 }
 
-export function DesignMediaCarousel({ entry, autoplay = false }: DesignMediaCarouselProps) {
+export function DesignMediaCarousel({
+  entry,
+  aspect = "aspect-[3/2]",
+  controls = "hover",
+  fit = "cover",
+  onOpen,
+  autoplay = false,
+  className,
+}: DesignMediaCarouselProps) {
   const [api, setApi] = useState<CarouselApi>();
   const [activeIndex, setActiveIndex] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const hasMultipleSlides = entry.media.length > 1;
+
+  const visibility =
+    controls === "always"
+      ? ""
+      : "opacity-0 transition-opacity duration-200 group-hover/media:opacity-100 group-focus-within/media:opacity-100 motion-reduce:transition-none [@media(hover:none)]:opacity-100";
 
   const updateActiveSlide = useCallback((carouselApi: CarouselApi) => {
     if (!carouselApi) return;
@@ -70,7 +109,6 @@ export function DesignMediaCarousel({ entry, autoplay = false }: DesignMediaCaro
     updateActiveSlide(api);
     api.on("select", updateActiveSlide);
     api.on("reInit", updateActiveSlide);
-
     return () => {
       api.off("select", updateActiveSlide);
       api.off("reInit", updateActiveSlide);
@@ -97,114 +135,137 @@ export function DesignMediaCarousel({ entry, autoplay = false }: DesignMediaCaro
     return () => window.clearInterval(interval);
   }, [api, autoplay, reducedMotion, hasMultipleSlides]);
 
-  const links = [
-    { href: entry.repoUrl, label: "GitHub repository", icon: Github },
-    { href: entry.liveUrl, label: "Live website", icon: ExternalLink },
-    {
-      href: entry.artifactUrl,
-      label:
-        "artifactLabel" in entry && entry.artifactLabel
-          ? entry.artifactLabel
-          : "Project artifact",
-      icon: FileCheck2,
-    },
-  ].filter((link): link is typeof link & { href: string } => Boolean(link.href));
+  // Only links present in the data are shown, so a project without a GitHub repo,
+  // live site or file simply leaves that icon out.
+  const links = (
+    [
+      { href: entry.repoUrl, label: "GitHub repository", Icon: Github },
+      { href: entry.liveUrl, label: "Live link", Icon: ExternalLink },
+      { href: entry.artifactUrl, label: entry.artifactLabel || "Project file", Icon: FileCheck2 },
+    ] as Array<{ href?: string; label: string; Icon: LucideIcon }>
+  ).filter((link): link is { href: string; label: string; Icon: LucideIcon } => Boolean(link.href));
 
   return (
     <Carousel
       setApi={setApi}
       opts={{ loop: hasMultipleSlides }}
-      tabIndex={0}
-      aria-label={`${entry.title} media`}
-      className="group/media overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      aria-label={`${entry.title} photos`}
+      className={cn(
+        "group/media relative overflow-hidden rounded-frame border border-border bg-card",
+        className,
+      )}
     >
       <CarouselContent className="ml-0">
         {entry.media.map((item, index) => (
-          <CarouselItem key={`${item.src}-${index}`} className="pl-0">
-            <MediaSlide
-              item={item}
-              videoRef={(node) => {
-                videoRefs.current[index] = node;
-              }}
-            />
+          <CarouselItem
+            key={`${item.src}-${index}`}
+            className="pl-0"
+            aria-label={`Photo ${index + 1} of ${entry.media.length}`}
+          >
+            {onOpen && item.type === "image" ? (
+              <button
+                type="button"
+                onClick={onOpen}
+                aria-label={`Open ${entry.title}`}
+                className="block w-full cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+              >
+                <MediaSlide item={item} fit={fit} aspect={aspect} />
+              </button>
+            ) : (
+              <MediaSlide
+                item={item}
+                fit={fit}
+                aspect={aspect}
+                videoRef={(node) => {
+                  videoRefs.current[index] = node;
+                }}
+              />
+            )}
           </CarouselItem>
         ))}
       </CarouselContent>
 
       {links.length > 0 && (
         <TooltipProvider delayDuration={250}>
-          <div
-            className={cn(
-              "absolute right-3 top-3 z-30 flex gap-2",
-              controlVisibility,
-            )}
-          >
-            {links.map(({ href, label, icon: Icon }) => (
-              <Tooltip key={label}>
-                <TooltipTrigger asChild>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="icon"
-                    className="hairline h-9 w-9 rounded-sm border-media-icon/60 bg-media-scrim text-media-icon shadow-none transition-[color,transform,border-color] hover:scale-105 hover:border-primary hover:bg-media-scrim hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <a href={href} aria-label={label}>
-                      <Icon aria-hidden className="h-4 w-4" />
-                    </a>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="bottom">{label}</TooltipContent>
-              </Tooltip>
-            ))}
+          <div className={cn("absolute right-2.5 top-2.5 z-30 flex gap-1.5", visibility)}>
+            {links.map(({ href, label, Icon }) => {
+              const placeholder = isPlaceholder(href);
+              const tip = placeholder ? `${label} — coming soon` : label;
+              return (
+                <Tooltip key={label}>
+                  <TooltipTrigger asChild>
+                    {placeholder ? (
+                      <button
+                        type="button"
+                        aria-label={tip}
+                        aria-disabled="true"
+                        onClick={(event) => event.preventDefault()}
+                        className={cn(controlButton, "h-9 w-9 cursor-default")}
+                      >
+                        <Icon aria-hidden className="size-4" strokeWidth={1.7} />
+                      </button>
+                    ) : (
+                      <a
+                        href={href}
+                        aria-label={label}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={cn(controlButton, "h-9 w-9 hover:scale-105")}
+                      >
+                        <Icon aria-hidden className="size-4" strokeWidth={1.7} />
+                      </a>
+                    )}
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">{tip}</TooltipContent>
+                </Tooltip>
+              );
+            })}
           </div>
         </TooltipProvider>
       )}
 
       {hasMultipleSlides && (
         <>
-          <Button
+          <button
             type="button"
-            variant="outline"
-            size="icon"
             onClick={() => api?.scrollPrev()}
-            aria-label="Previous slide"
+            aria-label="Previous photo"
             className={cn(
-              "hairline absolute left-3 top-1/2 z-20 h-8 w-8 -translate-y-1/2 rounded-sm border-media-icon/60 bg-media-scrim text-media-icon shadow-none hover:border-primary hover:bg-media-scrim hover:text-primary",
-              controlVisibility,
+              controlButton,
+              "absolute left-2.5 top-1/2 z-20 h-9 w-9 -translate-y-1/2",
+              visibility,
             )}
           >
-            <ArrowLeft aria-hidden />
-          </Button>
-          <Button
+            <ArrowLeft aria-hidden className="size-4" />
+          </button>
+          <button
             type="button"
-            variant="outline"
-            size="icon"
             onClick={() => api?.scrollNext()}
-            aria-label="Next slide"
+            aria-label="Next photo"
             className={cn(
-              "hairline absolute right-3 top-1/2 z-20 h-8 w-8 -translate-y-1/2 rounded-sm border-media-icon/60 bg-media-scrim text-media-icon shadow-none hover:border-primary hover:bg-media-scrim hover:text-primary",
-              controlVisibility,
+              controlButton,
+              "absolute right-2.5 top-1/2 z-20 h-9 w-9 -translate-y-1/2",
+              visibility,
             )}
           >
-            <ArrowRight aria-hidden />
-          </Button>
+            <ArrowRight aria-hidden className="size-4" />
+          </button>
           <div
+            role="group"
+            aria-label="Choose photo"
             className={cn(
-              "absolute left-3 top-3 z-20 flex gap-1.5 rounded-sm bg-media-scrim p-2",
-              controlVisibility,
+              "absolute left-2.5 top-2.5 z-20 flex gap-1 bg-media-scrim px-2 py-2 backdrop-blur-[2px]",
+              visibility,
             )}
-            aria-label="Choose slide"
           >
             {entry.media.map((item, index) => (
-              <Button
+              <button
                 key={`${item.src}-dot-${index}`}
                 type="button"
-                variant="ghost"
-                size="icon"
                 onClick={() => api?.scrollTo(index)}
-                aria-label={`Go to slide ${index + 1}`}
+                aria-label={`Go to photo ${index + 1}`}
                 aria-current={index === activeIndex ? "true" : undefined}
-                className="h-3 w-3 rounded-full p-0 hover:bg-transparent"
+                className="flex h-4 w-4 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 <span
                   aria-hidden
@@ -213,7 +274,7 @@ export function DesignMediaCarousel({ entry, autoplay = false }: DesignMediaCaro
                     index === activeIndex ? "bg-media-icon" : "bg-transparent",
                   )}
                 />
-              </Button>
+              </button>
             ))}
           </div>
         </>

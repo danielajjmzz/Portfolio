@@ -12,6 +12,7 @@ import {
   type VisualFilter,
 } from "@/data/projects-page";
 import { PageHero } from "@/components/PageHero";
+import { DesignMediaCarousel, type MediaEntry } from "@/components/DesignMediaCarousel";
 import { cardClass, chipClass, outlineButton, sectionHeadRow, tintCardClass } from "@/lib/ui";
 
 export const Route = createFileRoute("/projects/")({
@@ -41,7 +42,7 @@ const sections = [
   { id: "teaching", title: "Teaching", count: String(teaching.length) },
   { id: "visual", title: "Visual work", count: String(visualWork.length) },
 ] as const;
-type Preview = { title: string; image: string; description: string };
+type Preview = MediaEntry & { description: string };
 const container = "mx-auto max-w-6xl px-5 md:px-8";
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -294,13 +295,10 @@ function ProjectsIndex() {
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {teaching.map((entry) => (
               <article key={entry.id} className={`${tintCardClass} min-w-0 p-3`}>
-                <img
-                  src={entry.image}
-                  alt={`${entry.title} — blueprint placeholder for lesson documentation`}
-                  width={800}
-                  height={500}
-                  loading="lazy"
-                  className="aspect-[16/10] w-full rounded-frame border border-border object-cover"
+                <DesignMediaCarousel
+                  entry={entry}
+                  aspect="aspect-[16/10]"
+                  onOpen={() => setPreview(entry)}
                 />
                 <div className="px-2 pb-3 pt-4">
                   <h3 className="text-[1.375rem]">{entry.title}</h3>
@@ -375,25 +373,15 @@ function ProjectsIndex() {
             ref={gridRef}
             id="visual-grid"
             aria-live="polite"
-            className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-5"
+            className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4 lg:gap-x-5"
           >
             {visible.entries.map((entry) => (
               <article key={entry.id} className="min-w-0">
-                <button
-                  type="button"
-                  aria-label={`View ${entry.title}`}
-                  className="block w-full overflow-hidden rounded-frame border border-border bg-card transition-colors hover:border-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  onClick={() => setPreview(entry)}
-                >
-                  <img
-                    src={entry.image}
-                    alt={`${entry.title} — ${entry.category.toLowerCase()} preview`}
-                    width={600}
-                    height={600}
-                    loading="lazy"
-                    className="aspect-square w-full object-cover"
-                  />
-                </button>
+                <DesignMediaCarousel
+                  entry={entry}
+                  aspect="aspect-square"
+                  onOpen={() => setPreview(entry)}
+                />
                 <h3 className="mt-2.5 font-sans text-sm font-medium leading-snug">{entry.title}</h3>
               </article>
             ))}
@@ -425,16 +413,26 @@ function ProjectsIndex() {
           if (!open) setPreview(null);
         }}
       >
-        <DialogContent className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-card border-border bg-card shadow-none sm:rounded-card">
+        <DialogContent
+          tabIndex={-1}
+          // Focus the popup itself on open (not the first icon, which would pop its tooltip).
+          onOpenAutoFocus={(event) => {
+            event.preventDefault();
+            (event.currentTarget as HTMLElement | null)?.focus();
+          }}
+          className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-[20px] border-border bg-card shadow-none focus-visible:outline-none sm:rounded-[20px]"
+        >
           {preview && (
             <>
               <DialogTitle className="pr-8 font-display text-2xl font-semibold tracking-normal">
                 {preview.title}
               </DialogTitle>
-              <img
-                src={preview.image}
-                alt={preview.title}
-                className="max-h-[60dvh] w-full rounded-frame object-contain"
+              {/* Same carousel as the card, with controls always visible and whole photos shown. */}
+              <DesignMediaCarousel
+                entry={preview}
+                aspect="aspect-[3/2] max-h-[60dvh]"
+                controls="always"
+                fit="contain"
               />
               <DialogDescription>{preview.description}</DialogDescription>
             </>

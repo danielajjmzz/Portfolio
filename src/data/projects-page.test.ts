@@ -28,20 +28,26 @@ describe("Projects-page curation", () => {
       );
     }
   });
-  test("shows eight visual items, then Show more reveals the rest", () => {
-    assert.equal(VISUAL_INITIAL_COUNT, 8);
+  test("shows one row of four visual items, then Show more reveals the rest", () => {
+    assert.equal(VISUAL_INITIAL_COUNT, 4);
     const collapsed = selectVisualWork("All");
-    assert.equal(collapsed.entries.length, Math.min(8, visualWork.length));
-    assert.equal(collapsed.hasMore, visualWork.length > 8);
+    assert.equal(collapsed.entries.length, 4);
+    assert.equal(collapsed.hasMore, true);
     assert.equal(collapsed.canCollapse, false);
     const expanded = selectVisualWork("All", true);
     assert.equal(expanded.entries.length, visualWork.length);
     assert.equal(expanded.hasMore, false);
-    assert.equal(expanded.canCollapse, visualWork.length > 8);
+    assert.equal(expanded.canCollapse, true);
   });
-  test("no toggle when a filter has eight or fewer items", () => {
+  test("no toggle when a filter fits in one row", () => {
     assert.equal(selectVisualWork("Physical designs").hasMore, false);
     assert.equal(selectVisualWork("Physical designs", true).canCollapse, false);
+    assert.equal(selectVisualWork("Document designs").hasMore, false);
+  });
+  test("every visual work and teaching card has photos for the carousel", () => {
+    for (const entry of [...visualWork, ...teaching]) {
+      assert.ok(entry.media.length > 0, `${entry.title} has no photos`);
+    }
   });
   test("filters visual work without including teaching", () => {
     assert.equal(selectVisualWork("Physical designs").entries.length, 4);
