@@ -23,7 +23,7 @@ Requires [Bun](https://bun.sh) (the lockfile is `bun.lock`).
 bun install --frozen-lockfile   # install exact locked versions
 bun run dev                     # start dev server on http://localhost:8080
 bun run build                   # production build into .output/
-bun run preview                 # preview the production build
+NITRO_PRESET=node-server bun run build && node .output/server/index.mjs   # run the production build locally
 ```
 
 ## Deployment
