@@ -28,7 +28,7 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { chipClass } from "@/lib/ui";
 
 type Skill = { label: string; alt: string; Icon: LucideIcon };
 
@@ -203,11 +203,7 @@ export function SkillsExplorer() {
 
   return (
     <div>
-      <div
-        role="tablist"
-        aria-label="Skill groups"
-        className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 md:mx-0 md:px-0"
-      >
+      <div role="tablist" aria-label="Skill groups" className="flex flex-wrap gap-2">
         {skillGroups.map((g) => (
           <button
             key={g.title}
@@ -215,12 +211,7 @@ export function SkillsExplorer() {
             type="button"
             aria-selected={g.title === active}
             onClick={() => setActive(g.title)}
-            className={cn(
-              "hairline shrink-0 rounded-sm px-4 py-2 text-sm transition-colors",
-              g.title === active
-                ? "border-primary bg-primary text-primary-foreground"
-                : "text-muted-foreground",
-            )}
+            className={chipClass(g.title === active)}
           >
             {g.title}
           </button>
@@ -230,22 +221,14 @@ export function SkillsExplorer() {
       <div
         role="tabpanel"
         aria-label={group.title}
-        className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5"
+        className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5"
       >
         {group.skills.map(({ label, alt, Icon }) => (
-          <div
-            key={label}
-            className="group flex flex-col items-center gap-3 text-center"
-          >
-            <span className="hairline flex h-14 w-14 items-center justify-center rounded-sm bg-card transition-transform duration-200 group-hover:scale-105">
-              <Icon
-                role="img"
-                aria-label={alt}
-                className="h-6 w-6 text-link"
-                strokeWidth={1.4}
-              />
+          <div key={label} className="group flex flex-col items-center gap-3 text-center">
+            <span className="flex h-14 w-14 items-center justify-center rounded-tile bg-tint-card transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none">
+              <Icon role="img" aria-label={alt} className="h-6 w-6 text-link" strokeWidth={1.4} />
             </span>
-            <span className="text-sm text-muted-foreground">{label}</span>
+            <span className="text-sm text-foreground">{label}</span>
           </div>
         ))}
       </div>

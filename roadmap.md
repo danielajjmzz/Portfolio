@@ -1,5 +1,15 @@
 # Portfolio updates
 
+## Redesign (branch: redesign)
+- [x] New light (pink & off-white) and dark (noir) tokens; Barlow Condensed headings; square buttons/chips, rounded cards
+- [x] Shared top section with identical height on Home, Projects and Contact
+- [x] Home: Selected Work cards, Education band, Leadership card grid, Skills band, accent footer
+- [x] Projects: sticky jump bar, case study cards, Teaching band, Visual work filters + Show more after 8
+- [x] Contact: two-column container, contact cards, resume card, pink form panel
+- [ ] Add Formspree form ID (VITE_FORMSPREE_FORM_ID) so the contact form sends directly
+- [ ] Add a "you at work" photo for the sixth Leadership slot
+- [ ] Add the resume PDF and point "Download resume" at it
+
 - [ ] Compact Projects into Case studies, Teaching, and filtered Visual work
 - [ ] Verify sticky navigation, lightbox, filters, reveal-more, and responsive grids
 - [x] Make Visual work filters a second sticky bar under the section nav

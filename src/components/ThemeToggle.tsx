@@ -8,10 +8,8 @@ type ThemeChoice = "light" | "dark";
 function getPreferredTheme(): ThemeChoice {
   if (typeof window === "undefined") return "light";
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  if (stored === "light" || stored === "dark") return stored;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  // Light is the default theme; dark only when the visitor has switched to it.
+  return stored === "dark" ? "dark" : "light";
 }
 
 function applyTheme(theme: ThemeChoice) {
@@ -42,7 +40,7 @@ export function ThemeToggle() {
         window.localStorage.setItem(STORAGE_KEY, nextTheme);
         applyTheme(nextTheme);
       }}
-      className="h-9 w-9 rounded-sm border-rule bg-background text-foreground shadow-none hover:border-primary hover:bg-secondary hover:text-link"
+      className="h-10 w-10 border-border-strong bg-card text-foreground shadow-none hover:border-link hover:bg-secondary hover:text-link"
     >
       {theme === "dark" ? (
         <Sun aria-hidden className="h-4 w-4" strokeWidth={1.6} />

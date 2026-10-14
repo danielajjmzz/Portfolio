@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
@@ -98,7 +99,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap",
       },
     ],
   }),
@@ -113,6 +114,12 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          // Apply a saved dark-mode choice before first paint (light is the default).
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("daniela-theme")==="dark"){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark"}}catch(e){}`,
+          }}
+        />
       </head>
       <body>
         {children}
@@ -130,37 +137,38 @@ const navItems = [
 
 function SiteHeader() {
   return (
-    <header id="site-header" className="hairline-b sticky top-0 z-30 bg-header/95 backdrop-blur-[2px]">
-      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-4 sm:flex sm:justify-between md:px-8">
-        <Link to="/" className="flex min-w-0 items-center gap-3">
-          <img
-            src="/images/logo-placeholder.svg"
-            alt="Daniela Jimenez logo"
-            width={40}
-            height={40}
-            className="h-9 w-9 shrink-0 rounded-sm md:h-10 md:w-10"
-          />
+    <header
+      id="site-header"
+      className="sticky top-0 z-30 border-b border-border bg-header/95 backdrop-blur-[2px]"
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5 md:px-8 md:py-4">
+        <Link
+          to="/"
+          className="flex min-w-0 items-center gap-3"
+          aria-label="Daniela Jimenez — home"
+        >
+          <span
+            aria-hidden
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-primary font-sans text-sm font-semibold tracking-wide text-primary-foreground md:h-11 md:w-11"
+          >
+            DJ
+          </span>
           <span className="hidden min-w-0 sm:block">
-          <span className="block whitespace-nowrap font-display text-xl leading-none tracking-tight text-foreground sm:text-2xl">
-            Daniela Jimenez
-          </span>
-          <span className="label-tech mt-1 hidden truncate sm:block">
-            UI/UX Design · Chicago
-          </span>
+            <span className="block whitespace-nowrap font-display text-2xl font-semibold leading-none text-foreground">
+              Daniela Jimenez
+            </span>
+            <span className="label-tech mt-1 block truncate">UI/UX Design · Chicago</span>
           </span>
         </Link>
 
-        <div className="flex shrink-0 items-center gap-4">
-          <nav className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
+        <div className="flex shrink-0 items-center gap-4 sm:gap-6">
+          <nav aria-label="Main" className="flex items-center gap-4 text-sm sm:gap-7">
             {navItems.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
                 activeOptions={{ exact: item.to === "/" }}
-                className="nav-underline text-muted-foreground transition-colors hover:text-link"
-                activeProps={{
-                  className: "text-link",
-                }}
+                className="nav-underline text-muted-foreground transition-colors hover:text-link data-[status=active]:font-medium data-[status=active]:text-link"
               >
                 {item.label}
               </Link>
@@ -174,25 +182,35 @@ function SiteHeader() {
 }
 
 function SiteFooter() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const onContact = pathname.startsWith("/contact");
+
   return (
-    <footer className="mt-24 bg-primary text-primary-foreground">
-      <div className="mx-auto grid max-w-6xl gap-4 px-5 py-10 text-sm sm:flex sm:items-end sm:justify-between md:px-8">
+    <footer className="mt-auto bg-primary text-primary-foreground">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-14 sm:flex-row sm:items-center sm:justify-between md:px-8 md:py-16">
         <div>
-          <p className="font-display text-3xl leading-none">
-            Let's build something
+          <p className="font-display text-[2.5rem] font-semibold leading-none sm:text-5xl">
+            Let's build something.
           </p>
-          <p className="mt-2">
-            <a
-              href="mailto:danielajjmzz@gmail.com"
-              className="underline decoration-1 underline-offset-4 hover:decoration-2"
-            >
-              danielajjmzz@gmail.com
-            </a>
-          </p>
+          <a
+            href="mailto:danielajjmzz@gmail.com"
+            className="mt-3 inline-block text-sm underline decoration-1 underline-offset-4 hover:decoration-2"
+          >
+            danielajjmzz@gmail.com
+          </a>
         </div>
-        <p className="text-xs tracking-[0.06em] text-primary-foreground/80">
-          Chicago, Illinois · © {new Date().getFullYear()}
-        </p>
+        {onContact ? (
+          <p className="text-xs tracking-[0.06em] sm:self-end">
+            Chicago, Illinois · © {new Date().getFullYear()}
+          </p>
+        ) : (
+          <Link
+            to="/contact"
+            className="inline-flex w-fit items-center gap-2 bg-ink px-5 py-3 text-sm font-semibold text-ink-foreground transition-opacity hover:opacity-85"
+          >
+            Get in touch <span aria-hidden>→</span>
+          </Link>
+        )}
       </div>
     </footer>
   );
@@ -214,4 +232,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

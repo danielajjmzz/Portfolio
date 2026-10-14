@@ -1,93 +1,83 @@
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
-import { caseStudies, teaching, visualFilters, selectVisualWork, visualRowLimit, type VisualFilter } from "@/data/projects-page";
-import { cn } from "@/lib/utils";
+import {
+  caseStudies,
+  teaching,
+  visualFilters,
+  visualWork,
+  selectVisualWork,
+  type VisualFilter,
+} from "@/data/projects-page";
+import { PageHero } from "@/components/PageHero";
+import { cardClass, chipClass, outlineButton, sectionHeadRow, tintCardClass } from "@/lib/ui";
 
 export const Route = createFileRoute("/projects/")({
-  head: () => ({ meta: [
-    { title: "Projects — Daniela Jimenez" },
-    { name: "description", content: "Case studies, teaching, and visual work, each built with a real audience in mind." },
-    { property: "og:title", content: "Projects — Daniela Jimenez" },
-    { property: "og:description", content: "Explore Daniela Jimenez’s case studies, student programs, physical designs, documents, and photography." },
-    { property: "og:type", content: "website" },
-    { name: "twitter:card", content: "summary_large_image" },
-  ] }),
+  head: () => ({
+    meta: [
+      { title: "Projects — Daniela Jimenez" },
+      {
+        name: "description",
+        content:
+          "Case studies, teaching, and visual work, each built with a real audience in mind.",
+      },
+      { property: "og:title", content: "Projects — Daniela Jimenez" },
+      {
+        property: "og:description",
+        content:
+          "Explore Daniela Jimenez’s case studies, student programs, physical designs, documents, and photography.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: ProjectsIndex,
 });
 
 const sections = [
-  { id: "case-studies", title: "Case studies", count: "3" },
-  { id: "teaching", title: "Teaching", count: "3" },
-  { id: "visual", title: "Visual work", count: "8+" },
+  { id: "case-studies", title: "Case studies", count: String(caseStudies.length) },
+  { id: "teaching", title: "Teaching", count: String(teaching.length) },
+  { id: "visual", title: "Visual work", count: String(visualWork.length) },
 ] as const;
 type Preview = { title: string; image: string; description: string };
-const chipStyle = (active: boolean) => cn(
-  "hairline h-9 shrink-0 rounded-sm px-3 text-sm shadow-none sm:px-4",
-  active ? "border-primary bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground" : "bg-transparent text-muted-foreground hover:border-primary hover:bg-transparent hover:text-link",
-);
-
-function SectionHeading({ id, title, label }: { id: string; title: string; label: string }) {
-  return <div className="mb-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-    <h2 id={id}>{title}</h2><p className="text-xs text-muted-foreground sm:text-sm">{label}</p>
-  </div>;
-}
-
-const WIDE_QUERY = "(min-width: 1024px)";
-/** True at the `lg` breakpoint, where the Visual work grid has four columns. */
-function useIsWide() {
-  return useSyncExternalStore(
-    (onChange) => {
-      const query = window.matchMedia(WIDE_QUERY);
-      query.addEventListener("change", onChange);
-      return () => query.removeEventListener("change", onChange);
-    },
-    () => window.matchMedia(WIDE_QUERY).matches,
-    () => true,
-  );
-}
+const container = "mx-auto max-w-6xl px-5 md:px-8";
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function SectionHeading({ id, title, label }: { id: string; title: string; label: string }) {
+  return (
+    <div className={sectionHeadRow}>
+      <h2 id={id}>{title}</h2>
+      <p className="label-tech">{label}</p>
+    </div>
+  );
+}
 
 function ProjectsIndex() {
   const [activeSection, setActiveSection] = useState<string>("case-studies");
   const [filter, setFilter] = useState<VisualFilter>("All");
   const [expanded, setExpanded] = useState(false);
   const [preview, setPreview] = useState<Preview | null>(null);
-  const isWide = useIsWide();
-  const visible = selectVisualWork(filter, expanded, visualRowLimit(isWide));
+  const visible = selectVisualWork(filter, expanded);
   const filterBarRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-  // The filter bar sticks directly under the site header + section nav, whose heights vary by breakpoint.
-  const [filterTop, setFilterTop] = useState<number | null>(null);
+  // Sticky offsets: the jump bar sits under the site header; Visual work filters sit under both.
+  const [offsets, setOffsets] = useState<{ nav: number; filters: number } | null>(null);
 
   useEffect(() => {
     const header = document.getElementById("site-header");
     const nav = document.getElementById("project-section-nav");
     if (!header || !nav) return;
-    const measure = () => setFilterTop(header.offsetHeight + nav.offsetHeight - 1);
+    const measure = () =>
+      setOffsets({ nav: header.offsetHeight, filters: header.offsetHeight + nav.offsetHeight });
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(header);
     observer.observe(nav);
     return () => observer.disconnect();
   }, []);
-
-  /** If the grid's top has scrolled under the sticky bars, bring it back into view. */
-  const revealGridTop = () => {
-    requestAnimationFrame(() => {
-      const grid = gridRef.current;
-      const bar = filterBarRef.current;
-      if (!grid || !bar) return;
-      const barBottom = bar.getBoundingClientRect().bottom;
-      const gridTop = grid.getBoundingClientRect().top;
-      if (gridTop < barBottom) {
-        window.scrollTo({ top: window.scrollY + gridTop - barBottom - 16, behavior: prefersReducedMotion() ? "instant" : "smooth" });
-      }
-    });
-  };
 
   useEffect(() => {
     let frame = 0;
@@ -100,110 +90,355 @@ function ProjectsIndex() {
         const element = document.getElementById(section.id);
         if (element && element.getBoundingClientRect().top <= boundary) current = section.id;
       }
-      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) current = "visual";
+      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4)
+        current = "visual";
       setActiveSection(current);
     };
-    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); cancelAnimationFrame(frame); };
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+    };
   }, []);
+
+  /** If the grid's top has scrolled under the sticky bars, bring it back into view. */
+  const revealGridTop = () => {
+    requestAnimationFrame(() => {
+      const grid = gridRef.current;
+      const bar = filterBarRef.current;
+      if (!grid || !bar) return;
+      const barBottom = bar.getBoundingClientRect().bottom;
+      const gridTop = grid.getBoundingClientRect().top;
+      if (gridTop < barBottom) {
+        window.scrollTo({
+          top: window.scrollY + gridTop - barBottom - 16,
+          behavior: prefersReducedMotion() ? "instant" : "smooth",
+        });
+      }
+    });
+  };
+
+  const jumpTo = (id: string) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+    // Measure where the jump bar sits once stuck (under the header), not where it is right now.
+    const header = document.getElementById("site-header");
+    const nav = document.getElementById("project-section-nav");
+    const stuckBottom = (header?.offsetHeight ?? 0) + (nav?.offsetHeight ?? 0);
+    const top = window.scrollY + target.getBoundingClientRect().top - stuckBottom;
+    window.scrollTo({ top, behavior: prefersReducedMotion() ? "instant" : "smooth" });
+  };
 
   return (
     <div>
-      <header className="mx-auto max-w-6xl px-5 pb-8 pt-10 md:px-8 md:pt-12">
-        <h1>Projects</h1>
-        <p className="mt-5 max-w-2xl text-muted-foreground">Case studies, teaching, and visual work, each built with a real audience in mind.</p>
-      </header>
+      <PageHero
+        eyebrow="Case studies · Teaching · Visual work"
+        title="Projects."
+        body="Case studies, teaching, and visual work, each built with a real audience in mind."
+      />
 
-      <nav id="project-section-nav" aria-label="Project sections" className="hairline-t hairline-b sticky top-[69px] z-20 bg-background sm:top-[79px]">
-        <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 py-3 md:px-8">
-          {sections.map((section) => <Button key={section.id} asChild variant="outline" className={chipStyle(activeSection === section.id)}>
-            <a href={`#${section.id}`} aria-current={activeSection === section.id ? "location" : undefined} onClick={(event) => {
-              event.preventDefault();
-              document.getElementById(section.id)?.scrollIntoView({ behavior: prefersReducedMotion() ? "instant" : "smooth", block: "start" });
-              window.history.replaceState(null, "", `#${section.id}`);
-            }}>{section.title}<span className={cn("text-xs", activeSection === section.id ? "text-primary-foreground/70" : "text-muted-foreground")}>{section.count}</span></a>
-          </Button>)}
+      {/* Sticky jump bar */}
+      <nav
+        id="project-section-nav"
+        aria-label="Project sections"
+        style={offsets ? { top: offsets.nav } : undefined}
+        className="sticky top-[69px] z-20 border-b border-border bg-background md:top-[77px]"
+      >
+        <div className={`${container} flex flex-wrap gap-2 py-3`}>
+          {sections.map((section) => {
+            const active = activeSection === section.id;
+            return (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                aria-current={active ? "location" : undefined}
+                className={chipClass(active)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  jumpTo(section.id);
+                }}
+              >
+                {section.title}
+                <span
+                  className={
+                    active ? "text-xs text-primary-foreground/75" : "text-xs text-muted-foreground"
+                  }
+                >
+                  {section.count}
+                </span>
+              </a>
+            );
+          })}
         </div>
       </nav>
 
-      <div className="mx-auto max-w-6xl space-y-14 px-5 pt-9 md:space-y-16 md:px-8">
-        <section id="case-studies" aria-labelledby="case-studies-heading" className="scroll-mt-40">
-          <SectionHeading id="case-studies-heading" title="Case studies" label="UX research · product · data systems" />
-          <div className="grid gap-x-6 gap-y-9 md:grid-cols-2 lg:grid-cols-3">
-            {caseStudies.map((project, index) => <article key={project.slug} className="group min-w-0">
-              <div className="relative">
-                <Link to="/projects/$slug" params={{ slug: project.slug }} aria-label={`Read ${project.title}`} className="hairline block overflow-hidden rounded-sm bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  <img src={project.coverImage} alt={project.title} width={900} height={600} loading={index === 0 ? "eager" : "lazy"} className="aspect-[3/2] w-full object-cover" />
-                </Link>
-                {(project.repo_url || project.live_url) && <div className="absolute right-3 top-3 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none [@media(hover:none)]:opacity-100">
-                  {project.repo_url && <Button asChild variant="outline" size="icon" className="border-media-icon/60 bg-media-scrim text-media-icon hover:bg-media-scrim hover:text-primary"><a href={project.repo_url} aria-label="GitHub repository" target="_blank" rel="noreferrer"><Github /></a></Button>}
-                  {project.live_url && <Button asChild variant="outline" size="icon" className="border-media-icon/60 bg-media-scrim text-media-icon hover:bg-media-scrim hover:text-primary"><a href={project.live_url} aria-label="Live website" target="_blank" rel="noreferrer"><ExternalLink /></a></Button>}
-                </div>}
-              </div>
-              <p className="label-tech mt-4">{project.meta}</p>
-              <h3 className="mt-2 leading-tight"><Link to="/projects/$slug" params={{ slug: project.slug }}>{project.title}</Link></h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{project.summary}</p>
-              <Link to="/projects/$slug" params={{ slug: project.slug }} className="mt-4 inline-flex items-center gap-2 text-sm text-link">Read the case study <ArrowRight className="size-4" aria-hidden="true" /></Link>
-            </article>)}
+      {/* Case studies */}
+      <section id="case-studies" aria-labelledby="case-studies-heading" className="py-14 md:py-16">
+        <div className={container}>
+          <SectionHeading
+            id="case-studies-heading"
+            title="Case studies"
+            label="UX research · product · data systems"
+          />
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {caseStudies.map((project, index) => {
+              const [meta, ...tags] = project.meta.split(" · Featured");
+              return (
+                <article key={project.slug} className={`${cardClass} group min-w-0 p-3`}>
+                  <div className="relative">
+                    <Link
+                      to="/projects/$slug"
+                      params={{ slug: project.slug }}
+                      aria-label={`Read ${project.title}`}
+                      className="block overflow-hidden rounded-frame border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <img
+                        src={project.coverImage}
+                        alt={project.title}
+                        width={900}
+                        height={600}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        className="aspect-[3/2] w-full object-cover"
+                      />
+                    </Link>
+                    {(project.repo_url || project.live_url) && (
+                      <div className="absolute right-3 top-3 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none [@media(hover:none)]:opacity-100">
+                        {project.repo_url && (
+                          <Button
+                            asChild
+                            variant="outline"
+                            size="icon"
+                            className="border-media-icon/60 bg-media-scrim text-media-icon hover:bg-media-scrim hover:text-primary"
+                          >
+                            <a
+                              href={project.repo_url}
+                              aria-label="GitHub repository"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <Github />
+                            </a>
+                          </Button>
+                        )}
+                        {project.live_url && (
+                          <Button
+                            asChild
+                            variant="outline"
+                            size="icon"
+                            className="border-media-icon/60 bg-media-scrim text-media-icon hover:bg-media-scrim hover:text-primary"
+                          >
+                            <a
+                              href={project.live_url}
+                              aria-label="Live website"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <ExternalLink />
+                            </a>
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="px-2 pb-3 pt-4">
+                    <p className="label-tech">
+                      {meta}
+                      {tags.length > 0 && (
+                        <>
+                          {" "}
+                          · <span className="text-link">Featured</span>
+                        </>
+                      )}
+                    </p>
+                    <h3 className="mt-2 text-[1.75rem]">
+                      <Link
+                        to="/projects/$slug"
+                        params={{ slug: project.slug }}
+                        className="hover:text-link"
+                      >
+                        {project.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {project.summary}
+                    </p>
+                    <Link
+                      to="/projects/$slug"
+                      params={{ slug: project.slug }}
+                      className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link hover:underline"
+                    >
+                      Read the case study <ArrowRight className="size-4" aria-hidden="true" />
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="teaching" aria-labelledby="teaching-heading" className="scroll-mt-40">
-          <SectionHeading id="teaching-heading" title="Teaching" label="Lessons · workshops · student programs" />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {teaching.map((entry) => <article key={entry.id} className="hairline min-w-0 overflow-hidden rounded-sm bg-card">
-              <img src={entry.image} alt={`${entry.title} — blueprint placeholder for lesson documentation`} width={800} height={500} loading="lazy" className="aspect-[16/10] w-full border-b object-cover" />
-              <div className="p-5">
-                <h3 className="leading-tight">{entry.title}</h3>
-                <dl className="mt-4 grid grid-cols-[2.75rem_minmax(0,1fr)] gap-x-3 gap-y-3 text-xs leading-relaxed">
-                  {[["For", entry.audience], ["Made", entry.made], ["Result", entry.result]].map(([label, value]) => <div key={label} className="contents"><dt className="text-muted-foreground">{label}</dt><dd>{value}</dd></div>)}
-                </dl>
-                {entry.href ? <a href={entry.href} className="mt-5 inline-flex items-center gap-2 text-sm text-link">See the lesson <ArrowRight className="size-4" aria-hidden="true" /></a> : <Button variant="link" className="mt-5 h-auto p-0 font-normal text-link" onClick={() => setPreview(entry)}>See the lesson <ArrowRight aria-hidden="true" /></Button>}
-              </div>
-            </article>)}
+      {/* Teaching — tinted band */}
+      <section id="teaching" aria-labelledby="teaching-heading" className="bg-tint py-14 md:py-16">
+        <div className={container}>
+          <SectionHeading
+            id="teaching-heading"
+            title="Teaching"
+            label="Lessons · workshops · student programs"
+          />
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {teaching.map((entry) => (
+              <article key={entry.id} className={`${tintCardClass} min-w-0 p-3`}>
+                <img
+                  src={entry.image}
+                  alt={`${entry.title} — blueprint placeholder for lesson documentation`}
+                  width={800}
+                  height={500}
+                  loading="lazy"
+                  className="aspect-[16/10] w-full rounded-frame border border-border object-cover"
+                />
+                <div className="px-2 pb-3 pt-4">
+                  <h3 className="text-[1.375rem]">{entry.title}</h3>
+                  <dl className="mt-3 grid grid-cols-[3.25rem_minmax(0,1fr)] gap-x-3 gap-y-1.5 text-xs leading-relaxed">
+                    {[
+                      ["For", entry.audience],
+                      ["Made", entry.made],
+                      ["Result", entry.result],
+                    ].map(([label, value]) => (
+                      <div key={label} className="contents">
+                        <dt className="text-muted-foreground">{label}</dt>
+                        <dd className="text-foreground">{value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  {entry.href ? (
+                    <a
+                      href={entry.href}
+                      className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link hover:underline"
+                    >
+                      See the lesson <ArrowRight className="size-4" aria-hidden="true" />
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link hover:underline"
+                      onClick={() => setPreview(entry)}
+                    >
+                      See the lesson <ArrowRight className="size-4" aria-hidden="true" />
+                    </button>
+                  )}
+                </div>
+              </article>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="visual" aria-labelledby="visual-heading" className="scroll-mt-40">
-          <SectionHeading id="visual-heading" title="Visual work" label="Physical · document · photography" />
-          {/* Second sticky bar: stays under the section nav while scrolling through Visual work, then leaves with the section. */}
+      {/* Visual work */}
+      <section id="visual" aria-labelledby="visual-heading" className="py-14 md:py-16">
+        <div className={container}>
+          <SectionHeading
+            id="visual-heading"
+            title="Visual work"
+            label="Physical · document · photography"
+          />
+          {/* Filters stick under the jump bar while you scroll through Visual work, then leave with the section. */}
           <div
             ref={filterBarRef}
-            style={filterTop === null ? undefined : { top: filterTop }}
-            className="hairline-b sticky top-[130px] z-10 mb-6 bg-background sm:top-[140px]"
+            style={offsets ? { top: offsets.filters } : undefined}
+            className="sticky top-[130px] z-10 mb-5 bg-background py-3 md:top-[138px]"
           >
-            <div role="group" aria-label="Filter visual work" className="-mx-5 flex gap-2 overflow-x-auto px-5 py-3 md:mx-0 md:px-0">
-              {visualFilters.map((item) => <Button key={item} variant="outline" aria-pressed={filter === item} className={chipStyle(filter === item)} onClick={() => { setFilter(item); setExpanded(false); revealGridTop(); }}>{item}</Button>)}
+            <div role="group" aria-label="Filter visual work" className="flex flex-wrap gap-2">
+              {visualFilters.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  aria-pressed={filter === item}
+                  className={chipClass(filter === item)}
+                  onClick={() => {
+                    setFilter(item);
+                    setExpanded(false);
+                    revealGridTop();
+                  }}
+                >
+                  {item}
+                </button>
+              ))}
             </div>
           </div>
-          <div ref={gridRef} id="visual-grid" aria-live="polite" className="grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-4 lg:gap-x-6">
-            {visible.entries.map((entry) => <article key={entry.id} className="min-w-0">
-              <Button variant="ghost" aria-label={`View ${entry.title}`} className="hairline block h-auto w-full overflow-hidden rounded-sm bg-card p-0 hover:bg-card" onClick={() => setPreview(entry)}>
-                <img src={entry.image} alt={`${entry.title} — ${entry.category.toLowerCase()} preview`} width={600} height={600} loading="lazy" className="aspect-square w-full object-cover" />
-              </Button>
-              <h3 className="mt-3 text-lg leading-tight">{entry.title}</h3>
-            </article>)}
+          <div
+            ref={gridRef}
+            id="visual-grid"
+            aria-live="polite"
+            className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-5"
+          >
+            {visible.entries.map((entry) => (
+              <article key={entry.id} className="min-w-0">
+                <button
+                  type="button"
+                  aria-label={`View ${entry.title}`}
+                  className="block w-full overflow-hidden rounded-frame border border-border bg-card transition-colors hover:border-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  onClick={() => setPreview(entry)}
+                >
+                  <img
+                    src={entry.image}
+                    alt={`${entry.title} — ${entry.category.toLowerCase()} preview`}
+                    width={600}
+                    height={600}
+                    loading="lazy"
+                    className="aspect-square w-full object-cover"
+                  />
+                </button>
+                <h3 className="mt-2.5 font-sans text-sm font-medium leading-snug">{entry.title}</h3>
+              </article>
+            ))}
           </div>
-          {(visible.hasMore || visible.canCollapse) && <div className="mt-8 flex justify-center">
-            <Button
-              variant="outline"
-              aria-expanded={expanded}
-              aria-controls="visual-grid"
-              className="rounded-sm shadow-none"
-              onClick={() => {
-                if (expanded) { setExpanded(false); revealGridTop(); } else setExpanded(true);
-              }}
-            >{expanded ? "Show less visual work" : "Show more visual work"}</Button>
-          </div>}
-        </section>
-      </div>
+          {(visible.hasMore || visible.canCollapse) && (
+            <div className="mt-8 flex justify-center">
+              <button
+                type="button"
+                aria-expanded={expanded}
+                aria-controls="visual-grid"
+                className={outlineButton}
+                onClick={() => {
+                  if (expanded) {
+                    setExpanded(false);
+                    revealGridTop();
+                  } else setExpanded(true);
+                }}
+              >
+                {expanded ? "Show less visual work" : "Show more visual work"}
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
 
-      <Dialog open={preview !== null} onOpenChange={(open) => { if (!open) setPreview(null); }}>
-        <DialogContent className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-sm border-rule bg-background shadow-none">
-          {preview && <><DialogTitle className="pr-8 font-display text-2xl tracking-normal">{preview.title}</DialogTitle><img src={preview.image} alt={preview.title} className="max-h-[60dvh] w-full object-contain" /><DialogDescription>{preview.description}</DialogDescription></>}
+      <Dialog
+        open={preview !== null}
+        onOpenChange={(open) => {
+          if (!open) setPreview(null);
+        }}
+      >
+        <DialogContent className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-card border-border bg-card shadow-none sm:rounded-card">
+          {preview && (
+            <>
+              <DialogTitle className="pr-8 font-display text-2xl font-semibold tracking-normal">
+                {preview.title}
+              </DialogTitle>
+              <img
+                src={preview.image}
+                alt={preview.title}
+                className="max-h-[60dvh] w-full rounded-frame object-contain"
+              />
+              <DialogDescription>{preview.description}</DialogDescription>
+            </>
+          )}
         </DialogContent>
       </Dialog>
     </div>
