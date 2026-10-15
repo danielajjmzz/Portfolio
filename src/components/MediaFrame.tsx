@@ -43,7 +43,12 @@ export function MediaFrame({
     );
   }
 
-  const base = cn("w-full border border-border bg-card object-cover", rounded, className);
+  const base = cn(
+    "w-full border border-border bg-card object-cover",
+    media.fit === "contain" && "bg-white object-contain p-1",
+    rounded,
+    className,
+  );
   if (media.type === "video" && still && media.poster) {
     return (
       <img src={media.poster} alt={media.alt} loading={eager ? "eager" : "lazy"} className={base} />

@@ -9,6 +9,8 @@ export interface TeachingMedia {
   note?: string;
   poster?: string;
   caption?: string;
+  /** "contain" shows the whole image (documents, student boards) instead of cropping it. */
+  fit?: "cover" | "contain";
   /** Video only: play with sound and visible controls instead of a muted loop. */
   sound?: boolean;
 }

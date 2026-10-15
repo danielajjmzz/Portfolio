@@ -25,6 +25,22 @@ const clip = (file, poster, alt) => ({
   label: file,
 });
 
+const DP = "/images/teaching/design-principles";
+const PF = "/images/teaching/portfolio";
+const dp = (file, alt, extra = {}) => ({
+  type: "image",
+  src: `${DP}/${file}`,
+  alt,
+  label: file,
+  ...extra,
+});
+const pf = (file, alt, extra = {}) => ({
+  type: "image",
+  src: `${PF}/${file}`,
+  alt,
+  label: file,
+  ...extra,
+});
 const AI = "/images/teaching/ai-workshop";
 const slide = (file, alt, extra = {}) => ({
   type: "image",
@@ -77,31 +93,486 @@ export const teaching = [
   },
   {
     slug: "design-material",
-    title: "Design Material",
-    summary: "[One-line summary of the design lessons and who they were for.]",
-    cardMeta: "[Program] · [Years]",
-    year: "[Years]",
-    role: "[Role]",
-    audience: "[Audience]",
-    tools: ["[Tool]", "[Tool]"],
-    cover: slot("Hero · design cover"),
+    title: "Design Principles: PARC, Type & Color",
+    summary:
+      "Five lectures and a hands-on exercise that taught incoming Illinois Tech freshmen to design with intent: proximity, alignment, repetition and contrast, plus type and color fundamentals.",
+    cardMeta: "Exelon Summer Institute · 2026",
+    year: "Summer 2026",
+    role: "CS & Design Lead",
+    audience: "Incoming Illinois Tech freshmen",
+    tools: ["Google Slides", "Google Classroom", "Google Drawings", "Adobe Color"],
+    cover: dp(
+      "slide-077.jpg",
+      "Lecture slide: a full color palette built from one base color on the 12-color wheel, with its complementary, triad, split-complementary and analogous swatches.",
+    ),
     main: true,
     order: 2,
     context: {
-      body: "[Who you taught, for how long, and how the lessons were structured.]",
-      media: slot("Context image"),
-      caption: "[Caption]",
+      body: "Week 3 of the Exelon Summer Institute introduced graphic design to incoming Illinois Tech freshmen who would design and publish their own portfolio the following week. They needed a framework they could apply quickly and use to explain their choices, because, as the syllabus puts it, design choices should have a reason. I built the week around the PARC method, after Robin Williams' design principles, then extended it into typography, color theory and visual culture.",
+      media: dp(
+        "syllabus-week3.jpg",
+        "The Week 3 schedule from the course syllabus: design principles, typography and legibility, images and color, portfolio moodboard and wireframes, one topic a day.",
+      ),
+      caption: "Week 3 at a glance, from the course syllabus.",
     },
     approach: [
-      { lead: "[Principle one.]", body: "[Why it matters for students.]" },
-      { lead: "[Principle two.]", body: "[Why it matters for students.]" },
-      { lead: "[Principle three.]", body: "[Why it matters for students.]" },
+      {
+        lead: "Show bad next to good.",
+        body: "Every principle is taught by comparison, like three versions of one warning label, so students see the difference before they hear the rule.",
+      },
+      {
+        lead: "Color is a system, not a favorite.",
+        body: "Students build a full palette step by step from one base color, then use color to direct attention and group information.",
+      },
+      {
+        lead: "Research before you design.",
+        body: "The exercise asks students to study one era and one designer from it before choosing a single font or color.",
+      },
+      {
+        lead: "Practice for the real thing.",
+        body: "The period board is a rehearsal for each student's portfolio design board the following week, using the same process.",
+      },
     ],
-    lessons: [1, 2, 3, 4].map((n) => placeholderLesson(n, `[Lesson ${n}]`)),
+    lessonsLabel: "Lectures",
+    lessonItemLabel: "Part",
+    lessonsIntro: "Five lectures and one exercise. Pick one to see the slides.",
+    lessonMediaAspect: "wide",
+    lessons: [
+      {
+        id: "parc",
+        label: "PARC",
+        title: "The PARC method of design",
+        dates: "Week 3 · Monday",
+        body: "Proximity, alignment, repetition and contrast, taught with side-by-side examples. The same shapes read as one group or two depending on spacing, and three versions of a hazard label go from muddy to unmistakable. Students then analyzed real examples of good and poor design, and talked about when breaking the rules works.",
+        tags: ["Proximity", "Alignment", "Repetition", "Contrast"],
+        note: "Make things that should be different very different.",
+        media: [
+          dp(
+            "slide-020.jpg",
+            "Slide: Contrast, three versions of the same product warning label, two marked bad example and one marked good example.",
+          ),
+          dp(
+            "slide-009.jpg",
+            "Slide: Proximity, the same row of triangles spaced so they read as two worlds apart or as one group.",
+          ),
+          dp(
+            "slide-021.jpg",
+            "Slide: Contrast, the good warning label annotated to show how size, weight and spacing create hierarchy.",
+          ),
+        ],
+      },
+      {
+        id: "type",
+        label: "Type",
+        title: "Typefaces and legibility",
+        dates: "Week 3 · Tuesday",
+        body: "How type works: x-height, baseline, serif versus sans serif, display versus body fonts, and the major font categories. Students compared body fonts set with the same paragraph, learned why default fonts signal an unconsidered choice, and saw how the right font in the wrong context fails.",
+        tags: ["Legibility", "Font pairing", "Display vs. body"],
+        note: "Serifs guide the eye. Sans serif headings and serif body is a pairing that works.",
+        media: [
+          dp(
+            "slide-035.jpg",
+            "Slide: Letter height and positioning, the word Sphinx labeled with ascender, cap height, x-height, baseline and descender.",
+          ),
+          dp(
+            "slide-030.jpg",
+            "Slide: Legibility example, the same paragraph set in Source Sans and Century Schoolbook, with the book standard marked good example.",
+          ),
+          dp(
+            "slide-048.jpg",
+            "Slide: Font types, geometric sans serif shown with Century Gothic, with its origin and what it is useful for.",
+          ),
+          dp(
+            "slide-055.jpg",
+            "Slide: Consider context, the same messages set in mismatched fonts and then in fonts that fit.",
+          ),
+        ],
+      },
+      {
+        id: "color-wheel",
+        label: "Color wheel",
+        title: "Building a palette",
+        dates: "Week 3 · Wednesday",
+        body: "The 12-color wheel and its harmonies: complementary, triad, split-complementary, analogous and monochromatic, each shown on a small graphic. Then a full palette built one step at a time from a single base color, finished with neutrals.",
+        tags: ["Color harmony", "Palettes", "Neutrals"],
+        note: "",
+        media: [
+          dp(
+            "slide-066.jpg",
+            "Slide: Split complementary triad on the color wheel, applied to an extreme heat advisory graphic.",
+          ),
+          dp("slide-065.jpg", "Slide: Triad on the color wheel, applied to a safety first sign."),
+          dp(
+            "slide-068.jpg",
+            "Slide: Analogous colors on the color wheel, applied to a close doors sign.",
+          ),
+        ],
+      },
+      {
+        id: "color-function",
+        label: "Color as a tool",
+        title: "Color in information hierarchy",
+        dates: "Week 3 · Wednesday",
+        body: "Four functional uses of color: directing attention, grouping, showing magnitude and establishing continuity. Spot color, ledger lines, safety colors and choropleth maps, ending with a four-step method for annotating an interface screenshot.",
+        tags: ["Spot color", "Grouping", "UI annotation"],
+        note: "",
+        media: [
+          dp(
+            "slide-103.jpg",
+            "Slide: Combining techniques, step four of a UI annotation, using lines and boxes to connect notes to parts of a download page.",
+          ),
+          dp(
+            "slide-086.jpg",
+            "Slide: Four uses of color, direct attention, group objects, indicate severity or magnitude, and establish continuity.",
+          ),
+          dp(
+            "slide-096.jpg",
+            "Slide: Safety colors, four warning triangles in a standardized color scale.",
+          ),
+        ],
+      },
+      {
+        id: "zeitgeist",
+        label: "Zeitgeist",
+        title: "Promotional graphics and zeitgeist",
+        dates: "Week 3 · Wednesday",
+        body: "Culture as a design tool: the zeitgeist, nostalgia versus camp, and the life cycle of a trend, from mainstream popularity to historical interest. Case studies showed how long-running campaigns modernize a look while keeping what people remember.",
+        tags: ["Visual culture", "Trends"],
+        note: "Nostalgia comes back around every ten years or so.",
+        media: [
+          dp(
+            "slide-109.jpg",
+            "Slide: The life cycle of trends, five stages from mainstream popularity to historical interest.",
+          ),
+          dp(
+            "slide-107.jpg",
+            "Slide: Capturing cultural zeitgeist, with a definition of zeitgeist.",
+          ),
+          dp("slide-108.jpg", "Slide: Nostalgia versus camp, defined side by side."),
+        ],
+      },
+      {
+        id: "exercise",
+        label: "Period exercise",
+        title: "Creating a period aesthetic",
+        dates: "Posted Jul 22 · due Jul 26",
+        body: "Students picked one era, Mid-century Modern or the 1970s, researched one designer from it, and built a board with at least two fonts, one piece of linework, three colors and three images, plus a short note on the designer. I wrote the brief, the template and the rubric, and made an Art Deco example board to work from.",
+        tags: ["Design research", "Moodboard"],
+        note: "This same process of collecting is what you'll use for your portfolio moodboard.",
+        media: [
+          dp(
+            "exercise-brief.jpg",
+            "The Google Classroom post for the practical exercise: creating a period aesthetic, with the full brief and designer research requirement.",
+            { fit: "contain" },
+          ),
+          dp(
+            "template.jpg",
+            "The period aesthetic template, with labeled areas for fonts, color, linework and images.",
+            { fit: "contain" },
+          ),
+          dp("rubric.jpg", "The grading rubric for the period aesthetic exercise.", {
+            fit: "contain",
+          }),
+        ],
+      },
+    ],
     outcome: {
-      body: "[What came out of the lessons overall.]",
-      extras: [slot("Extra 1"), slot("Extra 2"), slot("Extra 3"), slot("Extra 4")],
-      change: "[One thing you would do differently next time.]",
+      body: "Fourteen students submitted a period board, and six included written research on a designer of their era. A selection is below, shared with names blocked out. The research habit carried straight into the next week, when the same students built design boards for their own portfolios.",
+      extrasLabel: "Student period boards",
+      extras: [
+        dp(
+          "student-period-1.jpg",
+          "A student's 1970s board with a note on artist Judy Chicago, retro display fonts and a labeled color palette.",
+          { caption: "1970s · Judy Chicago note" },
+        ),
+        dp(
+          "student-period-2.jpg",
+          "A student's 1970s board with psychedelic posters, four display fonts and a note on Peter Max.",
+          { caption: "1970s · Peter Max note" },
+        ),
+        dp(
+          "student-period-3.jpg",
+          "A student's 1970s board with a note on illustrator David Klein and bold display fonts.",
+          { caption: "1970s · David Klein note" },
+        ),
+        dp(
+          "student-period-4.jpg",
+          "A student's 1970s board with fashion photographs and a note on designer Willi Smith. The student's name is blocked out.",
+          { caption: "1970s · Willi Smith note" },
+        ),
+        dp(
+          "student-period-5.jpg",
+          "A student's 1970s board with patterned linework, swash fonts and an earthy palette.",
+          { caption: "1970s" },
+        ),
+        dp(
+          "student-period-6.jpg",
+          "A student's 1970s board with funk display type, an orange and brown palette and interiors.",
+          { caption: "1970s" },
+        ),
+        dp(
+          "student-period-7.jpg",
+          "A student's 1970s board with concert posters, display fonts and a muted palette.",
+          { caption: "1970s" },
+        ),
+        dp(
+          "student-period-8.jpg",
+          "A student's Mid-century Modern board with a note on Jackson Pollock, architecture sketches and period ads.",
+          { caption: "Mid-century Modern" },
+        ),
+      ],
+      change:
+        "The files show who submitted, but not how well. Next time I'd keep rubric scores and a line of feedback for each board, so I could show how the work improved.",
+    },
+  },
+  {
+    slug: "portfolio-material",
+    title: "Build Your First Portfolio",
+    summary:
+      "A two-phase unit that took incoming Illinois Tech freshmen from a design board and written plan to wireframes and a published Framer portfolio in about a week.",
+    cardMeta: "Exelon Summer Institute · 2026",
+    year: "Summer 2026",
+    role: "CS & Design Lead",
+    audience: "Incoming Illinois Tech freshmen",
+    tools: ["Figma", "Framer", "Google Docs", "Adobe Color Contrast Analyzer"],
+    cover: pf(
+      "student-board-1.jpg",
+      "A student's portfolio design board: a pink and green palette with hex codes, a heading and body type scale, and annotated screen mockups. Names are blocked out.",
+    ),
+    main: false,
+    order: 2.5,
+    context: {
+      body: "Right after the design-principles week, students had about a week to go from no plan to a live portfolio site. Improvising fonts and colors mid-build produces inconsistent sites, so I taught a repeatable order: decide the visual system, write the content, map the structure, then build. That way the finished site is consistent and every student can explain each choice.",
+      media: pf(
+        "classroom-deadlines.jpg",
+        "The Portfolio section in Google Classroom: six assignments from the assets file proof to the final portfolio URL, with due dates from July 24 to July 30.",
+        { fit: "contain" },
+      ),
+      caption: "Six deliverables in one week, from asset folder to live URL.",
+    },
+    approach: [
+      {
+        lead: "Plan before you build.",
+        body: "A design board and a written copy document come first, and the written plan is graded separately from the live site.",
+      },
+      {
+        lead: "Grey boxes first.",
+        body: "Wireframes strip out color on purpose so students judge structure, not decoration. If it works in grey boxes, it works in color.",
+      },
+      {
+        lead: "PARC in a live build.",
+        body: "My Framer guide maps each principle onto padding, stacks, reused styles and contrast, and has students build sections by hand before using import shortcuts.",
+      },
+      {
+        lead: "Accessibility at every step.",
+        body: "Colors are tested for WCAG contrast on the design board, and the guide adds what the tutorial skips: responsive layout, alt text and semantic headings.",
+      },
+    ],
+    lessonsLabel: "Unit",
+    lessonItemLabel: "Step",
+    lessonsIntro: "Two phases, six steps. Pick one to see the slides and student work.",
+    lessonMediaAspect: "wide",
+    lessons: [
+      {
+        id: "design-board",
+        label: "Design board",
+        title: "Create your design board",
+        dates: "Phase 1 · Week 3 Thursday",
+        body: "The visual foundation of the portfolio: a mood, a color palette tested with the Adobe Contrast Analyzer, fonts confirmed available in Framer, a text hierarchy and interaction ideas. Below the slides are two students' boards: one with hex codes, a type scale and notes on hover and page transitions, the other assigning each of three fonts a role.",
+        tags: ["Visual direction", "WCAG contrast", "Type system"],
+        note: "Think about your portfolio before you build it.",
+        media: [
+          pf(
+            "slide-04.jpg",
+            "Slide: Step 1, create your design board, with a checklist and questions about the feeling a portfolio should give.",
+          ),
+          pf(
+            "slide-05.jpg",
+            "Slide: Choose your colors, with example moods and the requirement to test contrast against WCAG standards.",
+          ),
+          pf(
+            "slide-06.jpg",
+            "Slide: Choose your fonts, with headings, subheadings, body text and captions, checked in Framer first.",
+          ),
+          pf(
+            "student-board-1.jpg",
+            "A student's design board: hex color palette, heading and body type scale, and annotated screen mockups with hover and transition notes. The student's name and email are blocked out.",
+            { fit: "contain" },
+          ),
+          pf(
+            "student-board-2.jpg",
+            "A student's design board: a four-color palette with hex codes and three fonts, each assigned to headings, captions or body text.",
+            { fit: "contain" },
+          ),
+        ],
+      },
+      {
+        id: "copy",
+        label: "Portfolio copy",
+        title: "Write it before you build it",
+        dates: "Phase 1 · Week 3 Thursday",
+        body: "All the writing happens in a Google Doc first, not inside the website builder: an introduction, project descriptions with metadata (dates, role, tools, skills, links), reserved sections for future work, and the questions every case study should answer. The goal is two or three strong projects instead of many small ones.",
+        tags: ["Content planning", "Case studies"],
+        note: "Show, don't just tell.",
+        media: [
+          pf(
+            "slide-10.jpg",
+            "Slide: Create your portfolio copy, a Google Doc that holds all the writing for the site, with its benefits.",
+          ),
+          pf("slide-11.jpg", "Slide: Include metadata, the fields every project should list."),
+          pf(
+            "slide-17.jpg",
+            "Slide: Start thinking about case studies, eight questions a good case study answers.",
+          ),
+          pf(
+            "slide-18.jpg",
+            "Slide: Your goal, aim for two or three strong case studies instead of many small projects.",
+          ),
+          pf(
+            "planning-template.jpg",
+            "The Portfolio Planning Template: visual direction, portfolio structure, portfolio copy, future sections and asset library.",
+            { fit: "contain" },
+          ),
+        ],
+      },
+      {
+        id: "wireframes",
+        label: "Wireframes",
+        title: "What a wireframe is for",
+        dates: "Phase 2 · Week 3 Friday",
+        body: "A wireframe is the blueprint of the site: grey boxes for layout and flow, no color or final fonts. We covered why to wireframe first, the blocks every portfolio needs (hero, navigation with five items at most, about, projects, contact) and the anatomy of a landing page.",
+        tags: ["Low-fidelity", "Layout"],
+        note: "Think floor plan, not finished house.",
+        media: [
+          pf(
+            "slide-22.jpg",
+            "Slide: What is a wireframe? A grey-box blueprint of layout and flow.",
+          ),
+          pf("slide-26.jpg", "Slide: Why wireframe before you build, with four reasons."),
+          pf(
+            "slide-27.jpg",
+            "Slide: What every portfolio wireframe needs, the non-negotiable blocks.",
+          ),
+          pf(
+            "slide-28.jpg",
+            "Slide: Anatomy of a landing page, the blocks in order from top to bottom.",
+          ),
+        ],
+      },
+      {
+        id: "structure",
+        label: "Structure",
+        title: "One page or many?",
+        dates: "Phase 2 · Week 3 Friday",
+        body: "Students mapped where every page leads, then chose between a one-page site and a multi-page site using a quick gut-check: a few projects and a fast launch point to one page; lots of work or long case studies point to several.",
+        tags: ["Information architecture", "Page flow"],
+        note: "You are not marrying this decision. Pick the one that gets you launched fastest.",
+        media: [
+          pf(
+            "slide-34.jpg",
+            "Slide: Option A, a one-page website, with what it is good for and what to watch out for.",
+          ),
+          pf(
+            "slide-35.jpg",
+            "Slide: Option B, a multi-page website, with what it is good for and what to watch out for.",
+          ),
+        ],
+      },
+      {
+        id: "tools",
+        label: "Tools & tips",
+        title: "Wireframing tools and tips",
+        dates: "Phase 2 · Week 3 Friday",
+        body: "Free tools to sketch with (Excalidraw, Figma, Canva, Penpot, Whimsical, Wireframe.cc) and the habits that make a wireframe useful: stay greyscale, label every box, sketch desktop then mobile, and annotate where each link goes. Then what else to plan for: responsive layout, load speed, accessibility and SEO.",
+        tags: ["Figma", "Responsive", "Accessibility"],
+        note: "If a stranger can read the boxes, you're done.",
+        media: [
+          pf(
+            "slide-40.jpg",
+            "Slide: Wireframing tips, stay greyscale, label boxes, desktop then mobile, real hierarchy, annotate the links.",
+          ),
+          pf(
+            "slide-38.jpg",
+            "Slide: Free tools for planning, a short description of six wireframing tools.",
+          ),
+          pf(
+            "slide-41.jpg",
+            "Slide: What else to consider for your site, including responsive design, load speed, accessibility and SEO.",
+          ),
+        ],
+      },
+      {
+        id: "build",
+        label: "Build in Framer",
+        title: "From wireframe to live site",
+        dates: "Week 4",
+        body: "Students sketched their landing page, chose a structure, wireframed each page and the mobile version, then built in Framer. My companion guide to the Framer tutorial ties each step back to PARC and lists what the video skips. The week ended with peer feedback, a short paper explaining design choices, and a showcase.",
+        tags: ["Framer", "Peer feedback"],
+        note: "This is the PARC method in a live build.",
+        media: [
+          pf(
+            "slide-42.jpg",
+            "Slide: Today's task, four steps from sketching the landing page to the mobile version.",
+          ),
+          pf(
+            "framer-guide-1.jpg",
+            "Page 1 of my Getting Started in Framer guide, connecting the tutorial to proximity, alignment, repetition and contrast.",
+            { fit: "contain" },
+          ),
+          pf(
+            "framer-guide-2.jpg",
+            "Page 2 of the Framer guide, listing what the tutorial skips: responsive layout, accessibility, semantic headings and layer naming.",
+            { fit: "contain" },
+          ),
+        ],
+      },
+    ],
+    outcome: {
+      body: "Students turned their boards into wireframes in Figma and Framer, and several published live portfolio sites by the end of the program. A selection of their boards and wireframes is below, shared with names blocked out.",
+      extrasLabel: "Student boards and wireframes",
+      extras: [
+        pf(
+          "student-wireframe-1.jpg",
+          "A student's six-page Figma wireframe set built on their own design board colors: landing, projects, project detail, skills, experience and contact.",
+          { fit: "contain", caption: "6-page Figma set" },
+        ),
+        pf(
+          "student-wireframe-2.jpg",
+          "A student's dark-theme wireframe of an About page with consistent navigation.",
+          { fit: "contain", caption: "About page" },
+        ),
+        pf(
+          "student-wireframe-3.jpg",
+          "The same student's Projects page, keeping the layout and navigation consistent.",
+          { fit: "contain", caption: "Projects page" },
+        ),
+        pf("student-wireframe-6.jpg", "The same student's Awards page.", {
+          fit: "contain",
+          caption: "Awards page",
+        }),
+        pf(
+          "student-wireframe-4.jpg",
+          "A student's low-fidelity scrolling wireframe: hero, project cards and about section.",
+          { fit: "contain", caption: "Low-fi scroll" },
+        ),
+        pf(
+          "student-wireframe-5.jpg",
+          "A student's grey-box Figma wireframe of a home page and a personal projects section.",
+          { fit: "contain", caption: "Grey-box Figma" },
+        ),
+        pf(
+          "student-board-3.jpg",
+          "A student's design board: a blue and green palette, a monospace and sans serif font pair, and interface linework.",
+          { fit: "contain", caption: "Design board" },
+        ),
+        pf(
+          "student-board-4.jpg",
+          "A student's retro-terminal design board: terminal color themes with hex codes and a single display font.",
+          { fit: "contain", caption: "Retro-terminal board" },
+        ),
+      ],
+      change:
+        "I didn't keep the design-explanation papers or peer feedback, which are the best evidence of students explaining their choices. Next time I'd collect both alongside the final URLs.",
     },
   },
   {

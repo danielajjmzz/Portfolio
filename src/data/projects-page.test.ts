@@ -23,16 +23,19 @@ describe("Projects-page curation", () => {
       ],
     );
   });
-  test("teaching shows Coding, Design and Circuits first, with the AI workshop behind Show more", () => {
+  test("teaching shows Coding, Design Principles and Circuits first, with Portfolio and the AI workshop behind Show more", () => {
     const collapsed = selectTeaching();
     assert.equal(TEACHING_INITIAL_COUNT, 3);
     assert.deepEqual(
       collapsed.entries.map((entry) => entry.title),
-      ["Coding Material", "Design Material", "Intro to Circuits & Arduino"],
+      ["Coding Material", "Design Principles: PARC, Type & Color", "Intro to Circuits & Arduino"],
     );
     assert.equal(collapsed.hasMore, true);
     const expanded = selectTeaching(true);
-    assert.equal(expanded.entries.at(-1)?.title, "STEM + AI Workshop");
+    assert.deepEqual(
+      expanded.entries.slice(3).map((entry) => entry.title),
+      ["Build Your First Portfolio", "STEM + AI Workshop"],
+    );
     assert.equal(expanded.canCollapse, true);
   });
   test("every teaching card links to a page with all four sections", () => {
