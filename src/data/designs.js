@@ -243,6 +243,50 @@ export const designs = [
     artifactUrl: "#",
   },
   {
+    id: "design-8",
+    title: "Lane Tech Clock Tower Keychains",
+    image: "/images/projects/clock-tower-keychains/keychain-01-design.png",
+    media: [
+      {
+        type: "image",
+        src: "/images/projects/clock-tower-keychains/keychain-01-design.png",
+        alt: "Adobe Illustrator design of a round keychain showing the Lane Tech clock tower with butterflies rising up the tower, with a red cut line around the edge",
+        caption: "Keychain design in Adobe Illustrator",
+      },
+      {
+        type: "video",
+        src: "/images/projects/clock-tower-keychains/keychain-02-laser-cutting.mp4",
+        poster: "/images/projects/clock-tower-keychains/keychain-02-laser-cutting-poster.jpg",
+        alt: "Video of the laser cutter engraving and cutting the clock tower keychains from a sheet of wood",
+        caption: "Engraving and cutting on the laser cutter",
+      },
+      {
+        type: "image",
+        src: "/images/projects/clock-tower-keychains/keychain-03-butterflies-cut-out.jpg",
+        alt: "Finished wooden clock tower keychain with the butterflies cut all the way through the wood",
+        caption: "Version 1: butterflies cut out",
+      },
+      {
+        type: "image",
+        src: "/images/projects/clock-tower-keychains/keychain-04-butterflies-etched.jpg",
+        alt: "Finished wooden clock tower keychain with the butterflies etched into the surface",
+        caption: "Version 2: butterflies etched",
+      },
+      {
+        type: "image",
+        src: "/images/projects/clock-tower-keychains/keychain-05-two-sizes.jpg",
+        alt: "A large and a small clock tower keychain side by side, showing the two sizes",
+        caption: "Two keychain sizes",
+      },
+    ],
+    description:
+      "My most advanced laser-cutting design: Lane Tech’s clock tower, with butterflies representing DACA rising up the tower. I designed it in Adobe Illustrator and cut it from 11.87″ × 11.75″ sheets of cherry, alder, walnut and Baltic birch in two sizes and two versions, one with the butterflies cut out and one with them etched. I made the keychains while teaching about DACA, and sold them to raise money for the DREAMers Fund, a scholarship that helps a student afford university.",
+    order: 7,
+    repoUrl: "#",
+    liveUrl: "#",
+    artifactUrl: "#",
+  },
+  {
     id: "design-6",
     title: "Laser-Cut Quote Box",
     image: "/images/projects/laser-quote-box/box-01-sketch-template.png",
@@ -292,7 +336,7 @@ export const designs = [
     ],
     description:
       "A laser-cut wooden box designed from scratch in Adobe Illustrator, with a quote of connected letters on top: “Books are a uniquely portable magic.”",
-    order: 7,
+    order: 8,
     repoUrl: "#",
     liveUrl: "#",
     artifactUrl: "#",

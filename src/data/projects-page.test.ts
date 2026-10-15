@@ -48,7 +48,7 @@ describe("Projects-page curation", () => {
     }
   });
   test("filters visual work without including teaching", () => {
-    assert.equal(selectVisualWork("Physical designs", true).entries.length, 7);
+    assert.equal(selectVisualWork("Physical designs", true).entries.length, 8);
     assert.equal(selectVisualWork("Document designs").entries.length, 2);
     assert.equal(
       selectVisualWork("Photography").entries.some(
