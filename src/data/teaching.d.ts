@@ -9,6 +9,8 @@ export interface TeachingMedia {
   note?: string;
   poster?: string;
   caption?: string;
+  /** Video only: play with sound and visible controls instead of a muted loop. */
+  sound?: boolean;
 }
 
 export interface TeachingLesson {
@@ -41,6 +43,14 @@ export interface TeachingEntry {
   context: { body: string; media: TeachingMedia; caption: string };
   approach: { lead: string; body: string }[];
   lessons: TeachingLesson[];
+  /** Name for section 03 and its nav chip (default "Lessons"). */
+  lessonsLabel?: string;
+  /** Line under the section 03 title (default "{n} lessons, one new idea each. Pick one."). */
+  lessonsIntro?: string;
+  /** Word before the number in the open tab, e.g. "Lesson 01" (default "Lesson"). */
+  lessonItemLabel?: string;
+  /** "wide" shows 16:9 frames (slides); default "square" for photos. */
+  lessonMediaAspect?: "square" | "wide";
   outcome: {
     body: string;
     extrasLabel?: string;

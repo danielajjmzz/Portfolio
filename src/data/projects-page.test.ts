@@ -32,7 +32,7 @@ describe("Projects-page curation", () => {
     );
     assert.equal(collapsed.hasMore, true);
     const expanded = selectTeaching(true);
-    assert.equal(expanded.entries.at(-1)?.title, "AI Workshop");
+    assert.equal(expanded.entries.at(-1)?.title, "STEM + AI Workshop");
     assert.equal(expanded.canCollapse, true);
   });
   test("every teaching card links to a page with all four sections", () => {

@@ -317,7 +317,12 @@ function ProjectsIndex() {
                   aria-label={`View ${entry.title}`}
                   className="block overflow-hidden rounded-frame focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  <MediaFrame media={entry.cover} className="aspect-[3/2]" eager={index === 0} />
+                  <MediaFrame
+                    media={entry.cover}
+                    className="aspect-[3/2]"
+                    eager={index === 0}
+                    still
+                  />
                 </Link>
                 <div className="px-2 pb-3 pt-4">
                   <p className="label-tech">{entry.cardMeta}</p>

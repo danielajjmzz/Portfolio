@@ -11,12 +11,15 @@ export function MediaFrame({
   className,
   rounded = "rounded-frame",
   eager = false,
+  still = false,
 }: {
   media: TeachingMedia;
   /** Sizing / aspect classes, e.g. "aspect-[16/9]". */
   className?: string;
   rounded?: string;
   eager?: boolean;
+  /** Show a video's poster image instead of the video (e.g. inside a card link). */
+  still?: boolean;
 }) {
   if (!media.src) {
     return (
@@ -41,6 +44,24 @@ export function MediaFrame({
   }
 
   const base = cn("w-full border border-border bg-card object-cover", rounded, className);
+  if (media.type === "video" && still && media.poster) {
+    return (
+      <img src={media.poster} alt={media.alt} loading={eager ? "eager" : "lazy"} className={base} />
+    );
+  }
+  if (media.type === "video" && media.sound) {
+    return (
+      <video
+        src={media.src}
+        poster={media.poster}
+        aria-label={media.alt}
+        controls
+        playsInline
+        preload="metadata"
+        className={cn(base, "bg-black object-contain")}
+      />
+    );
+  }
   if (media.type === "video") {
     return (
       <video

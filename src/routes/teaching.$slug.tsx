@@ -36,12 +36,15 @@ export const Route = createFileRoute("/teaching/$slug")({
   component: TeachingDetail,
 });
 
-const sections = [
-  { id: "context", label: "Context", title: "01 The Context" },
-  { id: "approach", label: "Approach", title: "02 My Approach" },
-  { id: "lessons", label: "Lessons", title: "03 The Lessons" },
-  { id: "outcome", label: "Outcome", title: "04 The Outcome" },
-] as const;
+function sectionsFor(entry: TeachingEntry) {
+  const lessons = entry.lessonsLabel ?? "Lessons";
+  return [
+    { id: "context", label: "Context", title: "01 The Context" },
+    { id: "approach", label: "Approach", title: "02 My Approach" },
+    { id: "lessons", label: lessons, title: `03 The ${lessons}` },
+    { id: "outcome", label: "Outcome", title: "04 The Outcome" },
+  ];
+}
 
 function TeachingNotFound() {
   return (
@@ -66,13 +69,13 @@ function MetaCell({ label, value }: { label: string; value: string }) {
   );
 }
 
-function SubNav({ className }: { className?: string }) {
+function SubNav({ entry, className }: { entry: TeachingEntry; className?: string }) {
   return (
     <nav
       aria-label="Material sections"
       className={cn("-mx-5 flex gap-2 overflow-x-auto px-5 md:mx-0 md:px-0", className)}
     >
-      {sections.map((s) => (
+      {sectionsFor(entry).map((s) => (
         <a
           key={s.id}
           href={`#${s.id}`}
@@ -121,6 +124,7 @@ function Lessons({ entry }: { entry: TeachingEntry }) {
   const baseId = useId();
   const lesson = entry.lessons[active]!;
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const wide = entry.lessonMediaAspect === "wide";
 
   const onKeyDown = (event: React.KeyboardEvent, index: number) => {
     const last = entry.lessons.length - 1;
@@ -147,16 +151,16 @@ function Lessons({ entry }: { entry: TeachingEntry }) {
   return (
     <Section
       id="lessons"
-      title={sections[2].title}
+      title={sectionsFor(entry)[2]!.title}
       aside={
         <>
           <p className="label-tech mt-3">
-            {entry.lessons.length} lessons, one new idea each. Pick one.
+            {entry.lessonsIntro ?? `${entry.lessons.length} lessons, one new idea each. Pick one.`}
           </p>
           <div
             role="tablist"
             aria-orientation="vertical"
-            aria-label="Lessons"
+            aria-label={entry.lessonsLabel ?? "Lessons"}
             className="mt-5 grid gap-2"
           >
             {entry.lessons.map((item, index) => {
@@ -202,11 +206,19 @@ function Lessons({ entry }: { entry: TeachingEntry }) {
       >
         <div className="grid grid-cols-2 gap-3">
           {lesson.media.map((media, index) => (
-            <MediaFrame key={`${lesson.id}-${index}`} media={media} className="aspect-square" />
+            <MediaFrame
+              key={`${lesson.id}-${index}`}
+              media={media}
+              className={cn(
+                wide ? "aspect-[16/9]" : "aspect-square",
+                // Wide slides: an odd count lets the first slide lead at full width.
+                wide && lesson.media.length % 2 === 1 && index === 0 && "col-span-2",
+              )}
+            />
           ))}
         </div>
         <p className="label-tech mt-5">
-          Lesson {String(active + 1).padStart(2, "0")} · {lesson.dates}
+          {entry.lessonItemLabel ?? "Lesson"} {String(active + 1).padStart(2, "0")} · {lesson.dates}
         </p>
         <h3 className="mt-2 text-[1.625rem] text-foreground">{lesson.title}</h3>
         <p className={cn(bodyText, "mt-3")}>{lesson.body}</p>
@@ -234,6 +246,7 @@ function Lessons({ entry }: { entry: TeachingEntry }) {
 
 function TeachingDetail() {
   const { entry } = Route.useLoaderData();
+  const sections = sectionsFor(entry);
   const heroRef = useRef<HTMLDivElement>(null);
   const [pinned, setPinned] = useState(false);
   const [headerHeight, setHeaderHeight] = useState<number | null>(null);
@@ -277,7 +290,7 @@ function TeachingDetail() {
           <p className="min-w-0 truncate font-display text-lg leading-none text-foreground">
             {entry.title}
           </p>
-          <SubNav className="ml-auto min-w-0 md:ml-0" />
+          <SubNav entry={entry} className="ml-auto min-w-0 md:ml-0" />
         </div>
       </div>
 
@@ -309,11 +322,11 @@ function TeachingDetail() {
           <MetaCell label="Tools" value={entry.tools.join(", ")} />
         </dl>
 
-        <SubNav className="mt-10" />
+        <SubNav entry={entry} className="mt-10" />
         <SectionRule className="mt-8" />
 
         <div className="mt-14 grid gap-14">
-          <Section id="context" title={sections[0].title}>
+          <Section id="context" title={sections[0]!.title}>
             <p className={bodyText}>{entry.context.body}</p>
             <figure className="mt-5 flex items-center gap-4">
               <MediaFrame
@@ -328,7 +341,7 @@ function TeachingDetail() {
 
           <SectionRule />
 
-          <Section id="approach" title={sections[1].title}>
+          <Section id="approach" title={sections[1]!.title}>
             <div className="grid gap-4">
               {entry.approach.map((point, index) => (
                 <p key={index} className={bodyText}>
@@ -344,7 +357,7 @@ function TeachingDetail() {
 
           <SectionRule />
 
-          <Section id="outcome" title={sections[3].title}>
+          <Section id="outcome" title={sections[3]!.title}>
             <p className={bodyText}>{entry.outcome.body}</p>
             {entry.outcome.extras.length > 0 && (
               <>

@@ -25,6 +25,15 @@ const clip = (file, poster, alt) => ({
   label: file,
 });
 
+const AI = "/images/teaching/ai-workshop";
+const slide = (file, alt, extra = {}) => ({
+  type: "image",
+  src: `${AI}/${file}`,
+  alt,
+  label: file,
+  ...extra,
+});
+
 const placeholderLesson = (number, label) => ({
   id: `lesson-${number}`,
   label,
@@ -338,31 +347,205 @@ export const teaching = [
   },
   {
     slug: "ai-workshop",
-    title: "AI Workshop",
-    summary: "[One-line summary of the AI workshop and who it was for.]",
-    cardMeta: "[Program] · [Year]",
-    year: "[Year]",
-    role: "[Role]",
-    audience: "[Audience]",
-    tools: ["[Tool]", "[Tool]"],
-    cover: slot("Hero · AI workshop cover"),
+    title: "STEM + AI Workshop",
+    summary:
+      "A one-hour interactive workshop introducing incoming Illinois Tech STEM students to generative AI: what it is, how to prompt it, where it goes wrong, and how to use it ethically.",
+    cardMeta: "Exelon Summer Institute · 2026",
+    year: "Summer 2026",
+    role: "Workshop designer & facilitator",
+    audience: "21 incoming STEM freshmen",
+    tools: ["PowerPoint", "Word", "NotebookLM"],
+    cover: {
+      type: "video",
+      sound: true,
+      src: `${AI}/stem-ai-recap.mp4`,
+      poster: `${AI}/video-poster.jpg`,
+      alt: "STEM + AI: Modern AI Landscape, a recap video of the workshop made with NotebookLM.",
+      label: "stem-ai-recap.mp4",
+    },
     main: false,
     order: 4,
     context: {
-      body: "[Who you taught, for how long, and how the workshop was structured.]",
-      media: slot("Context image"),
-      caption: "[Caption]",
+      body: "A one-day, 60-minute workshop for the Exelon Summer Institute, built for 21 incoming STEM freshmen at Illinois Tech. Almost everyone had used a generative AI tool, but few knew how it works, where it fails, or what responsible use looks like. I designed the slides and a full facilitator guide adapted from Illinois Tech's IPRO 497 Innovating with AI course, then made the video above with NotebookLM: a recap under ten minutes for students who missed the session and for everyone to keep for review.",
+      media: slide(
+        "guide-agenda.jpg",
+        "The workshop agenda from the facilitator guide: fifteen timed sections from the Creative Tensions icebreaker at 0:00 to resources and closing at 0:57, each with a duration and format.",
+      ),
+      caption: "The minute-by-minute agenda from my facilitator guide.",
     },
     approach: [
-      { lead: "[Principle one.]", body: "[Why it matters for students.]" },
-      { lead: "[Principle two.]", body: "[Why it matters for students.]" },
-      { lead: "[Principle three.]", body: "[Why it matters for students.]" },
+      {
+        lead: "Get students moving first.",
+        body: "The workshop opens with a Creative Tensions exercise: students physically walk to one side of the room to show whether AI excites or terrifies them, then explain why.",
+      },
+      {
+        lead: "Talk less than half the time.",
+        body: "About 27 of the 60 minutes are interactive: a prompt-rewriting challenge, a small-group ethics scenario, quiet reflection and a closing poll.",
+      },
+      {
+        lead: "Every claim has a source.",
+        body: "Each definition, statistic and tool recommendation traces back to the course materials, tagged in the facilitator guide so nothing is made up.",
+      },
+      {
+        lead: "Practice without shortcuts.",
+        body: "Every prompting exercise uses a non-academic topic the student cares about, and the message throughout is to follow each instructor's AI policy.",
+      },
     ],
-    lessons: [1, 2, 3].map((n) => placeholderLesson(n, `[Activity ${n}]`)),
+    lessonsLabel: "Workshop",
+    lessonItemLabel: "Part",
+    lessonsIntro: "Six parts in 60 minutes. Pick one to see the slides.",
+    lessonMediaAspect: "wide",
+    lessons: [
+      {
+        id: "part-1",
+        label: "Where do you stand?",
+        title: "Creative Tensions icebreaker",
+        dates: "0:00 – 0:07",
+        body: 'I read statements with two sides, like "AI will create more jobs than it eliminates" versus "AI will eliminate more jobs", and students moved left, right or to the middle to show where they stood. Two or three explained their position, then we set the four goals for the hour: AI literacy, prompting skills, critical awareness and ethical thinking.',
+        tags: ["Movement activity", "Learning goals"],
+        note: "Remember where you stood. We come back to it at the end.",
+        media: [
+          slide(
+            "slide-02.jpg",
+            "Slide: Where Do You Stand? A Creative Tensions icebreaker, with how it works on the left and three opposing statements on the right.",
+          ),
+          slide(
+            "slide-03.jpg",
+            "Slide: What You'll Walk Away With Today, listing AI literacy, prompting skills, critical awareness and ethical thinking.",
+          ),
+        ],
+      },
+      {
+        id: "part-2",
+        label: "What AI is",
+        title: "Predictive vs. generative AI",
+        dates: "0:07 – 0:18",
+        body: "AI splits into two domains: predictive AI forecasts from past patterns, like a weather app, and generative AI creates new text, code, images and audio. A show-of-hands poll checked who had used it, then four reasons why generative AI is different from every earlier technology, and who is building it, including the jagged frontier of what it does well and badly.",
+        tags: ["AI literacy", "Show-of-hands poll"],
+        note: "No one is an expert at this yet, not even the people who build it.",
+        media: [
+          slide(
+            "slide-04.jpg",
+            "Slide: What Is Artificial Intelligence? comparing predictive AI and generative AI side by side.",
+          ),
+          slide(
+            "slide-05.jpg",
+            "Slide: Why Is Generative AI a Big Deal? Four numbered reasons: different every time, no experts exist, democratizes technology, accelerating pace.",
+          ),
+          slide(
+            "slide-06.jpg",
+            "Slide: Who's Building Generative AI? Frontier labs versus tool companies, the jagged frontier, and free ways for students to access AI tools.",
+          ),
+        ],
+      },
+      {
+        id: "part-3",
+        label: "Prompting",
+        title: "The art of talking to AI",
+        dates: "0:18 – 0:28",
+        body: 'Generative AI starts every conversation from zero, so the student\'s job is to be a good manager: research and collect context first, then execute. Four techniques (role and goal, examples, clear instructions, pointed feedback) went straight into a Think-Pair-Share challenge to rewrite the weak prompt "Tell me about renewable energy" about a topic they cared about.',
+        tags: ["Prompt engineering", "Think-Pair-Share"],
+        note: "The best prompts give the AI a role, your context, and one specific task.",
+        media: [
+          slide(
+            "slide-07.jpg",
+            "Slide: The Art of Talking to AI, with the 50 First Dates analogy, the 2-Step Dance, and four prompting techniques.",
+          ),
+          slide(
+            "slide-08.jpg",
+            "Slide: Think, Pair, Share prompt practice challenge, showing the weak prompt and the timed steps.",
+          ),
+        ],
+      },
+      {
+        id: "part-4",
+        label: "Limits & ethics",
+        title: "When AI gets it wrong",
+        dates: "0:28 – 0:43",
+        body: "Hallucinations (confident, invented facts) and sycophancy (agreeing with you when you're wrong), each with a fix: ask it to cite and double-check, and invite disagreement. Then three layers of ethics: creation, operation and application. Small groups applied them to a scenario where an AI-written ad shipped with a fabricated statistic and an image trained on copyrighted art.",
+        tags: ["Critical awareness", "Small-group discussion"],
+        note: "Guardrails, not guidelines.",
+        media: [
+          slide(
+            "slide-09.jpg",
+            "Slide: When AI Gets It Wrong, explaining hallucinations and sycophancy and the fix for each.",
+          ),
+          slide(
+            "slide-10.jpg",
+            "Slide: Ethics and Governance, three numbered layers: creation, operation and application.",
+          ),
+          slide(
+            "slide-11.jpg",
+            "Slide: Scenario Discussion, a company's AI-generated marketing content with four questions for groups of three or four.",
+          ),
+        ],
+      },
+      {
+        id: "part-5",
+        label: "Careers",
+        title: "Building your GenAI portfolio",
+        dates: "0:43 – 0:48",
+        body: "Hiring is shifting from credentials to skills. I shared what hiring managers say they want to see, the idea of Transparent Mastery (pairing AI with your own expertise to make something valuable), and what that looks like for CS majors, non-CS majors and everyone.",
+        tags: ["Career readiness"],
+        note: "",
+        media: [
+          slide(
+            "slide-12.jpg",
+            "Slide: Building Your GenAI Portfolio, with hiring manager quotes, Transparent Mastery, and skills for CS majors, non-CS majors and everyone.",
+          ),
+        ],
+      },
+      {
+        id: "part-6",
+        label: "Reflect & close",
+        title: "Where do you stand now?",
+        dates: "0:48 – 1:00",
+        body: 'Two minutes of quiet writing: what surprised you most, and one ethical question to keep thinking about. Then the opening question again, "Personally, I am ___ by generative AI", with hands up for anyone whose position shifted, and five takeaways to leave with.',
+        tags: ["Reflection", "Closing poll"],
+        note: "You're not behind. You're right on time.",
+        media: [
+          slide(
+            "slide-14.jpg",
+            "Slide: Where Do You Stand NOW? revisiting the opening question on a spectrum from excited to terrified.",
+          ),
+          slide(
+            "slide-13.jpg",
+            "Slide: Personal Reflection, two minutes of quiet writing with two prompts.",
+          ),
+          slide(
+            "slide-15.jpg",
+            "Slide: Key Takeaways, five numbered points summarizing the workshop.",
+          ),
+        ],
+      },
+    ],
     outcome: {
-      body: "[What came out of the workshop.]",
-      extras: [slot("Extra 1"), slot("Extra 2"), slot("Extra 3"), slot("Extra 4")],
-      change: "[One thing you would do differently next time.]",
+      body: "A complete, one-hour workshop that anyone could run from the slides and guide alone, plus a ten-minute recap video so students who missed it could catch up. The facilitator guide includes the full script, activity instructions and a printed handout for all 21 students.",
+      extrasLabel: "From the facilitator guide",
+      extras: [
+        slide(
+          "guide-cover.jpg",
+          "Cover of the facilitator guide: STEM + AI, Understanding the Modern AI Landscape, complete facilitator guide.",
+          { caption: "Guide cover" },
+        ),
+        slide(
+          "guide-script.jpg",
+          "The opening of the facilitator script, with a source tag, setup notes and what to say for the icebreaker.",
+          { caption: "Script with source tags" },
+        ),
+        slide(
+          "guide-activities.jpg",
+          "Activity instructions for the icebreaker and the Think-Pair-Share prompt practice.",
+          { caption: "Activity instructions" },
+        ),
+        slide(
+          "guide-handout.jpg",
+          "The student handout summarizing generative AI, the 2-Step Dance, when AI gets it wrong, and three layers of ethics.",
+          { caption: "Student handout" },
+        ),
+      ],
+      change:
+        "I asked students to raise their hand if their position shifted, but I didn't record where they stood. Next time, I'd tally both rounds of the Where do you stand? question so the change is measurable.",
     },
   },
 ];
