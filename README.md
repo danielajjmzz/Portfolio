@@ -6,12 +6,12 @@ Built with [TanStack Start](https://tanstack.com/start), React, TypeScript, and 
 
 ## Pages
 
-| Route             | Page                              |
-| ----------------- | --------------------------------- |
-| `/`               | Home                              |
-| `/projects`       | Projects index                    |
-| `/projects/:slug` | Project case study (one template) |
-| `/contact`        | Contact                           |
+| Route             | Page                                 |
+| ----------------- | ------------------------------------ |
+| `/`               | Home                                 |
+| `/projects`       | Projects index                       |
+| `/projects/:slug` | Featured project page (one template) |
+| `/contact`        | Contact                              |
 
 Project content lives in `src/data/projects.js` and `src/data/designs.js`. Adding a project means adding one object to the array — the detail page is generated from its `slug`.
 

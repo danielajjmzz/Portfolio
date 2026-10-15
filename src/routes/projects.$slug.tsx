@@ -47,7 +47,7 @@ function ProjectNotFound() {
     <section className="mx-auto max-w-3xl px-5 py-24 md:px-8">
       <h1 className="font-display text-foreground">That project isn't here</h1>
       <p className="mt-4 text-muted-foreground">
-        The case study you're looking for may have been renamed.
+        The project you're looking for may have been renamed.
       </p>
       <Link to="/projects" className="mt-8 inline-block text-link">
         ← Back to projects
@@ -68,11 +68,8 @@ function MetaCell({ label, value }: { label: string; value: string }) {
 function SubNav({ className }: { className?: string }) {
   return (
     <nav
-      aria-label="Case study sections"
-      className={cn(
-        "-mx-5 flex gap-2 overflow-x-auto px-5 md:mx-0 md:px-0",
-        className,
-      )}
+      aria-label="Project sections"
+      className={cn("-mx-5 flex gap-2 overflow-x-auto px-5 md:mx-0 md:px-0", className)}
     >
       {sections.map((s) => (
         <a
@@ -87,24 +84,14 @@ function SubNav({ className }: { className?: string }) {
   );
 }
 
-function CaseSection({
-  id,
-  title,
-  body,
-}: {
-  id: string;
-  title: string;
-  body: string;
-}) {
+function CaseSection({ id, title, body }: { id: string; title: string; body: string }) {
   return (
     <section
       id={id}
       className="grid scroll-mt-32 gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12"
     >
       <div>
-        <h2 className="font-display leading-tight text-foreground">
-          {title}
-        </h2>
+        <h2 className="font-display leading-tight text-foreground">{title}</h2>
       </div>
       <p className="text-base leading-relaxed text-muted-foreground">{body}</p>
     </section>
@@ -165,9 +152,7 @@ function ProjectDetail() {
 
         <div className="mt-10 max-w-4xl">
           <h1 className="font-display text-foreground">{project.title}</h1>
-          <p className="mt-5 max-w-2xl text-lg text-muted-foreground">
-            {project.summary}
-          </p>
+          <p className="mt-5 max-w-2xl text-lg text-muted-foreground">{project.summary}</p>
         </div>
 
         <dl className="mt-12 grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-4">
@@ -185,11 +170,7 @@ function ProjectDetail() {
           {sections.map((s, i) => (
             <div key={s.id} className="grid gap-14">
               {i > 0 && <SectionRule />}
-              <CaseSection
-                id={s.id}
-                title={s.title}
-                body={project[s.id]}
-              />
+              <CaseSection id={s.id} title={s.title} body={project[s.id]} />
             </div>
           ))}
         </div>

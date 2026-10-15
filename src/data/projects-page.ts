@@ -5,7 +5,7 @@ const realEstate = sortedProjects.find((project) => project.slug === "real-estat
 const finance = sortedProjects.find((project) => project.slug === "jp-morgan-dashboard");
 const retail = sortedProjects.find((project) => project.slug === "ulta-beauty-ai");
 
-export const caseStudies = [
+export const featuredProjectCards = [
   ...(realEstate ? [{ ...realEstate, meta: "01 · 2025 · Featured" }] : []),
   ...(finance
     ? [

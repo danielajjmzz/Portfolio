@@ -4,7 +4,7 @@ import { ArrowRight, ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import {
-  caseStudies,
+  featuredProjectCards,
   teaching,
   visualFilters,
   visualWork,
@@ -38,7 +38,11 @@ export const Route = createFileRoute("/projects/")({
 });
 
 const sections = [
-  { id: "featured-projects", title: "Featured Projects", count: String(caseStudies.length) },
+  {
+    id: "featured-projects",
+    title: "Featured Projects",
+    count: String(featuredProjectCards.length),
+  },
   { id: "teaching", title: "Teaching", count: String(teaching.length) },
   { id: "visual", title: "Visual work", count: String(visualWork.length) },
 ] as const;
@@ -192,7 +196,7 @@ function ProjectsIndex() {
             label="UX research · product · data systems"
           />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {caseStudies.map((project, index) => {
+            {featuredProjectCards.map((project, index) => {
               const [meta, ...tags] = project.meta.split(" · Featured");
               return (
                 <article key={project.slug} className={`${cardClass} group min-w-0 p-3`}>

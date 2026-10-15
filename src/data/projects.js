@@ -20,13 +20,13 @@ export const projects = [
     order: 1,
     featured: true,
     problem:
-      "Placeholder — case study content coming soon. This section will describe the core problem the project set out to solve.",
+      "Placeholder — project content coming soon. This section will describe the core problem the project set out to solve.",
     process:
-      "Placeholder — case study content coming soon. This section will walk through research, schema design, and interface iterations.",
+      "Placeholder — project content coming soon. This section will walk through research, schema design, and interface iterations.",
     solution:
-      "Placeholder — case study content coming soon. This section will describe the final designed solution.",
+      "Placeholder — project content coming soon. This section will describe the final designed solution.",
     outcome:
-      "Placeholder — case study content coming soon. This section will describe results and what came out of the work.",
+      "Placeholder — project content coming soon. This section will describe results and what came out of the work.",
     repo_url: "",
     live_url: "",
   },
@@ -42,10 +42,10 @@ export const projects = [
     coverImage: ultaCover,
     order: 2,
     featured: true,
-    problem: "Placeholder — real case study content coming soon.",
+    problem: "Placeholder — real project content coming soon.",
     process:
       "Conducted user research, competitive analysis, and stakeholder interviews. Built and tested AI-powered recommendation prototypes.",
-    solution: "Placeholder — real case study content coming soon.",
+    solution: "Placeholder — real project content coming soon.",
     outcome:
       "Delivered an implementation roadmap presented at Illinois Tech Innovation Day to students, faculty, and industry guests.",
     repo_url: "",
@@ -63,8 +63,7 @@ export const projects = [
     coverImage: jpmCover,
     order: 3,
     featured: true,
-    problem:
-      "Students needed a clearer way to understand and manage their finances.",
+    problem: "Students needed a clearer way to understand and manage their finances.",
     process:
       "Conducted user research to uncover student financial pain points. Designed wireframes in Moqups. Built multiple interactive prototypes in Figma. Ran usability testing and iterated based on feedback.",
     solution:
@@ -78,7 +77,7 @@ export const projects = [
     slug: "portfolio-website",
     title: "Daniela Jimenez Portfolio Website",
     summary:
-      "A personal portfolio designed and built to present multidisciplinary case studies, physical designs, and professional experience.",
+      "A personal portfolio designed and built to present multidisciplinary featured projects, physical designs, and professional experience.",
     year: "2026",
     role: "Designer & Developer",
     client: "Personal project",
@@ -87,13 +86,13 @@ export const projects = [
     order: 4,
     featured: true,
     problem:
-      "Placeholder — case study content coming soon. This section will describe the core problem the project set out to solve.",
+      "Placeholder — project content coming soon. This section will describe the core problem the project set out to solve.",
     process:
-      "Placeholder — case study content coming soon. This section will walk through research, information architecture, visual design, and development.",
+      "Placeholder — project content coming soon. This section will walk through research, information architecture, visual design, and development.",
     solution:
-      "Placeholder — case study content coming soon. This section will describe the final designed and developed portfolio experience.",
+      "Placeholder — project content coming soon. This section will describe the final designed and developed portfolio experience.",
     outcome:
-      "Placeholder — case study content coming soon. This section will describe results and what came out of the work.",
+      "Placeholder — project content coming soon. This section will describe results and what came out of the work.",
     repo_url: "",
     live_url: "",
   },

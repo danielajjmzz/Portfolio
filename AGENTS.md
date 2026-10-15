@@ -1,2 +1,2 @@
-- Keep Projects-page curation and selection helpers in `src/data/projects-page.ts`, separate from the shared project catalog, so page-specific previews never alter Home or case-study details.
+- Keep Projects-page curation and selection helpers in `src/data/projects-page.ts`, separate from the shared project catalog, so page-specific previews never alter Home or featured project pages.
 - Projects-page visual previews use an accessible dialog with image, title, and description; keep filtering and reveal limits in tested data helpers.

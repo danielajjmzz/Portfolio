@@ -1,7 +1,7 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  caseStudies,
+  featuredProjectCards,
   teaching,
   visualWork,
   visualFilters,
@@ -12,7 +12,7 @@ import {
 describe("Projects-page curation", () => {
   test("shows three featured projects in the requested order", () => {
     assert.deepEqual(
-      caseStudies.map((entry) => entry.title),
+      featuredProjectCards.map((entry) => entry.title),
       [
         "Real Estate Management Database",
         "[Featured project 2 — finance]",
