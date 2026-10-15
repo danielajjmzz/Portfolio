@@ -126,8 +126,20 @@ export const designs = [
   {
     id: "design-5",
     title: "Laser-Cut Cat Earrings",
-    image: "/images/projects/laser-earrings/earrings-01-assembly.jpg",
+    image: "/images/projects/laser-earrings/earrings-00a-design-sitting-cat.png",
     media: [
+      {
+        type: "image",
+        src: "/images/projects/laser-earrings/earrings-00a-design-sitting-cat.png",
+        alt: "Adobe Illustrator design of the sitting-cat earrings, with red cut lines around the outline and black engraved details",
+        caption: "Sitting cat design in Adobe Illustrator",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-earrings/earrings-00b-design-hanging-cat.png",
+        alt: "Adobe Illustrator design of the hanging-cat earrings, with red cut lines around the outline and black engraved details",
+        caption: "Hanging cat design in Adobe Illustrator",
+      },
       {
         type: "image",
         src: "/images/projects/laser-earrings/earrings-01-assembly.jpg",

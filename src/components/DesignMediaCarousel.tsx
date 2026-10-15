@@ -61,7 +61,7 @@ function MediaSlide({
   aspect: string;
   videoRef?: (node: HTMLVideoElement | null) => void;
 }) {
-  const media = cn("w-full", aspect, fit === "cover" ? "object-cover" : "object-contain");
+  const media = cn("w-full", aspect, fit === "cover" ? "object-cover" : "object-scale-down");
   if (item.type === "video") {
     return (
       <video
