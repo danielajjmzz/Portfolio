@@ -137,10 +137,7 @@ const navItems = [
 
 function SiteHeader() {
   return (
-    <header
-      id="site-header"
-      className="sticky top-0 z-30 border-b border-border bg-header"
-    >
+    <header id="site-header" className="sticky top-0 z-30 border-b border-border bg-header">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5 md:px-8 md:py-4">
         <Link
           to="/"

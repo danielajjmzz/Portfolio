@@ -7,7 +7,10 @@ import {
   visualFilters,
   selectVisualWork,
   VISUAL_INITIAL_COUNT,
+  selectTeaching,
+  TEACHING_INITIAL_COUNT,
 } from "./projects-page";
+import { getTeachingBySlug } from "./teaching";
 
 describe("Projects-page curation", () => {
   test("shows three featured projects in the requested order", () => {
@@ -20,16 +23,23 @@ describe("Projects-page curation", () => {
       ],
     );
   });
-  test("moves process documentation and student showcase into three teaching cards", () => {
-    assert.equal(teaching.length, 3);
-    for (const title of ["Workshop Process Documentation", "Student Showcase Moments"]) {
-      assert.equal(
-        teaching.some((entry) => entry.title === title),
-        true,
-      );
-      assert.equal(
-        visualWork.some((entry) => entry.title === title),
-        false,
+  test("teaching shows Coding, Design and Circuits first, with the AI workshop behind Show more", () => {
+    const collapsed = selectTeaching();
+    assert.equal(TEACHING_INITIAL_COUNT, 3);
+    assert.deepEqual(
+      collapsed.entries.map((entry) => entry.title),
+      ["Coding Material", "Design Material", "Circuits Material"],
+    );
+    assert.equal(collapsed.hasMore, true);
+    const expanded = selectTeaching(true);
+    assert.equal(expanded.entries.at(-1)?.title, "AI Workshop");
+    assert.equal(expanded.canCollapse, true);
+  });
+  test("every teaching card links to a page with all four sections", () => {
+    for (const entry of teaching) {
+      assert.ok(getTeachingBySlug(entry.slug), `${entry.slug} has no page`);
+      assert.ok(
+        entry.context.body && entry.approach.length && entry.lessons.length && entry.outcome.body,
       );
     }
   });
@@ -47,8 +57,8 @@ describe("Projects-page curation", () => {
   test("no toggle when a filter fits in one row", () => {
     assert.equal(selectVisualWork("Document designs").hasMore, false);
   });
-  test("every visual work and teaching card has photos for the carousel", () => {
-    for (const entry of [...visualWork, ...teaching]) {
+  test("every visual work card has photos for the carousel", () => {
+    for (const entry of visualWork) {
       assert.ok(entry.media.length > 0, `${entry.title} has no photos`);
     }
   });

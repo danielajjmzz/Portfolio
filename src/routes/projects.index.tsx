@@ -9,9 +9,11 @@ import {
   visualFilters,
   visualWork,
   selectVisualWork,
+  selectTeaching,
   type VisualFilter,
 } from "@/data/projects-page";
 import { PageHero } from "@/components/PageHero";
+import { MediaFrame } from "@/components/MediaFrame";
 import { DesignMediaCarousel, type MediaEntry } from "@/components/DesignMediaCarousel";
 import { cardClass, chipClass, outlineButton, sectionHeadRow, tintCardClass } from "@/lib/ui";
 
@@ -66,6 +68,8 @@ function ProjectsIndex() {
   const [expanded, setExpanded] = useState(false);
   const [preview, setPreview] = useState<Preview | null>(null);
   const visible = selectVisualWork(filter, expanded);
+  const [teachingExpanded, setTeachingExpanded] = useState(false);
+  const visibleTeaching = selectTeaching(teachingExpanded);
   const filterBarRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   // Sticky offsets: the jump bar sits under the site header; Visual work filters sit under both.
@@ -300,48 +304,59 @@ function ProjectsIndex() {
             title="Teaching"
             label="Lessons · workshops · student programs"
           />
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {teaching.map((entry) => (
-              <article key={entry.id} className={`${tintCardClass} min-w-0 p-3`}>
-                <DesignMediaCarousel
-                  entry={entry}
-                  aspect="aspect-[16/10]"
-                  onOpen={() => setPreview(entry)}
-                />
+          <div
+            id="teaching-grid"
+            aria-live="polite"
+            className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
+          >
+            {visibleTeaching.entries.map((entry, index) => (
+              <article key={entry.slug} className={`${tintCardClass} group min-w-0 p-3`}>
+                <Link
+                  to="/teaching/$slug"
+                  params={{ slug: entry.slug }}
+                  aria-label={`View ${entry.title}`}
+                  className="block overflow-hidden rounded-frame focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <MediaFrame media={entry.cover} className="aspect-[3/2]" eager={index === 0} />
+                </Link>
                 <div className="px-2 pb-3 pt-4">
-                  <h3 className="text-[1.375rem]">{entry.title}</h3>
-                  <dl className="mt-3 grid grid-cols-[3.25rem_minmax(0,1fr)] gap-x-3 gap-y-1.5 text-xs leading-relaxed">
-                    {[
-                      ["For", entry.audience],
-                      ["Made", entry.made],
-                      ["Result", entry.result],
-                    ].map(([label, value]) => (
-                      <div key={label} className="contents">
-                        <dt className="text-muted-foreground">{label}</dt>
-                        <dd className="text-foreground">{value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  {entry.href ? (
-                    <a
-                      href={entry.href}
-                      className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link hover:underline"
+                  <p className="label-tech">{entry.cardMeta}</p>
+                  <h3 className="mt-2 text-[1.75rem]">
+                    <Link
+                      to="/teaching/$slug"
+                      params={{ slug: entry.slug }}
+                      className="hover:text-link"
                     >
-                      See the lesson <ArrowRight className="size-4" aria-hidden="true" />
-                    </a>
-                  ) : (
-                    <button
-                      type="button"
-                      className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link hover:underline"
-                      onClick={() => setPreview(entry)}
-                    >
-                      See the lesson <ArrowRight className="size-4" aria-hidden="true" />
-                    </button>
-                  )}
+                      {entry.title}
+                    </Link>
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {entry.summary}
+                  </p>
+                  <Link
+                    to="/teaching/$slug"
+                    params={{ slug: entry.slug }}
+                    className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link hover:underline"
+                  >
+                    View the material <ArrowRight className="size-4" aria-hidden="true" />
+                  </Link>
                 </div>
               </article>
             ))}
           </div>
+          {(visibleTeaching.hasMore || visibleTeaching.canCollapse) && (
+            <div className="mt-8 flex justify-center">
+              <button
+                type="button"
+                aria-expanded={teachingExpanded}
+                aria-controls="teaching-grid"
+                className={outlineButton}
+                onClick={() => setTeachingExpanded((open) => !open)}
+              >
+                {teachingExpanded ? "Show less teaching" : "Show more teaching"}
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
