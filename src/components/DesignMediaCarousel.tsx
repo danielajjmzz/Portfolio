@@ -41,6 +41,9 @@ type DesignMediaCarouselProps = {
   className?: string;
 };
 
+/** Above this many slides the dots switch to a "2 / 6" counter. */
+const MAX_DOTS = 4;
+
 /** A link counts as "coming soon" until it has a real URL; "#" is the placeholder in the data. */
 const isPlaceholder = (href: string) => href.trim() === "#";
 
@@ -250,33 +253,47 @@ export function DesignMediaCarousel({
           >
             <ArrowRight aria-hidden className="size-4" />
           </button>
-          <div
-            role="group"
-            aria-label="Choose photo"
-            className={cn(
-              "absolute left-2.5 top-2.5 z-20 flex gap-1 bg-media-scrim px-2 py-2 backdrop-blur-[2px]",
-              visibility,
-            )}
-          >
-            {entry.media.map((item, index) => (
-              <button
-                key={`${item.src}-dot-${index}`}
-                type="button"
-                onClick={() => api?.scrollTo(index)}
-                aria-label={`Go to photo ${index + 1}`}
-                aria-current={index === activeIndex ? "true" : undefined}
-                className="flex h-4 w-4 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                <span
-                  aria-hidden
-                  className={cn(
-                    "block h-2 w-2 rounded-full border border-media-icon",
-                    index === activeIndex ? "bg-media-icon" : "bg-transparent",
-                  )}
-                />
-              </button>
-            ))}
-          </div>
+          {entry.media.length <= MAX_DOTS ? (
+            <div
+              role="group"
+              aria-label="Choose photo"
+              className={cn(
+                "absolute left-2.5 top-2.5 z-20 flex gap-1 bg-media-scrim px-2 py-2 backdrop-blur-[2px]",
+                visibility,
+              )}
+            >
+              {entry.media.map((item, index) => (
+                <button
+                  key={`${item.src}-dot-${index}`}
+                  type="button"
+                  onClick={() => api?.scrollTo(index)}
+                  aria-label={`Go to photo ${index + 1}`}
+                  aria-current={index === activeIndex ? "true" : undefined}
+                  className="flex h-4 w-4 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "block h-2 w-2 rounded-full border border-media-icon",
+                      index === activeIndex ? "bg-media-icon" : "bg-transparent",
+                    )}
+                  />
+                </button>
+              ))}
+            </div>
+          ) : (
+            // Many slides: a compact counter so it never collides with the link icons.
+            <p
+              aria-live="polite"
+              className={cn(
+                "absolute left-2.5 top-2.5 z-20 bg-media-scrim px-2.5 py-1.5 text-xs font-semibold tabular-nums text-media-icon backdrop-blur-[2px]",
+                visibility,
+              )}
+            >
+              <span className="sr-only">Photo </span>
+              {activeIndex + 1} / {entry.media.length}
+            </p>
+          )}
         </>
       )}
     </Carousel>

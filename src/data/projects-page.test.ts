@@ -40,8 +40,6 @@ describe("Projects-page curation", () => {
     assert.equal(expanded.canCollapse, true);
   });
   test("no toggle when a filter fits in one row", () => {
-    assert.equal(selectVisualWork("Physical designs").hasMore, false);
-    assert.equal(selectVisualWork("Physical designs", true).canCollapse, false);
     assert.equal(selectVisualWork("Document designs").hasMore, false);
   });
   test("every visual work and teaching card has photos for the carousel", () => {
@@ -50,7 +48,7 @@ describe("Projects-page curation", () => {
     }
   });
   test("filters visual work without including teaching", () => {
-    assert.equal(selectVisualWork("Physical designs").entries.length, 4);
+    assert.equal(selectVisualWork("Physical designs", true).entries.length, 5);
     assert.equal(selectVisualWork("Document designs").entries.length, 2);
     assert.equal(
       selectVisualWork("Photography").entries.some(

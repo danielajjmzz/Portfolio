@@ -123,6 +123,51 @@ export const designs = [
     liveUrl: "#",
     artifactUrl: "#",
   },
+  {
+    id: "design-5",
+    title: "Laser-Cut Cat Earrings",
+    image: "/images/projects/laser-earrings/earrings-01-assembly.jpg",
+    media: [
+      {
+        type: "image",
+        src: "/images/projects/laser-earrings/earrings-01-assembly.jpg",
+        alt: "Workbench with pliers, earring hooks and laser-cut cat pieces laid out for assembly",
+      },
+      {
+        type: "video",
+        src: "/images/projects/laser-earrings/earrings-02-laser-engraving.mp4",
+        poster: "/images/projects/laser-earrings/earrings-02-laser-engraving-poster.jpg",
+        alt: "Video of the laser cutter engraving cat faces onto a sheet of wood",
+      },
+      {
+        type: "video",
+        src: "/images/projects/laser-earrings/earrings-03-laser-cutting.mp4",
+        poster: "/images/projects/laser-earrings/earrings-03-laser-cutting-poster.jpg",
+        alt: "Video of the laser cutter cutting out a cat earring shape from the wood sheet",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-earrings/earrings-04-sitting-cat.jpg",
+        alt: "A pair of laser-cut wooden sitting-cat earrings with engraved faces, on a white background",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-earrings/earrings-05-hanging-cat.jpg",
+        alt: "A pair of laser-cut wooden hanging-cat earrings with long curled tails",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-earrings/earrings-06-packaged.jpg",
+        alt: "Finished cat earring pairs packaged in small bags, ready to sell at the Makers Lab fundraiser",
+      },
+    ],
+    description:
+      "My introduction to laser cutting. I designed two cat earrings in Adobe Illustrator, a sitting cat and a hanging cat, then engraved the faces and cut the shapes on the laser cutter from 11.87″ × 11.75″ sheets of cherry, alder, walnut and Baltic birch. I assembled each pair with earring hooks, and the finished earrings were packaged and sold to raise money for the Makers Lab.",
+    order: 5,
+    repoUrl: "#",
+    liveUrl: "#",
+    artifactUrl: "#",
+  },
 ];
 
 export const documentDesigns = [
@@ -216,8 +261,7 @@ export const designSections = [
   {
     id: "photography",
     title: "Photography",
-    summary:
-      "Documentation and visual studies from workshops, classrooms, Chicago, and Mexico.",
+    summary: "Documentation and visual studies from workshops, classrooms, Chicago, and Mexico.",
     entries: [...photography].sort((a, b) => a.order - b.order),
   },
 ];
