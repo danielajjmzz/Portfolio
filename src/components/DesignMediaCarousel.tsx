@@ -148,7 +148,7 @@ export function DesignMediaCarousel({
     ] as Array<{ href?: string; label: string; Icon: LucideIcon }>
   ).filter((link): link is { href: string; label: string; Icon: LucideIcon } => Boolean(link.href));
 
-  return (
+  const carousel = (
     <Carousel
       setApi={setApi}
       opts={{ loop: hasMultipleSlides }}
@@ -297,5 +297,17 @@ export function DesignMediaCarousel({
         </>
       )}
     </Carousel>
+  );
+
+  // Captions only appear in the expanded view (controls always visible); cards stay clean.
+  const hasCaptions = controls === "always" && entry.media.some((item) => item.caption);
+  if (!hasCaptions) return carousel;
+  return (
+    <figure className="m-0">
+      {carousel}
+      <figcaption aria-live="polite" className="mt-3 min-h-5 text-sm font-semibold text-foreground">
+        {entry.media[activeIndex]?.caption ?? ""}
+      </figcaption>
+    </figure>
   );
 }

@@ -168,6 +168,61 @@ export const designs = [
     liveUrl: "#",
     artifactUrl: "#",
   },
+  {
+    id: "design-6",
+    title: "Laser-Cut Quote Box",
+    image: "/images/projects/laser-quote-box/box-01-sketch-template.png",
+    media: [
+      {
+        type: "image",
+        src: "/images/projects/laser-quote-box/box-01-sketch-template.png",
+        alt: "Blank box template sheet with outlines for the back, right, bottom, front, left and top panels",
+        caption: "Task 1: Sketch",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-quote-box/box-02-artboard-size.png",
+        alt: "Adobe Illustrator artboard settings: 11.87 by 11.75 inches, no bleed",
+        caption: "Task 2: Prototype & Design.",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-quote-box/box-03-final-design.jpg",
+        alt: "Final box design in Adobe Illustrator: an open book with a reading figure, leafy branches, an open window and a quote panel",
+        caption: "Task 3: Automate final design",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-quote-box/box-04-quote-original.png",
+        alt: "Original vector outline of the quote “Books are a uniquely portable magic” with connected letters",
+        caption: "Original Design",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-quote-box/box-05-quote-cut.jpg",
+        alt: "The laser-cut quote in wood, with thin and cut-off letters circled in red",
+        caption: "Thin & cut off letters.",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-quote-box/box-06-book-original.png",
+        alt: "Original design of the open book panel with swirls and stars rising from the pages",
+        caption: "Original Design",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-quote-box/box-07-book-cut.jpg",
+        alt: "The laser-cut book panel, with thin swirls that came out weak circled in red",
+        caption: "Weak due to how thin the design came out.",
+      },
+    ],
+    description:
+      "A laser-cut wooden box designed from scratch in Adobe Illustrator, with a quote of connected letters on top: “Books are a uniquely portable magic.”",
+    order: 6,
+    repoUrl: "#",
+    liveUrl: "#",
+    artifactUrl: "#",
+  },
 ];
 
 export const documentDesigns = [

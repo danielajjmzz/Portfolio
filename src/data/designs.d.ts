@@ -1,6 +1,7 @@
+/** `caption` is optional text shown under the photo in the expanded view. */
 export type MediaItem =
-  | { type: "image"; src: string; alt: string; poster?: never }
-  | { type: "video"; src: string; alt: string; poster?: string };
+  | { type: "image"; src: string; alt: string; caption?: string; poster?: never }
+  | { type: "video"; src: string; alt: string; caption?: string; poster?: string };
 
 export interface DesignEntry {
   id: string;
