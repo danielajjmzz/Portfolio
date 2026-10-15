@@ -92,8 +92,30 @@ export const designs = [
   {
     id: "design-4",
     title: "Carved Wood Nameplate",
-    image: placeholder,
-    media: placeholderMedia("Carved Wood Nameplate"),
+    image: "/images/projects/3d-carving/nameplate-01-carved.jpg",
+    media: [
+      {
+        type: "image",
+        src: "/images/projects/3d-carving/nameplate-01-carved.jpg",
+        alt: "Aspen wood nameplate on the carving machine bed with the name Daniela and leaf designs carved in",
+      },
+      {
+        type: "image",
+        src: "/images/projects/3d-carving/nameplate-02-clamped.jpg",
+        alt: "Block of aspen wood clamped onto the bed of an X-Carve CNC carving machine before carving",
+      },
+      {
+        type: "video",
+        src: "/images/projects/3d-carving/nameplate-03-carving.mp4",
+        poster: "/images/projects/3d-carving/nameplate-03-carving-poster.jpg",
+        alt: "Video of the carving bit cutting the lettering into the wood nameplate",
+      },
+      {
+        type: "image",
+        src: "/images/projects/3d-carving/nameplate-04-setup.jpg",
+        alt: "Makerspace workstation with the Easel design software open on the computer next to the carving machine",
+      },
+    ],
     description:
       "Placeholder — toolpaths, bit selection, and safe setup for carving a personalized wood nameplate.",
     order: 4,
