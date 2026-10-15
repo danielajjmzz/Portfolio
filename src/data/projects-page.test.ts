@@ -23,12 +23,16 @@ describe("Projects-page curation", () => {
       ],
     );
   });
-  test("teaching shows Coding, Design Principles and Circuits first, with Portfolio and the AI workshop behind Show more", () => {
+  test("teaching shows Python, Design Principles and Circuits first, with Portfolio and the AI workshop behind Show more", () => {
     const collapsed = selectTeaching();
     assert.equal(TEACHING_INITIAL_COUNT, 3);
     assert.deepEqual(
       collapsed.entries.map((entry) => entry.title),
-      ["Coding Material", "Design Principles: PARC, Type & Color", "Intro to Circuits & Arduino"],
+      [
+        "Intro to Python Programming",
+        "Design Principles: PARC, Type & Color",
+        "Intro to Circuits & Arduino",
+      ],
     );
     assert.equal(collapsed.hasMore, true);
     const expanded = selectTeaching(true);

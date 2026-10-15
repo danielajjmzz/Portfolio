@@ -2,11 +2,9 @@
  * Single source of truth for teaching material (cards on /projects and pages at /teaching/:slug).
  * To add a new teaching page: append one object to `teaching`. Nothing else to edit.
  *
- * Media slots: leave `src` empty ("") to show a labeled placeholder frame until the real
+ * Media: leave `src` empty ("") to show a labeled placeholder frame until the real
  * photo or video is ready; `label` is what the placeholder says.
  */
-
-const slot = (label, extra = {}) => ({ type: "image", src: "", alt: "", label, ...extra });
 
 const CIRCUITS = "/images/teaching/circuits";
 const img = (file, alt, extra = {}) => ({
@@ -25,6 +23,14 @@ const clip = (file, poster, alt) => ({
   label: file,
 });
 
+const CD = "/images/teaching/coding";
+const cd = (file, alt, extra = {}) => ({
+  type: "image",
+  src: `${CD}/${file}`,
+  alt,
+  label: file,
+  ...extra,
+});
 const DP = "/images/teaching/design-principles";
 const PF = "/images/teaching/portfolio";
 const dp = (file, alt, extra = {}) => ({
@@ -50,45 +56,268 @@ const slide = (file, alt, extra = {}) => ({
   ...extra,
 });
 
-const placeholderLesson = (number, label) => ({
-  id: `lesson-${number}`,
-  label,
-  title: `[Lesson ${number} title]`,
-  dates: "[Dates]",
-  body: "[What students built in this lesson and the one new idea it introduced.]",
-  tags: ["[Skill]", "[Skill]"],
-  note: "",
-  media: [slot(`Lesson ${number} photo`), slot(`Lesson ${number} clip`, { type: "video" })],
-});
-
 export const teaching = [
   {
     slug: "coding-material",
-    title: "Coding Material",
-    summary: "[One-line summary of the coding lessons and who they were for.]",
-    cardMeta: "[Program] · [Years]",
-    year: "[Years]",
-    role: "[Role]",
-    audience: "[Audience]",
-    tools: ["[Tool]", "[Tool]"],
-    cover: slot("Hero · coding cover"),
+    title: "Intro to Python Programming",
+    summary:
+      "Four days that took incoming Illinois Tech freshmen from saving a file and opening a terminal to writing their own Python functions and if/else logic.",
+    cardMeta: "Exelon Summer Institute · 2026",
+    year: "Summer 2026",
+    role: "CS Lead",
+    audience: "Incoming Illinois Tech freshmen",
+    tools: ["Python", "VS Code", "Terminal", "Google Classroom"],
+    cover: cd(
+      "slide-41.jpg",
+      "Lecture slide: writing a new function, with the function name, parameters, rule and indentation labeled on the code, and its expected outputs.",
+    ),
     main: true,
     order: 1,
     context: {
-      body: "[Who you taught, for how long, and how the lessons were structured.]",
-      media: slot("Context image"),
-      caption: "[Caption]",
+      body: "Week 2 of the Exelon Summer Institute was the coding foundation for incoming Illinois Tech freshmen, most of whom had never written a program. Before any Python, they needed to be comfortable with their own computer: saving files, unzipping a folder, using the terminal. Then, one idea a day: variables, functions, and if/else logic. I wrote the slides, fifteen practice files, a step-by-step computer skills guide, and a teacher's guide with speaker notes, timing and answer keys for the two TAs.",
+      media: cd(
+        "syllabus-week2.jpg",
+        "The Week 2 schedule from the course syllabus: AI workshop, setup and intro to variables, variables and data types, functions, and if/else statements.",
+      ),
+      caption: "Week 2 at a glance, from the course syllabus.",
     },
     approach: [
-      { lead: "[Principle one.]", body: "[Why it matters for students.]" },
-      { lead: "[Principle two.]", body: "[Why it matters for students.]" },
-      { lead: "[Principle three.]", body: "[Why it matters for students.]" },
+      {
+        lead: "= means SET, not equals.",
+        body: 'The single most important idea of the week. x = x + 5 looks impossible in algebra, so we read every = out loud as "set to" until it sticks.',
+      },
+      {
+        lead: "Read code like a computer.",
+        body: "One line at a time, top to bottom. Every practice file is solved by tracing the value of each variable after each line.",
+      },
+      {
+        lead: "Use it before you build it.",
+        body: "Students call built-in functions as black boxes, judging them only by input and output, before writing a function of their own.",
+      },
+      {
+        lead: "Practice right after every idea.",
+        body: "Each concept is followed by a numbered practice file with a time estimate and difficulty level, and TAs coach students to explain their thinking instead of handing out answers.",
+      },
     ],
-    lessons: [1, 2, 3, 4].map((n) => placeholderLesson(n, `[Lesson ${n}]`)),
+    lessonMediaAspect: "wide",
+    lessons: [
+      {
+        id: "computer-skills",
+        label: "Computer skills",
+        title: "Computer skills first",
+        dates: "Day 10 · Tue Jul 14",
+        body: "Before writing a line of code, everyone practiced the basics they would need all summer: screenshots, saving from the browser, zipping and unzipping files, flash drives, navigating the file system in the terminal, and installing Python and VS Code. A checklist and a step-by-step guide for both Windows and Mac walked them through it.",
+        tags: ["Terminal", "File system", "Setup"],
+        note: "",
+        media: [
+          cd(
+            "slide-09.jpg",
+            "Slide: Topics covered, from screenshots and file compression to installing Python and VS Code and running a Python script.",
+          ),
+          cd(
+            "computer-skills-checklist.jpg",
+            "Page 1 of the Computer Skills Checklist assignment.",
+            { fit: "contain" },
+          ),
+        ],
+      },
+      {
+        id: "variables",
+        label: "Variables",
+        title: "Variables and expressions",
+        dates: "Day 11 · Wed Jul 15",
+        body: "A variable has two parts, a name and a value, just like the variables students tracked in a science lab. We named a car's speed, created variables in code, traced a short program line by line, and combined values with operators into expressions.",
+        tags: ["Variables", "Integers", "Operators", "Expressions"],
+        note: "The equal sign is not the EQUAL operator, it is the SET operator.",
+        media: [
+          cd(
+            "slide-14.jpg",
+            "Slide: Variables, initialization, possible names for a car's speed and the rule that = is the SET operator.",
+          ),
+          cd(
+            "slide-12.jpg",
+            "Slide: Variables, parts of a variable, a name and a value, compared to variables in a science lab.",
+          ),
+          cd(
+            "slide-15.jpg",
+            "Slide: Reading code like a computer, one line at a time from top to bottom, ignoring comments.",
+          ),
+          cd(
+            "slide-17.jpg",
+            "Slide: Variables, operators, add, subtract, multiply, divide, mod and parentheses.",
+          ),
+          cd(
+            "slide-18.jpg",
+            "Slide: Variables, initialization and expressions, setting a variable to the value of an expression.",
+          ),
+        ],
+      },
+      {
+        id: "set-operator",
+        label: "SET operator",
+        title: "Updating a variable",
+        dates: "Day 11 · Wed Jul 15",
+        body: "When you set a variable to a new value, the old one is gone. So how do you add 20 to a speed you already have? speed = speed + 20: the right side is calculated first with the old value, then stored back, just like updating a lab data sheet. The day ended with the longest practice, 03_SetOP.py.",
+        tags: ["SET operator", "Tracing"],
+        note: "Right side first, then SET.",
+        media: [
+          cd(
+            "slide-22.jpg",
+            "Slide: Updating a variable should be like updating a variable in a lab data sheet.",
+          ),
+          cd(
+            "slide-20.jpg",
+            "Slide: SET operator behavior, a new value replaces the old one, which is lost.",
+          ),
+          cd(
+            "code-setop-wide.jpg",
+            "The practice file 03_SetOP.py in Python: questions that update a variable several times and ask for its final value.",
+          ),
+          cd(
+            "slide-23.jpg",
+            "Practice slide: Set operator and summary, 03_SetOP.py, individual with group, 20 to 30 minutes.",
+          ),
+        ],
+      },
+      {
+        id: "functions",
+        label: "Functions",
+        title: "Calling functions",
+        dates: "Day 12 · Thu Jul 16",
+        body: "Functions in code work a lot like f(x) in math: an input, a rule, and maybe an output. Students called min, max, abs, pow and print as black boxes, predicted each result, and learned the difference between a function that returns a value and one that only prints. Then they passed variables in as arguments and used function results inside expressions.",
+        tags: ["Function calls", "Arguments", "Return values"],
+        note: "If a function has an output, store it somewhere if you want to use it.",
+        media: [
+          cd(
+            "slide-25.jpg",
+            "Slide: Functions, comparing math functions and CS functions with an input, rule and output diagram.",
+          ),
+          cd(
+            "slide-26.jpg",
+            "Slide: Calling functions in code, the name followed by arguments in parentheses.",
+          ),
+          cd(
+            "slide-27.jpg",
+            "Slide: Black box practice, given inputs 5 and 10 and an expected output of 5, which function is it?",
+          ),
+          cd(
+            "slide-33.jpg",
+            "Slide: Functions and variables, using variables instead of literal values as arguments.",
+          ),
+          cd(
+            "slide-35.jpg",
+            "Slide: Expressions and functions, with the order of operations including function calls.",
+          ),
+        ],
+      },
+      {
+        id: "writing-functions",
+        label: "Writing functions",
+        title: "Writing your own function",
+        dates: "Day 12 · Thu Jul 16",
+        body: "We turned a math problem into code: given two angles of a triangle, find the third. Name the function, choose its parameters, write the rule, indent it, and predict the output before running it. Students then wrote their own, ending with a distance formula and a compound interest calculator.",
+        tags: ["Parameters", "Return", "Problem solving"],
+        note: "What job does this function do? What does it need? What does it give back?",
+        media: [
+          cd(
+            "slide-40.jpg",
+            "Slide: Demo writing a new function, the goal, name and parameters for missingAngle.",
+          ),
+          cd(
+            "slide-41.jpg",
+            "Slide: Demo writing a new function, the code with its name, parameters, rule and indentation labeled.",
+          ),
+          cd(
+            "code-missing-angle-wide.jpg",
+            "The demo file 05_WritingFunctionsEX.py: the missingAngle function and four calls to it.",
+          ),
+          cd(
+            "slide-45.jpg",
+            "Slide: Practice instructions, a distance formula and a future value formula to implement.",
+          ),
+          cd(
+            "code-complex-functions-wide.jpg",
+            "The practice file 07_WritingComplexFunctions.py: four empty functions for students to complete.",
+          ),
+        ],
+      },
+      {
+        id: "if-else",
+        label: "If/else",
+        title: "Making decisions with if/else",
+        dates: "Day 13 · Fri Jul 17",
+        body: "Booleans, comparison operators, and code that only runs when a condition is true. Every example started with two questions: what is the condition, and what happens if it's true? A biker breaking a speed record became an if statement, and a soccer player's bicycle kick became an if/else. The final practice updates a game's level, points and lives.",
+        tags: ["Booleans", "Conditions", "Branching"],
+        note: "== is not the same as =.",
+        media: [
+          cd(
+            "slide-48.jpg",
+            "Slide: If statements, conditions that decide which part of a process runs.",
+          ),
+          cd(
+            "slide-50.jpg",
+            "Slide: Simple conditional operators, less than, greater than, is equal to and is not equal to.",
+          ),
+          cd(
+            "slide-53.jpg",
+            "Slide: Writing an if, a biker going for a speed record, with the condition and what happens if it is true.",
+          ),
+          cd(
+            "slide-56.jpg",
+            "Slide: Writing if/else, a soccer player earns extra points for a bicycle kick and normal points otherwise.",
+          ),
+          cd(
+            "code-ifs-game-wide.jpg",
+            "The practice file 01_IFs.py: game functions to complete for updating the level, checking for a mission item and restoring a life.",
+          ),
+        ],
+      },
+    ],
     outcome: {
-      body: "[What came out of the lessons overall.]",
-      extras: [slot("Extra 1"), slot("Extra 2"), slot("Extra 3"), slot("Extra 4")],
-      change: "[One thing you would do differently next time.]",
+      body: "Four days of material that a new instructor could pick up and teach: a 58-slide deck, fifteen practice files from tracing variables to a small game, a computer skills checklist with a Windows and Mac guide, and a teacher's guide with what to say, how long to spend, common mistakes and an answer key for every file. The same if/else lesson came back the next week, when students planned their portfolio wireframes.",
+      extrasLabel: "Practice files and teaching guides",
+      extras: [
+        cd(
+          "teachers-guide-cover.jpg",
+          "Cover of the teacher's guide and speaker notes for Days 11 to 13. TA names are blocked out.",
+          { fit: "contain", caption: "Teacher's guide" },
+        ),
+        cd(
+          "teachers-guide-functions.jpg",
+          "A page of the teacher's guide for Day 12, functions, with timing, speaker notes and answers.",
+          { fit: "contain", caption: "Speaker notes + answers" },
+        ),
+        cd("functions-documentation.jpg", "The functions practice documentation handout.", {
+          fit: "contain",
+          caption: "Functions handout",
+        }),
+        cd(
+          "code-functions-variables.jpg",
+          "The practice file 02_FunctionsAndVariables1.py, with an example and questions that call functions on variables.",
+          { fit: "contain", caption: "02_FunctionsAndVariables1.py" },
+        ),
+        cd("code-initialization.jpg", "The practice file 00_Initialization.py.", {
+          fit: "contain",
+          caption: "00_Initialization.py",
+        }),
+        cd(
+          "slide-16.jpg",
+          "Practice slide: variable initialization, 00_Initialization.py, five to ten minutes, beginner level.",
+          { fit: "contain", caption: "Practice: beginner" },
+        ),
+        cd(
+          "slide-19.jpg",
+          "Practice slide: expressions, 01 and 02_Expressions.py, five to ten minutes, beginner level.",
+          { fit: "contain", caption: "Practice: expressions" },
+        ),
+        cd(
+          "slide-43.jpg",
+          "Practice slide: writing simple functions, ten to twenty minutes, medium difficulty.",
+          { fit: "contain", caption: "Practice: medium" },
+        ),
+      ],
+      change:
+        "I kept the practice files but not the students' finished versions. Next time I'd collect one traced file per student each day, so I could see where the SET operator still tripped people up.",
     },
   },
   {
