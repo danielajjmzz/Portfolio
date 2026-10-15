@@ -181,6 +181,37 @@ export const designs = [
     artifactUrl: "#",
   },
   {
+    id: "design-7",
+    title: "Laser-Cut Butterfly Earrings",
+    image: "/images/projects/laser-butterflies/butterflies-01-design-cutout.png",
+    media: [
+      {
+        type: "image",
+        src: "/images/projects/laser-butterflies/butterflies-01-design-cutout.png",
+        alt: "Adobe Illustrator design of a pair of butterflies with cut-out wing patterns, outlined in red cut lines",
+        caption: "Butterfly design with cut-out wings in Adobe Illustrator",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-butterflies/butterflies-02-design-solid.png",
+        alt: "Adobe Illustrator design of a pair of solid butterfly shapes outlined in red cut lines",
+        caption: "Solid butterfly design in Adobe Illustrator",
+      },
+      {
+        type: "image",
+        src: "/images/projects/laser-butterflies/butterflies-03-finished-pink-acrylic.jpg",
+        alt: "Three small laser-cut pink acrylic butterflies strung on a wire, held in an open hand",
+        caption: "Finished butterflies cut from pink acrylic",
+      },
+    ],
+    description:
+      "A second laser-cutting design for the Makers Lab fundraiser, made with the same process as the cat earrings but cut from pink acrylic instead of wood. I designed the butterflies in Adobe Illustrator, cut them on the laser cutter, and assembled them into earrings to sell for the fundraiser.",
+    order: 6,
+    repoUrl: "#",
+    liveUrl: "#",
+    artifactUrl: "#",
+  },
+  {
     id: "design-6",
     title: "Laser-Cut Quote Box",
     image: "/images/projects/laser-quote-box/box-01-sketch-template.png",
@@ -230,7 +261,7 @@ export const designs = [
     ],
     description:
       "A laser-cut wooden box designed from scratch in Adobe Illustrator, with a quote of connected letters on top: “Books are a uniquely portable magic.”",
-    order: 6,
+    order: 7,
     repoUrl: "#",
     liveUrl: "#",
     artifactUrl: "#",
