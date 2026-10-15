@@ -123,8 +123,8 @@ function Lessons({ entry }: { entry: TeachingEntry }) {
   const [active, setActive] = useState(0);
   const baseId = useId();
   const lesson = entry.lessons[active]!;
+  const wide = (lesson.mediaAspect ?? entry.lessonMediaAspect) === "wide";
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const wide = entry.lessonMediaAspect === "wide";
 
   const onKeyDown = (event: React.KeyboardEvent, index: number) => {
     const last = entry.lessons.length - 1;

@@ -26,6 +26,8 @@ export interface TeachingLesson {
   /** Optional pull quote under the lesson. */
   note: string;
   media: TeachingMedia[];
+  /** Overrides the entry's lessonMediaAspect for this lesson only. */
+  mediaAspect?: "square" | "wide";
 }
 
 export interface TeachingEntry {

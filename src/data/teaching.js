@@ -580,8 +580,8 @@ export const teaching = [
     title: "Intro to Circuits & Arduino",
     summary:
       "Seven months of simulate-first circuit projects for the Exelon Summer Institute, so every incoming Illinois Tech freshman had a next build that matched their pace and interests.",
-    cardMeta: "Exelon Summer Institute · Instructor",
-    year: "2022 – 2023",
+    cardMeta: "Exelon Summer Institute · 2025",
+    year: "Summer 2025",
     role: "Instructor",
     audience: "Incoming Illinois Tech freshmen",
     tools: ["Tinkercad Circuits", "Arduino UNO", "Arduino IDE", "Serial Monitor"],
@@ -618,6 +618,30 @@ export const teaching = [
       },
     ],
     lessons: [
+      {
+        id: "intro",
+        label: "What is a circuit?",
+        title: "What is a circuit?",
+        dates: "Day 1",
+        body: "Every student started from the same place, whatever their experience. A circuit is a complete path for electricity: from a power source, through a path, and back again. If the loop is broken, nothing flows. Before any code, students proved it with a single red LED on a 9V battery and a breadboard.",
+        tags: ["Closed circuits", "LED polarity"],
+        note: "A source, a load and a path back: that's all a circuit is.",
+        mediaAspect: "wide",
+        media: [
+          img(
+            "slide-title.jpg",
+            "Title slide from my lesson deck: Introduction to Circuits, ESI Summer 2025, illustrated with a light bulb, a warning sign and a plug.",
+          ),
+          img(
+            "slide-what-is-a-circuit.jpg",
+            "Lesson slide: What is a circuit? A complete path for electricity to flow from a power source, through a path, and back again.",
+          ),
+          img(
+            "overview-battery-led.jpg",
+            "A 9V battery plugged into a breadboard power module, powering a single lit red LED.",
+          ),
+        ],
+      },
       {
         id: "lesson-1",
         label: "Traffic light",
@@ -788,13 +812,13 @@ export const teaching = [
       },
     ],
     outcome: {
-      body: "More than seven months of projects for a four-week program, documented in over 170 photos and videos. The six lessons above are the core path; the builds below are where faster students went next, ending with a model elevator that combined buttons, a motor driver and a distance sensor in one structure.",
+      body: "More than seven months of projects for a four-week program, documented in over 170 photos and videos. The lessons above are the core path; the builds below are where faster students went next, ending with a model elevator that combined buttons, a motor driver and a distance sensor in one structure.",
       extrasLabel: "Also built along the way",
       extras: [
         img(
-          "overview-battery-led.jpg",
-          "A 9V battery plugged into a breadboard power module, powering a single lit red LED.",
-          { caption: "Battery LED" },
+          "overview-elevator-driver.jpg",
+          "A motor driver board with four indicator LEDs mounted inside the cardboard elevator shaft.",
+          { caption: "Elevator motor driver" },
         ),
         img(
           "overview-fan-spinning.jpg",
