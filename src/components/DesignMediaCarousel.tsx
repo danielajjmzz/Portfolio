@@ -151,7 +151,7 @@ export function DesignMediaCarousel({
       opts={{ loop: hasMultipleSlides }}
       aria-label={`${entry.title} photos`}
       className={cn(
-        "group/media relative overflow-hidden rounded-frame border border-border bg-card",
+        "group/media relative isolate overflow-hidden rounded-frame border border-border bg-card",
         className,
       )}
     >
