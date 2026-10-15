@@ -79,11 +79,42 @@ export const designs = [
   },
   {
     id: "design-3",
-    title: "Vinyl Sticker Vector Set",
-    image: placeholder,
-    media: placeholderMedia("Vinyl Sticker Vector Set"),
+    title: "Layered Vinyl Jarrito Sticker",
+    image: "/images/projects/vinyl-sticker/sticker-01-sketch.jpg",
+    media: [
+      {
+        type: "image",
+        src: "/images/projects/vinyl-sticker/sticker-01-sketch.jpg",
+        alt: "Colored pencil sketch of a blue and tan jarrito sticker at 2 by 2 inches, broken into four numbered layers with a color key: brown/tan, light blue, dark blue and white",
+        caption: "Sketch and layer plan: 2 × 2 in, four colors",
+      },
+      {
+        type: "image",
+        src: "/images/projects/vinyl-sticker/sticker-02-layers.png",
+        alt: "The four sticker layers drawn as separate black shapes in the cutting software, on a grid",
+        caption: "Each color layer separated for cutting",
+      },
+      {
+        type: "image",
+        src: "/images/projects/vinyl-sticker/sticker-03-assembled.jpg",
+        alt: "The full jarrito sticker design assembled in color in the cutting software",
+        caption: "Full design assembled digitally",
+      },
+      {
+        type: "image",
+        src: "/images/projects/vinyl-sticker/sticker-04-finished-photo.jpg",
+        alt: "The finished layered vinyl jarrito sticker on its backing sheet, on a wooden table",
+        caption: "Finished layered vinyl sticker",
+      },
+      {
+        type: "image",
+        src: "/images/projects/vinyl-sticker/sticker-05-finished-scan.jpg",
+        alt: "Close-up scan of the finished sticker showing the blue rim, leaf pattern and sunburst band",
+        caption: "Scan of the finished sticker",
+      },
+    ],
     description:
-      "Placeholder — a lesson translating clean vector artwork into cut vinyl sticker sheets.",
+      "A self-directed project to teach myself the vinyl cutter and how to build layered stickers. I sketched a jarrito at 2 × 2 inches and planned it in four colors (brown/tan, light blue, dark blue and white), separated each color into its own cut layer in the cutting software, assembled the full design digitally, then cut and layered the vinyl by hand into the finished sticker.",
     order: 3,
     repoUrl: "#",
     liveUrl: "#",
