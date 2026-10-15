@@ -179,26 +179,26 @@ function SiteFooter() {
 
   return (
     <footer className="mt-auto bg-primary text-primary-foreground">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-14 sm:flex-row sm:items-center sm:justify-between md:px-8 md:py-16">
-        <div>
-          <p className="font-display text-[2.5rem] font-semibold leading-none sm:text-5xl">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-5 py-5 md:px-8">
+        <p className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <span className="font-display text-xl font-semibold leading-none">
             Let's build something.
-          </p>
+          </span>
           <a
             href="mailto:danielajjmzz@gmail.com"
-            className="mt-3 inline-block text-sm underline decoration-1 underline-offset-4 hover:decoration-2"
+            className="text-sm underline decoration-1 underline-offset-4 hover:decoration-2"
           >
             danielajjmzz@gmail.com
           </a>
-        </div>
+        </p>
         {onContact ? (
-          <p className="text-xs tracking-[0.06em] sm:self-end">
+          <p className="text-xs tracking-[0.06em]">
             Chicago, Illinois · © {new Date().getFullYear()}
           </p>
         ) : (
           <Link
             to="/contact"
-            className="inline-flex w-fit items-center gap-2 bg-ink px-5 py-3 text-sm font-semibold text-ink-foreground transition-opacity hover:opacity-85"
+            className="inline-flex w-fit items-center gap-2 bg-ink px-4 py-2 text-sm font-semibold text-ink-foreground transition-opacity hover:opacity-85"
           >
             Get in touch <span aria-hidden>→</span>
           </Link>

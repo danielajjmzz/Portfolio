@@ -84,13 +84,23 @@ function Home() {
         title="creating spaces where people feel seen, supported, and informed."
         body="UI/UX designer and Computer Science student working at the intersection of people, design, and technology. If you're building something for a real community, I'd like to hear about it."
         aside={
-          <img
-            src="/images/portrait.jpg"
-            alt="Daniela Jimenez"
-            width={800}
-            height={1200}
-            className="h-full w-full rounded-frame border border-border object-cover object-[50%_20%]"
-          />
+          <>
+            {/* Light mode shows the greenhouse photo; dark mode keeps the original portrait. */}
+            <img
+              src="/images/portrait-light.jpg"
+              alt="Daniela Jimenez"
+              width={360}
+              height={450}
+              className="h-full w-full rounded-frame border border-border object-cover object-[50%_25%] dark:hidden"
+            />
+            <img
+              src="/images/portrait.jpg"
+              alt="Daniela Jimenez"
+              width={800}
+              height={1200}
+              className="hidden h-full w-full rounded-frame border border-border object-cover object-[50%_20%] dark:block"
+            />
+          </>
         }
         actions={
           <>
