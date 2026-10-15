@@ -119,12 +119,32 @@ function Section({
 
 const bodyText = "text-base leading-relaxed text-muted-foreground";
 
-function Lessons({ entry }: { entry: TeachingEntry }) {
+function Lessons({ entry, stickyTop }: { entry: TeachingEntry; stickyTop: number }) {
   const [active, setActive] = useState(0);
   const baseId = useId();
   const lesson = entry.lessons[active]!;
   const wide = (lesson.mediaAspect ?? entry.lessonMediaAspect) === "wide";
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const tablistRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const label = entry.lessonsLabel ?? "Lessons";
+
+  // Switching tabs after scrolling down brings the new lesson's start back into view,
+  // just below the sticky bars (and the sticky number row on phones).
+  const select = (index: number) => {
+    setActive(index);
+    const panel = panelRef.current;
+    if (!panel) return;
+    const mobileRow = window.matchMedia("(min-width: 768px)").matches
+      ? 0
+      : (tablistRef.current?.offsetHeight ?? 0);
+    const offset = (mobileRow ? stickyTop - 12 : stickyTop) + mobileRow + 12;
+    const top = panel.getBoundingClientRect().top;
+    if (top < offset) {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: window.scrollY + top - offset, behavior: reduce ? "auto" : "smooth" });
+    }
+  };
 
   const onKeyDown = (event: React.KeyboardEvent, index: number) => {
     const last = entry.lessons.length - 1;
@@ -144,65 +164,88 @@ function Lessons({ entry }: { entry: TeachingEntry }) {
               : null;
     if (next === null) return;
     event.preventDefault();
-    setActive(next);
+    select(next);
     tabRefs.current[next]?.focus();
   };
 
   return (
-    <Section
+    <section
       id="lessons"
-      title={sectionsFor(entry)[2]!.title}
-      aside={
-        <>
+      aria-labelledby="lessons-heading"
+      className="grid scroll-mt-36 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12"
+    >
+      {/*
+        Desktop: the whole left column (title, intro, lesson list) sticks while the lesson scrolls.
+        Phone: this wrapper dissolves (display: contents) so only the number row sticks,
+        across the full length of the lesson.
+      */}
+      <div className="contents md:block md:self-start md:sticky" style={{ top: stickyTop }}>
+        <div>
+          <h2 id="lessons-heading" className="font-display leading-tight text-foreground">
+            {sectionsFor(entry)[2]!.title}
+          </h2>
           <p className="label-tech mt-3">
             {entry.lessonsIntro ?? `${entry.lessons.length} lessons, one new idea each. Pick one.`}
           </p>
-          <div
-            role="tablist"
-            aria-orientation="vertical"
-            aria-label={entry.lessonsLabel ?? "Lessons"}
-            className="mt-5 grid gap-2"
-          >
-            {entry.lessons.map((item, index) => {
-              const selected = index === active;
-              return (
-                <button
-                  key={item.id}
-                  ref={(node) => {
-                    tabRefs.current[index] = node;
-                  }}
-                  id={`${baseId}-tab-${index}`}
-                  role="tab"
-                  type="button"
-                  aria-selected={selected}
-                  aria-controls={`${baseId}-panel`}
-                  tabIndex={selected ? 0 : -1}
-                  onClick={() => setActive(index)}
-                  onKeyDown={(event) => onKeyDown(event, index)}
+        </div>
+        <div
+          ref={tablistRef}
+          role="tablist"
+          aria-orientation="vertical"
+          aria-label={label}
+          // Flush under the bars on phones (the 12px breathing room is for the desktop column).
+          style={{ top: stickyTop - 12 }}
+          className="sticky z-10 -mx-5 flex gap-2 overflow-x-auto border-b border-border bg-background px-5 py-2.5 md:static md:mx-0 md:mt-5 md:grid md:overflow-visible md:border-0 md:bg-transparent md:p-0"
+        >
+          {entry.lessons.map((item, index) => {
+            const selected = index === active;
+            const number = String(index + 1).padStart(2, "0");
+            return (
+              <button
+                key={item.id}
+                ref={(node) => {
+                  tabRefs.current[index] = node;
+                }}
+                id={`${baseId}-tab-${index}`}
+                role="tab"
+                type="button"
+                aria-selected={selected}
+                aria-controls={`${baseId}-panel`}
+                tabIndex={selected ? 0 : -1}
+                title={item.label}
+                onClick={() => select(index)}
+                onKeyDown={(event) => onKeyDown(event, index)}
+                className={cn(
+                  "flex h-10 min-w-10 shrink-0 items-center justify-center gap-3 border px-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:h-auto md:justify-start md:py-2 md:text-left",
+                  selected
+                    ? "border-link bg-secondary font-medium text-foreground"
+                    : "border-border-strong bg-card text-muted-foreground hover:border-link hover:text-link",
+                )}
+              >
+                <span
                   className={cn(
-                    "flex items-center gap-3 border px-3 py-2 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                    selected
-                      ? "border-link bg-secondary font-medium text-foreground"
-                      : "border-border-strong bg-card text-muted-foreground hover:border-link hover:text-link",
+                    "tabular-nums md:text-xs md:text-muted-foreground",
+                    selected && "text-link",
                   )}
                 >
-                  <span className="text-xs tabular-nums text-muted-foreground">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  {item.label}
-                </button>
-              );
-            })}
-          </div>
-        </>
-      }
-    >
+                  {number}
+                </span>
+                {/* Phones show only the number; the name stays for screen readers. */}
+                <span className="sr-only md:not-sr-only">{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div
+        ref={panelRef}
         id={`${baseId}-panel`}
         role="tabpanel"
         aria-labelledby={`${baseId}-tab-${active}`}
         tabIndex={0}
-        className="focus-visible:outline-none"
+        className="min-w-0 focus-visible:outline-none"
+        style={{ scrollMarginTop: stickyTop + 12 }}
       >
         <div className="grid grid-cols-2 gap-3">
           {lesson.media.map((media, index) => (
@@ -240,7 +283,7 @@ function Lessons({ entry }: { entry: TeachingEntry }) {
           </blockquote>
         )}
       </div>
-    </Section>
+    </section>
   );
 }
 
@@ -250,6 +293,18 @@ function TeachingDetail() {
   const heroRef = useRef<HTMLDivElement>(null);
   const [pinned, setPinned] = useState(false);
   const [headerHeight, setHeaderHeight] = useState<number | null>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const [barHeight, setBarHeight] = useState(0);
+
+  useEffect(() => {
+    const bar = barRef.current;
+    if (!bar) return;
+    const measure = () => setBarHeight(bar.offsetHeight);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(bar);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const header = document.getElementById("site-header");
@@ -276,6 +331,7 @@ function TeachingDetail() {
     <>
       {/* Sticky section bar: appears once the hero scrolls away, same as featured project pages. */}
       <div
+        ref={barRef}
         style={headerHeight !== null ? { top: headerHeight } : undefined}
         className={cn(
           "fixed inset-x-0 top-[69px] z-20 border-b border-border bg-background transition-all duration-300 motion-reduce:transition-none md:top-[77px]",
@@ -353,7 +409,8 @@ function TeachingDetail() {
 
           <SectionRule />
 
-          <Lessons entry={entry} />
+          {/* Sticks just under the site header and the section bar. */}
+          <Lessons entry={entry} stickyTop={(headerHeight ?? 72) + barHeight + 12} />
 
           <SectionRule />
 
