@@ -22,13 +22,13 @@ export const Route = createFileRoute("/projects/")({
       {
         name: "description",
         content:
-          "Case studies, teaching, and visual work, each built with a real audience in mind.",
+          "Featured projects, teaching, and visual work, each built with a real audience in mind.",
       },
       { property: "og:title", content: "Projects — Daniela Jimenez" },
       {
         property: "og:description",
         content:
-          "Explore Daniela Jimenez’s case studies, student programs, physical designs, documents, and photography.",
+          "Explore Daniela Jimenez’s featured projects, student programs, physical designs, and documents.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/projects/")({
 });
 
 const sections = [
-  { id: "case-studies", title: "Case studies", count: String(caseStudies.length) },
+  { id: "featured-projects", title: "Featured Projects", count: String(caseStudies.length) },
   { id: "teaching", title: "Teaching", count: String(teaching.length) },
   { id: "visual", title: "Visual work", count: String(visualWork.length) },
 ] as const;
@@ -57,7 +57,7 @@ function SectionHeading({ id, title, label }: { id: string; title: string; label
 }
 
 function ProjectsIndex() {
-  const [activeSection, setActiveSection] = useState<string>("case-studies");
+  const [activeSection, setActiveSection] = useState<string>("featured-projects");
   const [filter, setFilter] = useState<VisualFilter>("All");
   const [expanded, setExpanded] = useState(false);
   const [preview, setPreview] = useState<Preview | null>(null);
@@ -139,9 +139,9 @@ function ProjectsIndex() {
   return (
     <div>
       <PageHero
-        eyebrow="Case studies · Teaching · Visual work"
+        eyebrow="Featured Projects · Teaching · Visual work"
         title="Projects."
-        body="Case studies, teaching, and visual work, each built with a real audience in mind."
+        body="Featured projects, teaching, and visual work, each built with a real audience in mind."
       />
 
       {/* Sticky jump bar */}
@@ -179,12 +179,16 @@ function ProjectsIndex() {
         </div>
       </nav>
 
-      {/* Case studies */}
-      <section id="case-studies" aria-labelledby="case-studies-heading" className="py-14 md:py-16">
+      {/* Featured Projects */}
+      <section
+        id="featured-projects"
+        aria-labelledby="featured-projects-heading"
+        className="py-14 md:py-16"
+      >
         <div className={container}>
           <SectionHeading
-            id="case-studies-heading"
-            title="Case studies"
+            id="featured-projects-heading"
+            title="Featured Projects"
             label="UX research · product · data systems"
           />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -274,7 +278,7 @@ function ProjectsIndex() {
                       params={{ slug: project.slug }}
                       className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link hover:underline"
                     >
-                      Read the case study <ArrowRight className="size-4" aria-hidden="true" />
+                      View featured project <ArrowRight className="size-4" aria-hidden="true" />
                     </Link>
                   </div>
                 </article>
@@ -340,11 +344,7 @@ function ProjectsIndex() {
       {/* Visual work */}
       <section id="visual" aria-labelledby="visual-heading" className="py-14 md:py-16">
         <div className={container}>
-          <SectionHeading
-            id="visual-heading"
-            title="Visual work"
-            label="Physical · document · photography"
-          />
+          <SectionHeading id="visual-heading" title="Visual work" label="Physical · document" />
           {/* Filters stick under the jump bar while you scroll through Visual work, then leave with the section. */}
           <div
             ref={filterBarRef}

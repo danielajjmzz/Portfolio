@@ -54,30 +54,6 @@ export const lessons = [
 
 export const designs = [
   {
-    id: "design-1",
-    title: "3D Printed Keychain Workshop",
-    image: placeholder,
-    media: placeholderMedia("3D Printed Keychain Workshop"),
-    description:
-      "Placeholder — students modeled a personal keychain in TinkerCAD and prepared it for classroom printing.",
-    order: 1,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
-  },
-  {
-    id: "design-2",
-    title: "Arduino Line-Following Robot",
-    image: placeholder,
-    media: placeholderMedia("Arduino Line-Following Robot"),
-    description:
-      "Placeholder — teams assembled a small rover and tuned its sensors against a taped course.",
-    order: 2,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
-  },
-  {
     id: "design-3",
     title: "Layered Vinyl Jarrito Sticker",
     image: "/images/projects/vinyl-sticker/sticker-01-sketch.jpg",

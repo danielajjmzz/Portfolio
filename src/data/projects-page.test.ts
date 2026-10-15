@@ -4,15 +4,20 @@ import {
   caseStudies,
   teaching,
   visualWork,
+  visualFilters,
   selectVisualWork,
   VISUAL_INITIAL_COUNT,
 } from "./projects-page";
 
 describe("Projects-page curation", () => {
-  test("shows three case studies in the requested order", () => {
+  test("shows three featured projects in the requested order", () => {
     assert.deepEqual(
       caseStudies.map((entry) => entry.title),
-      ["Real Estate Management Database", "[Case study 2 — finance]", "[Case study 3 — retail AI]"],
+      [
+        "Real Estate Management Database",
+        "[Featured project 2 — finance]",
+        "[Featured project 3 — retail AI]",
+      ],
     );
   });
   test("moves process documentation and student showcase into three teaching cards", () => {
@@ -48,17 +53,18 @@ describe("Projects-page curation", () => {
     }
   });
   test("filters visual work without including teaching", () => {
-    assert.equal(selectVisualWork("Physical designs", true).entries.length, 8);
+    assert.equal(selectVisualWork("Physical designs", true).entries.length, 6);
     assert.equal(selectVisualWork("Document designs").entries.length, 2);
+    assert.equal(visualFilters.includes("Photography" as never), false);
     assert.equal(
-      selectVisualWork("Photography").entries.some(
-        (entry) => entry.title === "Chicago Texture Study",
+      visualWork.some((entry) =>
+        ["3D Printed Keychain Workshop", "Arduino Line-Following Robot"].includes(entry.title),
       ),
-      true,
+      false,
     );
     assert.equal(
       visualWork.every((entry) =>
-        ["Physical designs", "Document designs", "Photography"].includes(entry.category),
+        ["Physical designs", "Document designs"].includes(entry.category),
       ),
       true,
     );

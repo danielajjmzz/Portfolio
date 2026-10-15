@@ -11,7 +11,7 @@ export const caseStudies = [
     ? [
         {
           ...finance,
-          title: "[Case study 2 — finance]",
+          title: "[Featured project 2 — finance]",
           summary: "Placeholder — finance research, design process, and outcomes coming soon.",
           meta: "02 · [YEAR]",
         },
@@ -21,7 +21,7 @@ export const caseStudies = [
     ? [
         {
           ...retail,
-          title: "[Case study 3 — retail AI]",
+          title: "[Featured project 3 — retail AI]",
           summary: "Placeholder — retail AI research, design process, and outcomes coming soon.",
           meta: "03 · [YEAR]",
         },
@@ -105,36 +105,16 @@ export const teaching: TeachingEntry[] = [
   },
 ];
 
-export const visualFilters = [
-  "All",
-  "Physical designs",
-  "Document designs",
-  "Photography",
-] as const;
+// Photography is hidden for now; add "Photography" back here (and to visualWork) to show it again.
+export const visualFilters = ["All", "Physical designs", "Document designs"] as const;
 export type VisualFilter = (typeof visualFilters)[number];
 export interface VisualEntry extends DesignEntry {
   category: Exclude<VisualFilter, "All">;
 }
 
-const photoPlaceholders: DesignEntry[] = ["[Photography study 2]", "[Photography study 3]"].map(
-  (title, index) => ({
-    id: `photo-placeholder-${index + 1}`,
-    title,
-    image: PLACEHOLDER_IMAGE,
-    media: placeholderMedia(title),
-    ...placeholderLinks,
-    description: "Placeholder — photograph and accompanying description coming soon.",
-    order: index + 4,
-  }),
-);
-
 export const visualWork: VisualEntry[] = [
   ...designs.map((entry) => ({ ...entry, category: "Physical designs" as const })),
   ...documentDesigns.map((entry) => ({ ...entry, category: "Document designs" as const })),
-  ...photography
-    .filter((entry) => entry.id !== documentation?.id && entry.id !== showcase?.id)
-    .concat(photoPlaceholders)
-    .map((entry) => ({ ...entry, category: "Photography" as const })),
 ];
 
 /** Visual work shows one row of four before "Show more". */
