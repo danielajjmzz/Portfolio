@@ -28,7 +28,7 @@ describe("Projects-page curation", () => {
     assert.equal(TEACHING_INITIAL_COUNT, 3);
     assert.deepEqual(
       collapsed.entries.map((entry) => entry.title),
-      ["Coding Material", "Design Material", "Circuits Material"],
+      ["Coding Material", "Design Material", "Intro to Circuits & Arduino"],
     );
     assert.equal(collapsed.hasMore, true);
     const expanded = selectTeaching(true);
