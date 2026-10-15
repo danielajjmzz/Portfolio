@@ -144,12 +144,7 @@ function SiteHeader() {
           className="flex min-w-0 items-center gap-3"
           aria-label="Daniela Jimenez — home"
         >
-          <span
-            aria-hidden
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-primary font-sans text-sm font-semibold tracking-wide text-primary-foreground md:h-11 md:w-11"
-          >
-            DJ
-          </span>
+          <span aria-hidden className="block h-10 w-10 shrink-0 bg-primary md:h-11 md:w-11" />
           <span className="hidden min-w-0 sm:block">
             <span className="block whitespace-nowrap font-display text-2xl font-semibold leading-none text-foreground">
               Daniela Jimenez
