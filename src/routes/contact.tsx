@@ -64,7 +64,8 @@ function Contact() {
       <section className="mx-auto max-w-6xl px-5 pb-20 md:px-8 md:pb-24">
         <div className="grid gap-4 rounded-card border border-border bg-card p-4 sm:p-5 lg:grid-cols-2 lg:gap-6">
           {/* Left: availability, contact cards, resume */}
-          <div className="flex flex-col gap-3 p-2 sm:p-4">
+          {/* No inner padding, so its first line and last edge line up with the form panel. */}
+          <div className="flex flex-col gap-3">
             <p className="mb-2 text-[0.9375rem] leading-relaxed text-muted-foreground">
               Open to internships, entry-level jobs, freelance, design collaborations, and community
               projects in Chicago, Boston, Mexico (Acapulco, San Luis Potosi) or remote. I usually
@@ -106,7 +107,7 @@ function Contact() {
               );
             })}
 
-            <div className="mt-3 rounded-frame bg-tint p-5 sm:p-6">
+            <div className="mt-auto rounded-frame bg-tint p-5 sm:p-6">
               <h2 className="text-[1.75rem]">Resume</h2>
               <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted-foreground">
                 A one-page PDF covering design work, engineering coursework, and leadership roles.

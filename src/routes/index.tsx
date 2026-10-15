@@ -58,8 +58,18 @@ const leadership = [
 ];
 
 const education = [
-  { level: "High School", school: "Lane Tech" },
-  { level: "University", school: "Illinois Institute of Technology" },
+  {
+    level: "High School",
+    school: "Albert G. Lane Technical College Preparatory High School",
+    detail: "Concentration in Computer Science",
+    note: "Graduated May 2023 · Summa Cum Laude",
+  },
+  {
+    level: "University",
+    school: "Illinois Institute of Technology",
+    detail: "B.S. in Computer Science",
+    note: "Expected graduation May 2027",
+  },
 ];
 
 const homeFeaturedProjects = featuredProjects.slice(0, 3);
@@ -145,6 +155,10 @@ function Home() {
                 <dd className="mt-2 font-display text-[1.75rem] font-semibold leading-tight text-foreground">
                   {entry.school}
                 </dd>
+                <dd className="mt-3 text-[0.9375rem] font-semibold text-foreground">
+                  {entry.detail}
+                </dd>
+                <dd className="mt-1 text-sm text-muted-foreground">{entry.note}</dd>
               </div>
             ))}
           </dl>

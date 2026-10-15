@@ -197,41 +197,74 @@ const skillGroups: { title: string; skills: Skill[] }[] = [
   },
 ];
 
+const ALL = "All skills";
+
 export function SkillsExplorer() {
-  const [active, setActive] = useState(skillGroups[0]!.title);
-  const group = skillGroups.find((g) => g.title === active)!;
+  const [active, setActive] = useState(ALL);
+  const group = skillGroups.find((g) => g.title === active);
+  const tabs = [ALL, ...skillGroups.map((g) => g.title)];
 
   return (
     <div>
       <div role="tablist" aria-label="Skill groups" className="flex flex-wrap gap-2">
-        {skillGroups.map((g) => (
+        {tabs.map((title) => (
           <button
-            key={g.title}
+            key={title}
             role="tab"
             type="button"
-            aria-selected={g.title === active}
-            onClick={() => setActive(g.title)}
-            className={chipClass(g.title === active)}
+            aria-selected={title === active}
+            onClick={() => setActive(title)}
+            className={chipClass(title === active)}
           >
-            {g.title}
+            {title}
           </button>
         ))}
       </div>
 
-      <div
-        role="tabpanel"
-        aria-label={group.title}
-        className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5"
-      >
-        {group.skills.map(({ label, alt, Icon }) => (
-          <div key={label} className="group flex flex-col items-center gap-3 text-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-tile bg-tint-card transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none">
-              <Icon role="img" aria-label={alt} className="h-6 w-6 text-link" strokeWidth={1.4} />
-            </span>
-            <span className="text-sm text-foreground">{label}</span>
-          </div>
-        ))}
-      </div>
+      {!group && (
+        // All skills: a compact list, five per row on wide screens, grouped in reading order.
+        <ul
+          role="tabpanel"
+          aria-label={ALL}
+          className="mt-8 grid grid-cols-1 gap-x-6 min-[420px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
+        >
+          {skillGroups
+            .flatMap((g) => g.skills)
+            .map(({ label, alt, Icon }) => (
+              <li
+                key={label}
+                className="flex items-center gap-3 border-b border-border py-3 text-sm text-foreground"
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-tile bg-tint-card">
+                  <Icon
+                    role="img"
+                    aria-label={alt}
+                    className="h-4 w-4 text-link"
+                    strokeWidth={1.6}
+                  />
+                </span>
+                <span className="min-w-0">{label}</span>
+              </li>
+            ))}
+        </ul>
+      )}
+
+      {group && (
+        <div
+          role="tabpanel"
+          aria-label={group.title}
+          className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5"
+        >
+          {group.skills.map(({ label, alt, Icon }) => (
+            <div key={label} className="group flex flex-col items-center gap-3 text-center">
+              <span className="flex h-14 w-14 items-center justify-center rounded-tile bg-tint-card transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none">
+                <Icon role="img" aria-label={alt} className="h-6 w-6 text-link" strokeWidth={1.4} />
+              </span>
+              <span className="text-sm text-foreground">{label}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
