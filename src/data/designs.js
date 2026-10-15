@@ -21,10 +21,6 @@ export const lessons = [
     description:
       "Placeholder — a four-week sequence helping students move from coding basics to a personal portfolio site.",
     order: 1,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
-    artifactLabel: "Exelon Summer Institute teaching artifact",
   },
   {
     id: "lesson-2",
@@ -33,10 +29,6 @@ export const lessons = [
     description:
       "Placeholder — students explored responsible AI prompts, user needs, and low-fidelity design concepts.",
     order: 2,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
-    artifactLabel: "Exelon Summer Institute teaching artifact",
   },
   {
     id: "lesson-3",
@@ -45,16 +37,13 @@ export const lessons = [
     description:
       "Placeholder — a hands-on lesson covering safe tool use, iteration, and how to document a prototype process.",
     order: 3,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
-    artifactLabel: "Exelon Summer Institute teaching artifact",
   },
 ];
 
 export const designs = [
   {
     id: "design-3",
+    method: "Vinyl cut",
     title: "Layered Vinyl Jarrito Sticker",
     image: "/images/projects/vinyl-sticker/sticker-01-sketch.jpg",
     media: [
@@ -92,12 +81,10 @@ export const designs = [
     description:
       "A self-directed project to teach myself the vinyl cutter and how to build layered stickers. I sketched a jarrito at 2 × 2 inches and planned it in four colors (brown/tan, light blue, dark blue and white), separated each color into its own cut layer in the cutting software, assembled the full design digitally, then cut and layered the vinyl by hand into the finished sticker.",
     order: 3,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
   {
     id: "design-4",
+    method: "3D carve",
     title: "Carved Wood Nameplate",
     image: "/images/projects/3d-carving/nameplate-01-carved.jpg",
     media: [
@@ -126,12 +113,10 @@ export const designs = [
     description:
       "Placeholder — toolpaths, bit selection, and safe setup for carving a personalized wood nameplate.",
     order: 4,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
   {
     id: "design-5",
+    method: "Laser cut",
     title: "Laser-Cut Cat Earrings",
     image: "/images/projects/laser-earrings/earrings-00a-design-sitting-cat.png",
     media: [
@@ -183,12 +168,10 @@ export const designs = [
     description:
       "My introduction to laser cutting. I designed two cat earrings in Adobe Illustrator, a sitting cat and a hanging cat, then engraved the faces and cut the shapes on the laser cutter from 11.87″ × 11.75″ sheets of cherry, alder, walnut and Baltic birch. I assembled each pair with earring hooks, and the finished earrings were packaged and sold to raise money for the Makers Lab.",
     order: 5,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
   {
     id: "design-7",
+    method: "Laser cut",
     title: "Laser-Cut Butterfly Earrings",
     image: "/images/projects/laser-butterflies/butterflies-01-design-cutout.png",
     media: [
@@ -214,12 +197,10 @@ export const designs = [
     description:
       "A second laser-cutting design for the Makers Lab fundraiser, made with the same process as the cat earrings but cut from pink acrylic instead of wood. I designed the butterflies in Adobe Illustrator, cut them on the laser cutter, and assembled them into earrings to sell for the fundraiser.",
     order: 6,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
   {
     id: "design-8",
+    method: "Laser cut",
     title: "Lane Tech Clock Tower Keychains",
     image: "/images/projects/clock-tower-keychains/keychain-01-design.png",
     media: [
@@ -258,12 +239,10 @@ export const designs = [
     description:
       "My most advanced laser-cutting design: Lane Tech’s clock tower, with butterflies representing DACA rising up the tower. I designed it in Adobe Illustrator and cut it from 11.87″ × 11.75″ sheets of cherry, alder, walnut and Baltic birch in two sizes and two versions, one with the butterflies cut out and one with them etched. I made the keychains while teaching about DACA, and sold them to raise money for the DREAMers Fund, a scholarship that helps a student afford university.",
     order: 7,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
   {
     id: "design-6",
+    method: "Laser cut",
     title: "Laser-Cut Quote Box",
     image: "/images/projects/laser-quote-box/box-01-sketch-template.png",
     media: [
@@ -313,36 +292,29 @@ export const designs = [
     description:
       "A laser-cut wooden box designed from scratch in Adobe Illustrator, with a quote of connected letters on top: “Books are a uniquely portable magic.”",
     order: 8,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
 ];
 
 export const documentDesigns = [
   {
     id: "document-design-1",
+    method: "Document design",
     title: "Organization Flyer Series",
     image: placeholder,
     media: placeholderMedia("Organization Flyer Series"),
     description:
       "Placeholder — a collection of event and outreach flyers designed for student organizations.",
     order: 1,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
   {
     id: "document-design-2",
+    method: "Document design",
     title: "Document Design Class Assignments",
     image: placeholder,
     media: placeholderMedia("Document Design Class Assignments"),
     description:
       "Placeholder — editorial layouts and information-design exercises created for document design coursework.",
     order: 2,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
 ];
 
@@ -355,9 +327,6 @@ export const photography = [
     description:
       "Placeholder — photos capturing students sketching, testing, and revising their maker projects.",
     order: 1,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
   {
     id: "photo-2",
@@ -367,9 +336,6 @@ export const photography = [
     description:
       "Placeholder — architecture, trains, murals, and material details that inform Daniela's design eye.",
     order: 2,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
   {
     id: "photo-3",
@@ -379,9 +345,6 @@ export const photography = [
     description:
       "Placeholder — final presentation moments from classroom demos and portfolio reviews.",
     order: 3,
-    repoUrl: "#",
-    liveUrl: "#",
-    artifactUrl: "#",
   },
 ];
 

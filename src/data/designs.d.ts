@@ -5,15 +5,13 @@ export type MediaItem =
 
 export interface DesignEntry {
   id: string;
+  /** How it was made, shown above the title: "Laser cut", "3D carve", "Vinyl cut"… */
+  method?: string;
   title: string;
   image: string;
   description: string;
   order: number;
   media: MediaItem[];
-  repoUrl?: string;
-  liveUrl?: string;
-  artifactUrl?: string;
-  artifactLabel?: string;
 }
 
 export interface LessonEntry {
@@ -22,10 +20,6 @@ export interface LessonEntry {
   description: string;
   order: number;
   media: MediaItem[];
-  repoUrl?: string;
-  liveUrl?: string;
-  artifactUrl?: string;
-  artifactLabel?: string;
 }
 
 export interface DesignSection {

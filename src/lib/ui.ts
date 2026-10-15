@@ -27,3 +27,27 @@ export const tintCardClass = "rounded-card bg-tint-card";
 
 /** Section heading row: title on the left, small muted note on the right. */
 export const sectionHeadRow = "mb-7 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2";
+
+/**
+ * Hover/focus affordance for clickable project cards: the card lifts, gains a pink ring,
+ * and its image zooms slightly (pair with `cardImageZoom` on the image).
+ * The card must be `relative`; one link inside uses `stretchedLink` to make the whole card clickable.
+ */
+export const interactiveCard =
+  "relative transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_14px_30px_-16px_rgba(0,0,0,0.35)] hover:ring-2 hover:ring-primary/60 focus-within:-translate-y-1 focus-within:ring-2 focus-within:ring-primary/60 motion-reduce:transform-none motion-reduce:transition-none";
+
+/** Slight zoom on a card's image while the card is hovered or focused. */
+export const cardImageZoom =
+  "transition-transform duration-300 ease-out group-hover:scale-[1.04] group-focus-within:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none";
+
+/** Turns a link into a full-card click target (the card needs `relative`). */
+export const stretchedLink =
+  "after:absolute after:inset-0 after:z-0 after:rounded-card after:content-[''] focus-visible:outline-none";
+
+/** Card title with a pink underline, as on the teaching cards. */
+export const underlinedTitle =
+  "underline decoration-primary decoration-[3px] underline-offset-[6px] transition-colors group-hover:text-link";
+
+/** Nudges a trailing arrow while the card is hovered. */
+export const arrowNudge =
+  "transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none";

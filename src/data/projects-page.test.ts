@@ -86,4 +86,17 @@ describe("Projects-page curation", () => {
       true,
     );
   });
+  test("visual work cards carry a method label and no project links", () => {
+    for (const entry of visualWork) {
+      assert.ok(entry.method, `${entry.title} has no method label`);
+      for (const key of ["repoUrl", "liveUrl", "artifactUrl"]) {
+        assert.equal(key in entry, false, `${entry.title} still has ${key}`);
+      }
+    }
+  });
+  test("featured project cards hold the GitHub, live and file links", () => {
+    for (const card of featuredProjectCards) {
+      assert.ok(card.repo_url && card.live_url && card.file_url, `${card.title} is missing a link`);
+    }
+  });
 });

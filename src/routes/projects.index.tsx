@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ExternalLink, Github } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import {
   featuredProjectCards,
@@ -15,7 +14,20 @@ import {
 import { PageHero } from "@/components/PageHero";
 import { MediaFrame } from "@/components/MediaFrame";
 import { DesignMediaCarousel, type MediaEntry } from "@/components/DesignMediaCarousel";
-import { cardClass, chipClass, outlineButton, sectionHeadRow, tintCardClass } from "@/lib/ui";
+import { ProjectLinks } from "@/components/ProjectLinks";
+import {
+  arrowNudge,
+  cardClass,
+  cardImageZoom,
+  chipClass,
+  interactiveCard,
+  outlineButton,
+  sectionHeadRow,
+  stretchedLink,
+  tintCardClass,
+  underlinedTitle,
+} from "@/lib/ui";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/projects/")({
   head: () => ({
@@ -39,6 +51,17 @@ export const Route = createFileRoute("/projects/")({
   component: ProjectsIndex,
 });
 
+/** "Exelon Summer Institute · 2026": the program name in pink, the rest muted. */
+function CardMeta({ text }: { text: string }) {
+  const [program, ...rest] = text.split(" · ");
+  return (
+    <p className="label-tech">
+      <span className="text-link">{program}</span>
+      {rest.length > 0 && <> · {rest.join(" · ")}</>}
+    </p>
+  );
+}
+
 const sections = [
   {
     id: "featured-projects",
@@ -48,7 +71,7 @@ const sections = [
   { id: "teaching", title: "Teaching", count: String(teaching.length) },
   { id: "visual", title: "Visual work", count: String(visualWork.length) },
 ] as const;
-type Preview = MediaEntry & { description: string };
+type Preview = MediaEntry & { description: string; method?: string | undefined };
 const container = "mx-auto max-w-6xl px-5 md:px-8";
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -203,61 +226,28 @@ function ProjectsIndex() {
             {featuredProjectCards.map((project, index) => {
               const [meta, ...tags] = project.meta.split(" · Featured");
               return (
-                <article key={project.slug} className={`${cardClass} group min-w-0 p-3`}>
+                <article
+                  key={project.slug}
+                  className={cn(cardClass, interactiveCard, "group min-w-0 p-3")}
+                >
                   <div className="relative">
-                    <Link
-                      to="/projects/$slug"
-                      params={{ slug: project.slug }}
-                      aria-label={`Read ${project.title}`}
-                      className="block overflow-hidden rounded-frame border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    >
+                    <div className="overflow-hidden rounded-frame border border-border">
                       <img
                         src={project.coverImage}
-                        alt={project.title}
+                        alt=""
                         width={900}
                         height={600}
                         loading={index === 0 ? "eager" : "lazy"}
-                        className="aspect-[3/2] w-full object-cover"
+                        className={cn("aspect-[3/2] w-full object-cover", cardImageZoom)}
                       />
-                    </Link>
-                    {(project.repo_url || project.live_url) && (
-                      <div className="absolute right-3 top-3 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none [@media(hover:none)]:opacity-100">
-                        {project.repo_url && (
-                          <Button
-                            asChild
-                            variant="outline"
-                            size="icon"
-                            className="border-media-icon/60 bg-media-scrim text-media-icon hover:bg-media-scrim hover:text-primary"
-                          >
-                            <a
-                              href={project.repo_url}
-                              aria-label="GitHub repository"
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <Github />
-                            </a>
-                          </Button>
-                        )}
-                        {project.live_url && (
-                          <Button
-                            asChild
-                            variant="outline"
-                            size="icon"
-                            className="border-media-icon/60 bg-media-scrim text-media-icon hover:bg-media-scrim hover:text-primary"
-                          >
-                            <a
-                              href={project.live_url}
-                              aria-label="Live website"
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <ExternalLink />
-                            </a>
-                          </Button>
-                        )}
-                      </div>
-                    )}
+                    </div>
+                    {/* Sits above the full-card link so each icon stays clickable on its own. */}
+                    <ProjectLinks
+                      repoUrl={project.repo_url}
+                      liveUrl={project.live_url}
+                      fileUrl={project.file_url}
+                      className="absolute right-2.5 top-2.5 z-10"
+                    />
                   </div>
                   <div className="px-2 pb-3 pt-4">
                     <p className="label-tech">
@@ -273,7 +263,7 @@ function ProjectsIndex() {
                       <Link
                         to="/projects/$slug"
                         params={{ slug: project.slug }}
-                        className="hover:text-link"
+                        className={cn(stretchedLink, "transition-colors group-hover:text-link")}
                       >
                         {project.title}
                       </Link>
@@ -281,13 +271,12 @@ function ProjectsIndex() {
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                       {project.summary}
                     </p>
-                    <Link
-                      to="/projects/$slug"
-                      params={{ slug: project.slug }}
-                      className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link hover:underline"
+                    <p
+                      aria-hidden
+                      className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link"
                     >
-                      View featured project <ArrowRight className="size-4" aria-hidden="true" />
-                    </Link>
+                      View featured project <ArrowRight className={cn("size-4", arrowNudge)} />
+                    </p>
                   </div>
                 </article>
               );
@@ -310,41 +299,38 @@ function ProjectsIndex() {
             className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
           >
             {visibleTeaching.entries.map((entry, index) => (
-              <article key={entry.slug} className={`${tintCardClass} group min-w-0 p-3`}>
-                <Link
-                  to="/teaching/$slug"
-                  params={{ slug: entry.slug }}
-                  aria-label={`View ${entry.title}`}
-                  className="block overflow-hidden rounded-frame focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
+              <article
+                key={entry.slug}
+                className={cn(tintCardClass, interactiveCard, "group min-w-0 p-3")}
+              >
+                <div className="overflow-hidden rounded-frame">
                   <MediaFrame
                     media={entry.cover}
-                    className="aspect-[3/2]"
+                    className={cn("aspect-[3/2]", cardImageZoom)}
                     eager={index === 0}
                     still
                   />
-                </Link>
+                </div>
                 <div className="px-2 pb-3 pt-4">
-                  <p className="label-tech">{entry.cardMeta}</p>
+                  <CardMeta text={entry.cardMeta} />
                   <h3 className="mt-2 text-[1.75rem]">
                     <Link
                       to="/teaching/$slug"
                       params={{ slug: entry.slug }}
-                      className="hover:text-link"
+                      className={cn(stretchedLink, underlinedTitle)}
                     >
                       {entry.title}
                     </Link>
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                     {entry.summary}
                   </p>
-                  <Link
-                    to="/teaching/$slug"
-                    params={{ slug: entry.slug }}
-                    className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link hover:underline"
+                  <p
+                    aria-hidden
+                    className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link"
                   >
-                    View the material <ArrowRight className="size-4" aria-hidden="true" />
-                  </Link>
+                    View the material <ArrowRight className={cn("size-4", arrowNudge)} />
+                  </p>
                 </div>
               </article>
             ))}
@@ -400,13 +386,31 @@ function ProjectsIndex() {
             className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4 lg:gap-x-5"
           >
             {visible.entries.map((entry) => (
-              <article key={entry.id} className="min-w-0">
+              <article
+                key={entry.id}
+                className="group/card min-w-0 transition-transform duration-200 ease-out hover:-translate-y-1 focus-within:-translate-y-1 motion-reduce:transform-none"
+              >
                 <DesignMediaCarousel
                   entry={entry}
                   aspect="aspect-square"
                   onOpen={() => setPreview(entry)}
+                  className="transition-[border-color,box-shadow] group-hover/card:border-primary group-hover/card:shadow-[0_14px_30px_-16px_rgba(0,0,0,0.35)]"
                 />
-                <h3 className="mt-2.5 font-sans text-sm font-medium leading-snug">{entry.title}</h3>
+                <div className="mt-3 px-0.5">
+                  {entry.method && <p className="label-tech text-link">{entry.method}</p>}
+                  <h3 className="mt-1 font-sans text-sm font-semibold leading-snug">
+                    <button
+                      type="button"
+                      onClick={() => setPreview(entry)}
+                      className="text-left underline decoration-primary decoration-2 underline-offset-4 transition-colors hover:text-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover/card:text-link"
+                    >
+                      {entry.title}
+                    </button>
+                  </h3>
+                  <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                    {entry.description}
+                  </p>
+                </div>
               </article>
             ))}
           </div>
@@ -448,9 +452,12 @@ function ProjectsIndex() {
         >
           {preview && (
             <>
-              <DialogTitle className="pr-8 font-display text-2xl font-semibold tracking-normal">
-                {preview.title}
-              </DialogTitle>
+              <div className="pr-8">
+                {preview.method && <p className="label-tech text-link">{preview.method}</p>}
+                <DialogTitle className="mt-1 font-display text-2xl font-semibold tracking-normal">
+                  {preview.title}
+                </DialogTitle>
+              </div>
               {/* Same carousel as the card, with controls always visible and whole photos shown. */}
               <DesignMediaCarousel
                 entry={preview}

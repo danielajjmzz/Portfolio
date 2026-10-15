@@ -27,8 +27,10 @@ export const projects = [
       "Placeholder — project content coming soon. This section will describe the final designed solution.",
     outcome:
       "Placeholder — project content coming soon. This section will describe results and what came out of the work.",
-    repo_url: "",
-    live_url: "",
+    // "#" shows the icon as "coming soon" on the Projects card; replace with a real URL, or "" to hide it.
+    repo_url: "#",
+    live_url: "#",
+    file_url: "#",
   },
   {
     slug: "ulta-beauty-ai",
@@ -48,8 +50,10 @@ export const projects = [
     solution: "Placeholder — real project content coming soon.",
     outcome:
       "Delivered an implementation roadmap presented at Illinois Tech Innovation Day to students, faculty, and industry guests.",
-    repo_url: "",
-    live_url: "",
+    // "#" shows the icon as "coming soon" on the Projects card; replace with a real URL, or "" to hide it.
+    repo_url: "#",
+    live_url: "#",
+    file_url: "#",
   },
   {
     slug: "jp-morgan-dashboard",
@@ -70,8 +74,10 @@ export const projects = [
       "A final interactive prototype of a student budgeting dashboard, refined across multiple rounds of testing.",
     outcome:
       "Presented to a 50+ person audience, achieved 90% usability satisfaction, and delivered all milestones on time.",
-    repo_url: "",
-    live_url: "",
+    // "#" shows the icon as "coming soon" on the Projects card; replace with a real URL, or "" to hide it.
+    repo_url: "#",
+    live_url: "#",
+    file_url: "#",
   },
   {
     slug: "portfolio-website",
@@ -93,8 +99,10 @@ export const projects = [
       "Placeholder — project content coming soon. This section will describe the final designed and developed portfolio experience.",
     outcome:
       "Placeholder — project content coming soon. This section will describe results and what came out of the work.",
-    repo_url: "",
-    live_url: "",
+    // "#" shows the icon as "coming soon" on the Projects card; replace with a real URL, or "" to hide it.
+    repo_url: "#",
+    live_url: "#",
+    file_url: "#",
   },
 ];
 

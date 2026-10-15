@@ -15,6 +15,8 @@ export interface Project {
   outcome: string;
   repo_url?: string;
   live_url?: string;
+  /** A downloadable project file (PDF, deck…). */
+  file_url?: string;
 }
 
 export const projects: Project[];

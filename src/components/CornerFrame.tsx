@@ -28,10 +28,7 @@ function Bracket({ className }: { className?: string }) {
   return (
     <span
       aria-hidden
-      className={cn(
-        "pointer-events-none absolute z-10 h-3.5 w-3.5 border-primary",
-        className,
-      )}
+      className={cn("pointer-events-none absolute z-10 h-3.5 w-3.5 border-primary", className)}
     />
   );
 }

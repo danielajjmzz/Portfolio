@@ -1,30 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  ExternalLink,
-  FileCheck2,
-  Github,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import type { MediaItem } from "@/data/designs";
 import { cn } from "@/lib/utils";
 
-/** Anything with photos and optional links: visual work entries and teaching cards. */
+/** Anything with photos: visual work entries. Links live on the featured project cards. */
 export interface MediaEntry {
   title: string;
   media: MediaItem[];
-  repoUrl?: string;
-  liveUrl?: string;
-  artifactUrl?: string;
-  artifactLabel?: string;
 }
 
 type DesignMediaCarouselProps = {
@@ -44,9 +32,6 @@ type DesignMediaCarouselProps = {
 /** Above this many slides the dots switch to a "2 / 6" counter. */
 const MAX_DOTS = 4;
 
-/** A link counts as "coming soon" until it has a real URL; "#" is the placeholder in the data. */
-const isPlaceholder = (href: string) => href.trim() === "#";
-
 const controlButton =
   "flex items-center justify-center border border-media-icon/50 bg-media-scrim text-media-icon backdrop-blur-[2px] transition-[color,border-color,transform] hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary";
 
@@ -54,14 +39,23 @@ function MediaSlide({
   item,
   fit,
   aspect,
+  zoom,
   videoRef,
 }: {
   item: MediaItem;
   fit: "cover" | "contain";
   aspect: string;
+  zoom?: boolean;
   videoRef?: (node: HTMLVideoElement | null) => void;
 }) {
-  const media = cn("w-full", aspect, fit === "cover" ? "object-cover" : "object-scale-down");
+  const media = cn(
+    "w-full",
+    aspect,
+    fit === "cover" ? "object-cover" : "object-scale-down",
+    // Cards: the photo zooms slightly while the card is hovered, so it reads as openable.
+    zoom &&
+      "transition-transform duration-300 ease-out group-hover/card:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none",
+  );
   if (item.type === "video") {
     return (
       <video
@@ -138,16 +132,6 @@ export function DesignMediaCarousel({
     return () => window.clearInterval(interval);
   }, [api, autoplay, reducedMotion, hasMultipleSlides]);
 
-  // Only links present in the data are shown, so a project without a GitHub repo,
-  // live site or file simply leaves that icon out.
-  const links = (
-    [
-      { href: entry.repoUrl, label: "GitHub repository", Icon: Github },
-      { href: entry.liveUrl, label: "Live link", Icon: ExternalLink },
-      { href: entry.artifactUrl, label: entry.artifactLabel || "Project file", Icon: FileCheck2 },
-    ] as Array<{ href?: string; label: string; Icon: LucideIcon }>
-  ).filter((link): link is { href: string; label: string; Icon: LucideIcon } => Boolean(link.href));
-
   const carousel = (
     <Carousel
       setApi={setApi}
@@ -172,7 +156,7 @@ export function DesignMediaCarousel({
                 aria-label={`Open ${entry.title}`}
                 className="block w-full cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
               >
-                <MediaSlide item={item} fit={fit} aspect={aspect} />
+                <MediaSlide item={item} fit={fit} aspect={aspect} zoom={controls === "hover"} />
               </button>
             ) : (
               <MediaSlide
@@ -187,45 +171,6 @@ export function DesignMediaCarousel({
           </CarouselItem>
         ))}
       </CarouselContent>
-
-      {links.length > 0 && (
-        <TooltipProvider delayDuration={250}>
-          <div className={cn("absolute right-2.5 top-2.5 z-30 flex gap-1.5", visibility)}>
-            {links.map(({ href, label, Icon }) => {
-              const placeholder = isPlaceholder(href);
-              const tip = placeholder ? `${label} — coming soon` : label;
-              return (
-                <Tooltip key={label}>
-                  <TooltipTrigger asChild>
-                    {placeholder ? (
-                      <button
-                        type="button"
-                        aria-label={tip}
-                        aria-disabled="true"
-                        onClick={(event) => event.preventDefault()}
-                        className={cn(controlButton, "h-9 w-9 cursor-default")}
-                      >
-                        <Icon aria-hidden className="size-4" strokeWidth={1.7} />
-                      </button>
-                    ) : (
-                      <a
-                        href={href}
-                        aria-label={label}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={cn(controlButton, "h-9 w-9 hover:scale-105")}
-                      >
-                        <Icon aria-hidden className="size-4" strokeWidth={1.7} />
-                      </a>
-                    )}
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">{tip}</TooltipContent>
-                </Tooltip>
-              );
-            })}
-          </div>
-        </TooltipProvider>
-      )}
 
       {hasMultipleSlides && (
         <>
@@ -282,7 +227,7 @@ export function DesignMediaCarousel({
               ))}
             </div>
           ) : (
-            // Many slides: a compact counter so it never collides with the link icons.
+            // Many slides: a compact counter instead of a long row of dots.
             <p
               aria-live="polite"
               className={cn(
