@@ -48,9 +48,9 @@ export const projects = [
     slug: "real-estate-database",
     title: "Real Estate Management Database",
     summary:
-      "A rental app where agents list properties and renters search, book and pay for them, built for CS 425 Database Organization on a PostgreSQL database my 3-person team designed from the ER model up.",
+      "A rental app where agents list properties and renters search, book and pay for them, built for CS 425 Database Organization. I led a 3-person team that designed the PostgreSQL database from the ER model up.",
     year: "Fall 2025",
-    role: "Team member (3-person team)",
+    role: "Team lead (3-person team)",
     client: "CS 425 Database Organization — Illinois Tech",
     tools: ["Microsoft Visio", "PostgreSQL", "Python (Tkinter)", "DataGrip", "PyCharm"],
     coverImage: `${RE}/er-diagram-cover.jpg`,
