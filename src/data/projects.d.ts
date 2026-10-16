@@ -17,6 +17,8 @@ export interface Project {
   coverAlt?: string;
   /** Small note under the meta row about the page's images (e.g. AI-generated visuals). */
   mediaNote?: string;
+  /** Card and page tags: the project type first ("Case study", "Technical project"), then its topic. */
+  tags?: string[];
   order: number;
   featured: boolean;
 

@@ -10,6 +10,7 @@ import {
   type DetailSection,
 } from "@/components/DetailPage";
 import { MediaFrame } from "@/components/MediaFrame";
+import { ProjectTags } from "@/components/ProjectTags";
 import { StepGallery } from "@/components/StepGallery";
 import { getProjectBySlug } from "@/data/projects";
 import type { TeachingMedia } from "@/data/teaching";
@@ -121,6 +122,7 @@ function ProjectDetail() {
         </div>
 
         <div className="mt-10 max-w-4xl">
+          <ProjectTags tags={project.tags} className="mb-4" />
           <h1 className="font-display text-foreground">{project.title}</h1>
           <p className="mt-5 max-w-2xl text-lg text-muted-foreground">{project.summary}</p>
         </div>

@@ -14,6 +14,7 @@ import {
 import { PageHero } from "@/components/PageHero";
 import { MediaFrame } from "@/components/MediaFrame";
 import { DesignMediaCarousel, type MediaEntry } from "@/components/DesignMediaCarousel";
+import { ProjectTags } from "@/components/ProjectTags";
 import { ProjectLinks } from "@/components/ProjectLinks";
 import {
   arrowNudge,
@@ -259,7 +260,8 @@ function ProjectsIndex() {
                         </>
                       )}
                     </p>
-                    <h3 className="mt-2 text-[1.75rem]">
+                    <ProjectTags tags={project.tags} className="mt-3" />
+                    <h3 className="mt-3 text-[1.75rem]">
                       <Link
                         to="/projects/$slug"
                         params={{ slug: project.slug }}

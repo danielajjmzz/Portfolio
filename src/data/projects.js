@@ -57,6 +57,7 @@ export const projects = [
     coverAlt:
       "Our entity-relationship diagram: User, Address, CreditCard, Booking, Property and Neighborhood entities, with House, Apartment, Commercial Building, Vacation Home and Land property types.",
     mediaNote: "All names, emails and cards in the screenshots are test data.",
+    tags: ["Technical project", "Database design"],
     order: 1,
     featured: true,
     problem:
@@ -195,6 +196,7 @@ export const projects = [
       "Title slide: Beauty Formula Decoder, by Aahil Penwalla, Chandler Besse, Daniela Jimenez, Sara Pec, Shree Meher and Zachary Yujnovich, above Ulta Beauty Collection products on orange.",
     mediaNote:
       "Most of the photos and illustrations in our presentation and poster were AI-generated, created to fit the theme and the concepts we wanted to convey. They are not photos of real Ulta stores, products in use, or customers.",
+    tags: ["Case study", "AI strategy"],
     order: 2,
     featured: true,
     problem:
@@ -365,6 +367,7 @@ export const projects = [
     client: "JP Morgan Chase (P33 program)",
     tools: ["Moqups", "Figma"],
     coverImage: jpmCover,
+    tags: ["Technical project", "UX research"],
     order: 3,
     featured: true,
     problem: "Students needed a clearer way to understand and manage their finances.",
