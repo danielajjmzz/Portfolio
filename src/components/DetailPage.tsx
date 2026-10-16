@@ -71,7 +71,7 @@ export function Section({
       aria-labelledby={`${id}-heading`}
       className="grid scroll-mt-36 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12"
     >
-      <div>
+      <div className="min-w-0">
         <h2 id={`${id}-heading`} className="font-display leading-tight text-foreground">
           {title}
         </h2>
@@ -165,7 +165,7 @@ export function StickySectionBar({
         </p>
         <SectionChips
           sections={sections}
-          ariaLabel={ariaLabel}
+          ariaLabel={`${ariaLabel} (pinned)`}
           className="ml-auto min-w-0 md:ml-0"
         />
       </div>

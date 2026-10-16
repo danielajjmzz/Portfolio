@@ -170,7 +170,9 @@ function TeachingDetail() {
                     <li key={index}>
                       <MediaFrame media={media} className="aspect-[4/3]" rounded="rounded-tile" />
                       {media.caption && (
-                        <p className="mt-1.5 text-xs text-muted-foreground">{media.caption}</p>
+                        <p className="mt-1.5 text-xs text-muted-foreground [overflow-wrap:anywhere]">
+                          {media.caption}
+                        </p>
                       )}
                     </li>
                   ))}

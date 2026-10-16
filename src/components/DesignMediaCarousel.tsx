@@ -218,7 +218,7 @@ export function DesignMediaCarousel({
                   onClick={() => api?.scrollTo(index)}
                   aria-label={`Go to photo ${index + 1}`}
                   aria-current={index === activeIndex ? "true" : undefined}
-                  className="flex h-4 w-4 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="relative flex h-4 w-4 items-center justify-center before:absolute before:-inset-1.5 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <span
                     aria-hidden

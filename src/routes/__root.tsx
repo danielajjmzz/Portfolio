@@ -163,7 +163,7 @@ function SiteHeader() {
                 key={item.to}
                 to={item.to}
                 activeOptions={{ exact: item.to === "/" }}
-                className="nav-underline text-muted-foreground transition-colors hover:text-link data-[status=active]:font-medium data-[status=active]:text-link"
+                className="nav-underline before:absolute before:-inset-x-2 before:-inset-y-3 before:content-[''] text-muted-foreground transition-colors hover:text-link data-[status=active]:font-medium data-[status=active]:text-link"
               >
                 {item.label}
               </Link>

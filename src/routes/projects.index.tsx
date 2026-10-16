@@ -99,10 +99,10 @@ function FeaturedRow({ project, index }: { project: FeaturedCard; index: number 
         cardClass,
         interactiveCard,
         view.activeClass,
-        "group grid items-center gap-6 p-3 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:gap-10 md:p-4",
+        "group grid items-center gap-6 p-3 md:p-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-10",
       )}
     >
-      <div ref={view.zoneRef} className={cn("relative min-w-0", flip && "md:order-2")}>
+      <div ref={view.zoneRef} className={cn("relative min-w-0", flip && "lg:order-2")}>
         <div className="overflow-hidden rounded-frame border border-border bg-card">
           <img
             src={project.coverImage}
@@ -124,7 +124,10 @@ function FeaturedRow({ project, index }: { project: FeaturedCard; index: number 
       </div>
 
       <div
-        className={cn("min-w-0 px-2 pb-3 md:px-0 md:pb-0", flip ? "md:order-1 md:pl-4" : "md:pr-4")}
+        className={cn(
+          "min-w-0 px-2 pb-3 md:px-3 lg:px-0 lg:pb-0",
+          flip ? "lg:order-1 lg:pl-4" : "lg:pr-4",
+        )}
       >
         <p className="label-tech">
           {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
@@ -443,7 +446,7 @@ function ProjectsIndex() {
             ref={gridRef}
             id="visual-grid"
             aria-live="polite"
-            className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4 lg:gap-x-5"
+            className="grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-4 lg:gap-x-5"
           >
             {visible.entries.map((entry) => (
               <VisualCard key={entry.id} entry={entry} onOpen={() => setPreview(entry)} />

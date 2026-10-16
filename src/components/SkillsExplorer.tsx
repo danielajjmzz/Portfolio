@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import {
   Boxes,
   Braces,
@@ -199,10 +199,33 @@ const skillGroups: { title: string; skills: Skill[] }[] = [
 
 const ALL = "All skills";
 
+/** "Design & UX" -> "design-ux", for tab ids. */
+const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
 export function SkillsExplorer() {
   const [active, setActive] = useState(ALL);
   const group = skillGroups.find((g) => g.title === active);
   const tabs = [ALL, ...skillGroups.map((g) => g.title)];
+
+  /** Arrow keys, Home and End move between tabs, as screen reader users expect. */
+  const onTabKey = (event: KeyboardEvent<HTMLButtonElement>, title: string) => {
+    const index = tabs.indexOf(title);
+    const next =
+      event.key === "ArrowRight"
+        ? (index + 1) % tabs.length
+        : event.key === "ArrowLeft"
+          ? (index - 1 + tabs.length) % tabs.length
+          : event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? tabs.length - 1
+              : null;
+    if (next === null) return;
+    event.preventDefault();
+    const nextTitle = tabs[next] ?? ALL;
+    setActive(nextTitle);
+    document.getElementById(`skills-tab-${slug(nextTitle)}`)?.focus();
+  };
 
   return (
     <div>
@@ -212,7 +235,11 @@ export function SkillsExplorer() {
             key={title}
             role="tab"
             type="button"
+            id={`skills-tab-${slug(title)}`}
+            aria-controls="skills-panel"
             aria-selected={title === active}
+            tabIndex={title === active ? 0 : -1}
+            onKeyDown={(event) => onTabKey(event, title)}
             onClick={() => setActive(title)}
             className={chipClass(title === active)}
           >
@@ -223,36 +250,35 @@ export function SkillsExplorer() {
 
       {!group && (
         // All skills: a compact list, five per row on wide screens, grouped in reading order.
-        <ul
-          role="tabpanel"
-          aria-label={ALL}
-          className="mt-8 grid grid-cols-1 gap-x-6 min-[420px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
-        >
-          {skillGroups
-            .flatMap((g) => g.skills)
-            .map(({ label, alt, Icon }) => (
-              <li
-                key={label}
-                className="flex items-center gap-3 border-b border-border py-3 text-sm text-foreground"
-              >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-tile bg-tint-card">
-                  <Icon
-                    role="img"
-                    aria-label={alt}
-                    className="h-4 w-4 text-link"
-                    strokeWidth={1.6}
-                  />
-                </span>
-                <span className="min-w-0">{label}</span>
-              </li>
-            ))}
-        </ul>
+        <div role="tabpanel" id="skills-panel" aria-labelledby={`skills-tab-${slug(ALL)}`}>
+          <ul className="mt-8 grid grid-cols-2 gap-x-4 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-5">
+            {skillGroups
+              .flatMap((g) => g.skills)
+              .map(({ label, alt, Icon }) => (
+                <li
+                  key={label}
+                  className="flex items-center gap-3 border-b border-border py-3 text-sm text-foreground"
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-tile bg-tint-card">
+                    <Icon
+                      role="img"
+                      aria-label={alt}
+                      className="h-4 w-4 text-link"
+                      strokeWidth={1.6}
+                    />
+                  </span>
+                  <span className="min-w-0">{label}</span>
+                </li>
+              ))}
+          </ul>
+        </div>
       )}
 
       {group && (
         <div
           role="tabpanel"
-          aria-label={group.title}
+          id="skills-panel"
+          aria-labelledby={`skills-tab-${slug(group.title)}`}
           className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5"
         >
           {group.skills.map(({ label, alt, Icon }) => (

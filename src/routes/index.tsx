@@ -101,7 +101,7 @@ function HomeProjectCard({ project, index }: { project: Project; index: number }
         cardClass,
         interactiveCard,
         view.activeClass,
-        "group flex min-w-0 flex-col p-3",
+        "group flex min-w-0 flex-col p-3 md:max-lg:grid md:max-lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:max-lg:items-center md:max-lg:gap-6",
       )}
     >
       <div ref={view.zoneRef} className="relative">
@@ -129,7 +129,7 @@ function HomeProjectCard({ project, index }: { project: Project; index: number }
         />
         {view.bubble}
       </div>
-      <div className="flex flex-1 flex-col px-1 pb-1 pt-4">
+      <div className="flex flex-1 flex-col px-1 pb-1 pt-4 md:max-lg:py-2">
         <p className="label-tech">
           {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
         </p>
@@ -142,7 +142,7 @@ function HomeProjectCard({ project, index }: { project: Project; index: number }
             {project.title}
           </Link>
         </h3>
-        <ProjectTags tags={project.tags} className="mt-auto pt-4" />
+        <ProjectTags tags={project.tags} className="mt-auto pt-4 md:max-lg:mt-0" />
       </div>
     </article>
   );
@@ -195,7 +195,7 @@ function Home() {
             <h2 id="work-heading">Selected Work</h2>
             <p className="label-tech">{homeFeaturedProjects.length} projects · 2023–2026</p>
           </div>
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-5 lg:grid-cols-3">
             {homeFeaturedProjects.map((project, i) => (
               <HomeProjectCard key={project.slug} project={project} index={i} />
             ))}
