@@ -15,6 +15,8 @@ export interface Project {
   coverImage: string;
   /** Alt text for the cover image (defaults to the project title). */
   coverAlt?: string;
+  /** Small note under the meta row about the page's images (e.g. AI-generated visuals). */
+  mediaNote?: string;
   order: number;
   featured: boolean;
 

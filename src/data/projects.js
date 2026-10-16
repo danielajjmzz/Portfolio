@@ -98,6 +98,8 @@ export const projects = [
     coverImage: `${ULTA}/title-slide.jpg`,
     coverAlt:
       "Title slide: Beauty Formula Decoder, by Aahil Penwalla, Chandler Besse, Daniela Jimenez, Sara Pec, Shree Meher and Zachary Yujnovich, above Ulta Beauty Collection products on orange.",
+    mediaNote:
+      "Most of the photos and illustrations in our presentation and poster were AI-generated, created to fit the theme and the concepts we wanted to convey. They are not photos of real Ulta stores, products in use, or customers.",
     order: 2,
     featured: true,
     problem:

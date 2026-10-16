@@ -132,6 +132,13 @@ function ProjectDetail() {
           <MetaCell label="Tools" value={project.tools.join(", ")} />
         </dl>
 
+        {project.mediaNote && (
+          <p className="mt-6 max-w-2xl text-xs leading-relaxed text-muted-foreground">
+            <strong className="font-semibold text-foreground">About the images:</strong>{" "}
+            {project.mediaNote}
+          </p>
+        )}
+
         <SectionChips sections={sections} ariaLabel="Project sections" className="mt-10" />
         <SectionRule className="mt-8" />
 
