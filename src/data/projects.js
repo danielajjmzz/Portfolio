@@ -1,4 +1,3 @@
-import realEstateCover from "@/assets/real-estate-database.jpg";
 import jpmCover from "@/assets/jp-morgan-dashboard.jpg";
 
 /**
@@ -26,6 +25,16 @@ const ulta = (file, alt, extra = {}) => ({
   ...extra,
 });
 
+const RE = "/images/projects/real-estate";
+/** A screenshot or document from the real estate database project, in public/images/projects/real-estate. */
+const re = (file, alt, extra = {}) => ({
+  type: "image",
+  src: `${RE}/${file}`,
+  alt,
+  label: file,
+  ...extra,
+});
+
 /** Empty photo slot: shows a labeled placeholder frame until `src` is filled in. */
 const slot = (label, note = "Photo coming soon") => ({
   type: "image",
@@ -39,52 +48,138 @@ export const projects = [
     slug: "real-estate-database",
     title: "Real Estate Management Database",
     summary:
-      "A structured database and interface concept for managing property records, tenants, and listings.",
-    year: "2025",
-    role: "Designer & Developer",
-    client: "Academic project — Illinois Tech",
-    tools: ["SQL", "Figma"],
-    coverImage: realEstateCover,
+      "A rental app where agents list properties and renters search, book and pay for them, built for CS 425 Database Organization on a PostgreSQL database my 3-person team designed from the ER model up.",
+    year: "Fall 2025",
+    role: "Team member (3-person team)",
+    client: "CS 425 Database Organization — Illinois Tech",
+    tools: ["Microsoft Visio", "PostgreSQL", "Python (Tkinter)", "DataGrip", "PyCharm"],
+    coverImage: `${RE}/er-diagram-cover.jpg`,
+    coverAlt:
+      "Our entity-relationship diagram: User, Address, CreditCard, Booking, Property and Neighborhood entities, with House, Apartment, Commercial Building, Vacation Home and Land property types.",
+    mediaNote: "All names, emails and cards in the screenshots are test data.",
     order: 1,
     featured: true,
     problem:
-      "Placeholder — project content coming soon. This section will describe the core problem the project set out to solve.",
+      "The brief: a real estate app where people register as agents or prospective renters. Renters save addresses and credit cards, each card billed to one of their own addresses, then search for properties and book them. Agents add, update and remove listings and manage the bookings for their agency. Every rule had to hold in the database itself, not just the screens: only available properties can be booked, and a billing address can't be deleted while a card still uses it.",
     process:
-      "Placeholder — project content coming soon. This section will walk through research, schema design, and interface iterations.",
+      "ER model in Microsoft Visio, a PostgreSQL relational schema with sample data, then a Python desktop app on top of it.",
+    processIntro: "Three phases, from diagram to working app. Pick a step.",
+    processMediaAspect: "wide",
     processSteps: [
       {
-        id: "research",
-        label: "Research",
-        title: "Research",
-        body: "Placeholder — project content coming soon.",
-        tags: [],
-        media: [slot("Research photo"), slot("Research photo")],
+        id: "er-model",
+        label: "ER model",
+        title: "Modeling the data",
+        dates: "Phase I",
+        body: "We drew the ER model together in Microsoft Visio: users with renter or agent profiles, addresses, credit cards, properties and bookings, five property types (house, apartment, commercial building, vacation home and land), and a bonus Neighborhood entity with crime rates and nearby schools. Next to the diagram we wrote the rules it had to enforce, like a card's billing address belonging to the same user and confirmed bookings for one property never overlapping.",
+        tags: ["ER modeling", "Cardinalities", "Microsoft Visio"],
+        media: [
+          re(
+            "er-diagram.jpg",
+            "Our full ER diagram with entities, attributes, relationships and cardinalities.",
+            {
+              fit: "contain",
+            },
+          ),
+          re(
+            "entity-list.jpg",
+            "Page 1 of our ER model deliverable: the entities and attributes list, with primary and foreign keys marked.",
+            { fit: "contain" },
+          ),
+        ],
       },
       {
         id: "schema",
-        label: "Schema design",
-        title: "Schema design",
-        body: "Placeholder — project content coming soon.",
-        tags: ["SQL"],
-        media: [slot("Schema diagram"), slot("Table design")],
+        label: "Relational schema",
+        title: "From diagram to SQL",
+        dates: "Phase II",
+        body: "We translated the model into a PostgreSQL script: random UUID keys, foreign keys with cascading deletes, and CHECK constraints that keep budgets and prices from going negative, card months between 1 and 12, and every booking's start date before its end. Sample data with agents, renters, cards and a booking proved it ran. The schema scored 95.79% on the course rubric.",
+        tags: ["PostgreSQL", "Constraints", "Sample data"],
+        note: "Scored 95.79% on the relational schema rubric.",
+        media: [
+          re(
+            "schema-sql.jpg",
+            "Page 1 of our Phase III SQL script: creating the Users, Agent, RenterProfile and UserAddress tables.",
+            { fit: "contain" },
+          ),
+        ],
       },
       {
-        id: "interface",
-        label: "Interface",
-        title: "Interface iterations",
-        body: "Placeholder — project content coming soon.",
-        tags: ["Figma"],
-        media: [slot("Interface draft"), slot("Interface final")],
+        id: "accounts",
+        label: "Accounts & listings",
+        title: "Renters, agents and listings",
+        dates: "Phase III",
+        body: "For the app we chose a Python Tkinter desktop app connected to PostgreSQL and split the work into the database and booking logic, the renter side, the agent side, and testing. Renters and agents register on one tab. Renters manage addresses and cards on another, and deleting an address removes it from every card dropdown. Agents add, update and delete their own listings.",
+        tags: ["Python", "Tkinter", "CRUD"],
+        media: [
+          re(
+            "agent-properties.jpg",
+            "Agent Properties tab: an agent's listing in the table and the form to add, update or delete properties, with a Property added message.",
+          ),
+          re(
+            "register-agent.jpg",
+            "Register tab: a new agent with job title, phone and agency, and a Registered message.",
+          ),
+          re(
+            "payment-addresses.jpg",
+            "Payment and Addresses tab: a renter's billing address and a new card billed to it, with a Card added message.",
+          ),
+        ],
+      },
+      {
+        id: "booking",
+        label: "Search & booking",
+        title: "Booking rules in action",
+        dates: "Phase III",
+        body: "Search only shows properties marked available, filtered by city, state, price, bedrooms, type and dates, and sorted by price or bedrooms. When a renter tries to book dates that overlap an existing booking, the app blocks it.",
+        tags: ["Search", "Validation"],
+        media: [
+          re(
+            "search.jpg",
+            "Search and Book tab: one available Chicago apartment found, with a Found 1 result message.",
+          ),
+          re(
+            "double-booking-blocked.jpg",
+            "Search and Book tab: an error saying the property is not available for that date range.",
+          ),
+        ],
+      },
+      {
+        id: "rewards",
+        label: "Rewards bonus",
+        title: "The bonus: a rewards program",
+        dates: "Phase III",
+        body: "We also built the optional rewards program for extra credit. Renters earn points equal to the rental price of each booking, so a $2,100 booking shows 2,100 points, and renters can be enrolled or have points adjusted from the Rewards tab.",
+        tags: ["Bonus feature"],
+        media: [
+          re(
+            "rewards.jpg",
+            "Rewards tab: two enrolled renters, one with 2,100 points from a confirmed booking.",
+          ),
+        ],
       },
     ],
     solution:
-      "Placeholder — project content coming soon. This section will describe the final designed solution.",
+      "The Real Estate App: a Python Tkinter desktop app on our PostgreSQL schema, with tabs for Schema, Register, Payment & Addresses, Agent Properties, Search & Book, Manage Bookings and Rewards. Renters book with a saved card and the total is calculated for them. Renters can cancel their own bookings, and agents can view and cancel bookings for their agency's properties.",
+    solutionMedia: [
+      re(
+        "booking-created.jpg",
+        "Search and Book tab: a booking created for new dates, with the message Booked. Total: 2100.",
+        { caption: "A booking for open dates goes through, with the total calculated." },
+      ),
+      re(
+        "manage-bookings.jpg",
+        "Manage Bookings tab: a renter's bookings at the top and an agent's view of bookings for their agency below.",
+        { caption: "Renter and agent views of the same bookings." },
+      ),
+    ],
     outcome:
-      "Placeholder — project content coming soon. This section will describe results and what came out of the work.",
-    // "#" shows the icon as "coming soon" on the Projects card; replace with a real URL, or "" to hide it.
-    repo_url: "#",
-    live_url: "#",
-    file_url: "#",
+      "We delivered the ER model, the SQL schema and sample data, the app, a step-by-step demo walkthrough, and a setup guide for PostgreSQL, pgAdmin, DataGrip and PyCharm so anyone could run it.",
+    change:
+      "Our grader pointed out that putting every property type in one PropertyType table left many columns empty and repeated data. I'd give each type its own table, the way our ER model already split houses, apartments, commercial buildings, vacation homes and land.",
+    repo_url: "",
+    live_url: "",
+    file_url: "",
   },
   {
     slug: "ulta-beauty-ai",
