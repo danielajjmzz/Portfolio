@@ -18,8 +18,6 @@ export interface Project {
   /** "At a glance" extras. `timeline` falls back to `year`. */
   timeline?: string;
   team?: string;
-  /** Two or three headline results shown before the cover image. */
-  highlights?: { value: string; label: string }[];
   coverImage: string;
   /** Alt text for the cover image (defaults to the project title). */
   coverAlt?: string;

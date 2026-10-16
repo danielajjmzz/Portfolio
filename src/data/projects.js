@@ -56,11 +56,6 @@ export const projects = [
     tools: ["Microsoft Visio", "PostgreSQL", "Python (Tkinter)", "DataGrip", "PyCharm"],
     timeline: "Fall 2025 · 1 semester",
     team: "3 students",
-    highlights: [
-      { value: "95.79%", label: "schema score" },
-      { value: "7", label: "working app tabs" },
-      { value: "5", label: "property types modeled" },
-    ],
     coverImage: `${RE}/er-diagram-cover.jpg`,
     coverCaption: "Our ER diagram, drawn in Microsoft Visio.",
     coverAlt:
@@ -202,11 +197,6 @@ export const projects = [
     client: "Ulta Beauty (student concept, not affiliated)",
     tools: ["Playing to Win", "WWHTBT analysis", "Stakeholder interview"],
     team: "6 students",
-    highlights: [
-      { value: "1", label: "executive interview" },
-      { value: "4", label: "AI strategies compared" },
-      { value: "2", label: "hero concepts, 1 mine" },
-    ],
     coverImage: `${ULTA}/title-slide.jpg`,
     coverCaption: "Our Innovation Day title slide.",
     coverAlt:
@@ -384,10 +374,6 @@ export const projects = [
     role: "Project Lead",
     client: "JP Morgan Chase (P33 program)",
     tools: ["Moqups", "Figma"],
-    highlights: [
-      { value: "90%", label: "usability satisfaction" },
-      { value: "50+", label: "person audience" },
-    ],
     coverImage: jpmCover,
     tags: ["Technical project", "UX research"],
     order: 3,

@@ -94,7 +94,6 @@ function ProjectDetail() {
   const { project } = Route.useLoaderData();
   const bar = useStickyBar();
   const steps = project.processSteps ?? [];
-  const highlights = project.highlights ?? [];
   const extras = project.outcomeExtras ?? [];
   const solutionMedia = project.solutionMedia ?? [];
 
@@ -142,26 +141,7 @@ function ProjectDetail() {
           </aside>
         </div>
 
-        {/* 5 · Results up front */}
-        {highlights.length > 0 && (
-          <dl
-            className={cn(
-              "mt-12 grid gap-4 sm:gap-6",
-              highlights.length === 3 ? "grid-cols-3" : "grid-cols-2",
-            )}
-          >
-            {highlights.map((item) => (
-              <div key={item.label} className="hairline-t pt-4">
-                <dd className="font-display text-[1.75rem] leading-none text-foreground sm:text-4xl">
-                  {item.value}
-                </dd>
-                <dt className="mt-2 text-xs text-muted-foreground sm:text-sm">{item.label}</dt>
-              </div>
-            ))}
-          </dl>
-        )}
-
-        {/* 6 · Cover image after the facts */}
+        {/* 5 · Cover image after the facts */}
         <figure className="mt-12">
           <CornerFrame className="overflow-hidden bg-card">
             <MediaFrame
@@ -185,7 +165,7 @@ function ProjectDetail() {
           )}
         </figure>
 
-        {/* 7 · Section links as plain text */}
+        {/* 6 · Section links as plain text */}
         <nav
           aria-label="Project sections"
           className="mt-12 flex flex-wrap gap-x-6 gap-y-2 border-t border-border pt-4"
