@@ -165,22 +165,6 @@ function ProjectDetail() {
           )}
         </figure>
 
-        {/* 6 · Section links as plain text */}
-        <nav
-          aria-label="Project sections"
-          className="mt-12 flex flex-wrap gap-x-6 gap-y-2 border-t border-border pt-4"
-        >
-          {sections.map((s) => (
-            <a
-              key={s.id}
-              href={`#${s.id}`}
-              className="text-sm text-muted-foreground transition-colors hover:text-link"
-            >
-              {s.label}
-            </a>
-          ))}
-        </nav>
-
         <div className="mt-14 grid gap-14">
           <Section id="problem" title={sections[0]!.title}>
             <p className={bodyText}>{project.problem}</p>
