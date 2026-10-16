@@ -16,7 +16,7 @@ describe("Projects-page curation", () => {
   test("shows three featured projects in the requested order", () => {
     assert.deepEqual(
       featuredProjectCards.map((entry) => entry.title),
-      ["Real Estate Management Database", "Beauty Formula Decoder", "Student Finance Dashboard"],
+      ["Real Estate Management Database", "Beauty Formula Decoder", "Savvy"],
     );
   });
   test("featured cards label their number and year", () => {

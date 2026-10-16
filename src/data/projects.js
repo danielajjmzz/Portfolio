@@ -1,4 +1,12 @@
-import jpmCover from "@/assets/jp-morgan-dashboard.jpg";
+const SAVVY = "/images/projects/savvy";
+/** A screen or slide from the Savvy (JPMorgan Chase) project, in public/images/projects/savvy. */
+const savvy = (file, alt, extra = {}) => ({
+  type: "image",
+  src: `${SAVVY}/${file}`,
+  alt,
+  label: file,
+  ...extra,
+});
 
 /**
  * Single source of truth for all portfolio projects.
@@ -366,63 +374,143 @@ export const projects = [
   },
   {
     slug: "jp-morgan-dashboard",
-    title: "Student Finance Dashboard",
-    subtitle: "For JP Morgan Chase's P33 program",
+    title: "Savvy",
+    subtitle: "A budgeting dashboard for college students, with JPMorgan Chase",
     summary:
-      "I led the project, taking a student budgeting dashboard from user research through wireframes, prototypes and usability testing.",
-    year: "2023",
-    role: "Project Lead",
-    client: "JP Morgan Chase (P33 program)",
-    tools: ["Moqups", "Figma"],
-    coverImage: jpmCover,
-    tags: ["Technical project", "UX research"],
+      "I led a 5-person team and designed the final screens for Savvy, a dashboard that helps college students see where their money goes and warns them before they overspend.",
+    year: "Fall 2023",
+    timeline: "Fall 2023 · 9 weeks",
+    role: "Team lead & product designer",
+    client: "JPMorgan Chase × Illinois Tech (industry project)",
+    tools: ["Moqups", "Agile sprints", "Test cases"],
+    team: "5 students",
+    coverImage: `${SAVVY}/cover.jpg`,
+    coverCaption: "My final dashboard, designed in Moqups.",
+    coverAlt:
+      "Savvy's final dashboard: debit and credit cards, income and expense totals, recent transactions, a spending guidance pie chart, a calendar and savings goals.",
+    mediaNote: "All names, cards and transactions in the screens are sample data.",
+    tags: ["Case study", "UX design"],
     order: 3,
     featured: true,
-    problem: "Students needed a clearer way to understand and manage their finances.",
+    problem:
+      "Budgeting is a critical skill for college students, but many of us never learn it. Budgeting tools exist, but they often assume financial knowledge students don't have yet, or they're too complex to stick with. Without a clear picture of their money, students make choices that threaten their financial independence, often without realizing it. Our goal: a tool simple enough to use from day one and smart enough to warn students before they overspend.",
     process:
-      "Conducted user research to uncover student financial pain points. Designed wireframes in Moqups. Built multiple interactive prototypes in Figma. Ran usability testing and iterated based on feedback.",
+      "Nine weekly agile sprints with JPMorgan Chase engineers: brainstorm, lo-fi wireframes, high-fidelity screens, the account flow, architecture and testing.",
+    processIntro: "6 steps, from the first brainstorm to testing. Pick one.",
+    processMediaAspect: "wide",
     processSteps: [
       {
-        id: "research",
-        label: "User research",
-        title: "User research",
-        body: "Conducted user research to uncover student financial pain points.",
-        tags: ["User research"],
-        media: [slot("Research photo"), slot("Pain points")],
+        id: "brainstorm",
+        label: "Brainstorm",
+        title: "Starting broad",
+        dates: "Week 1",
+        body: "In my first semester at Illinois Tech, my team was paired with JPMorgan Chase software developers on a 9-week project. We started broad, covering security, simplicity, a help system, design, coding and budgeting guidance. Our first idea was an auto-investing system that splits a paycheck into categories. From there we narrowed to what students need every day: seeing where their money goes, setting goals and being warned early.",
+        tags: ["Problem framing", "Requirements"],
+        media: [
+          savvy(
+            "brainstorm.jpg",
+            "Brainstorm table with six columns, Security, Simplicity, Help System, Design, Coding and Budgeting, each listing early feature ideas.",
+          ),
+        ],
       },
       {
-        id: "wireframes",
-        label: "Wireframes",
-        title: "Wireframes",
-        body: "Designed wireframes in Moqups.",
-        tags: ["Moqups", "Wireframing"],
-        media: [slot("Wireframe"), slot("Wireframe")],
+        id: "lofi",
+        label: "Lo-fi wireframes",
+        title: "Mapping every screen",
+        body: "As a team we sketched the core flows as grayscale wireframes: sign up, log in, password recovery, the dashboard, spending guidance and transactions. As team lead I set our timeline, ran our meetings and kept a two-day review buffer before every deadline.",
+        tags: ["Wireframing", "User flows"],
+        note: "Lo-fi wireframes by the team.",
+        media: [
+          savvy(
+            "lofi-screens.jpg",
+            "Nine grayscale wireframes on desktop monitors: welcome, sign up, forgot password, verify code, set new password, two dashboard versions, spending guidance and transactions.",
+          ),
+        ],
       },
       {
-        id: "prototypes",
-        label: "Prototypes",
-        title: "Interactive prototypes",
-        body: "Built multiple interactive prototypes in Figma.",
-        tags: ["Figma", "Prototyping"],
-        media: [slot("Prototype screen"), slot("Prototype screen")],
+        id: "hifi",
+        label: "High-fidelity",
+        title: "Designing the final screens",
+        dates: "My design",
+        body: "I took our wireframes and designed the final high-fidelity version in Moqups, adding real hierarchy, a consistent navigation system and the data-rich dashboard the brief called for. Each budget category tracks spending against a goal, and the ones closest to their limits show up as warnings with tips. Savings goals, like a new laptop, show saved vs. needed.",
+        tags: ["Moqups", "Visual design", "Dashboard design"],
+        note: "The high-fidelity screens are my design.",
+        media: [
+          savvy(
+            "lofi-to-final.jpg",
+            "Side by side: the grayscale lo-fi dashboard with three large icon buttons, and an arrow pointing to my final blue high-fidelity dashboard.",
+            { caption: "From our lo-fi wireframe to my final dashboard." },
+          ),
+          savvy(
+            "dashboard-detail.jpg",
+            "Close-up of the dashboard: a spending alert with tips beside a pie chart of dining out, student loans and shopping, and a goals card showing weekly, monthly, emergency fund and MacBook progress.",
+            { caption: "Spending guidance and goals, side by side." },
+          ),
+        ],
+      },
+      {
+        id: "account-flow",
+        label: "Account flow",
+        title: "Never locked out",
+        body: "Getting locked out is where many users give up, so I designed the complete account flow: sign up, log in, and forgot password through a verification code, reset and confirmation.",
+        tags: ["Auth flow", "Moqups"],
+        media: [
+          savvy(
+            "account-flow.jpg",
+            "Six account screens in a grid: sign up, log in, forgot password, verification code, reset password and password changed.",
+          ),
+        ],
+      },
+      {
+        id: "architecture",
+        label: "Architecture",
+        title: "Planning how it works",
+        body: "We planned the system with a Model-View-Controller architecture: the view holds the dashboard, inputs and graphs, the controller handles user actions and API calls, and the model stores the data. We planned MongoDB for the database and Python for the backend, and because the app would handle bank information, we treated security as a requirement from week one.",
+        tags: ["MVC", "MongoDB", "Security"],
+        media: [
+          savvy(
+            "mvc.jpg",
+            "Diagram from our presentation showing the View, Controller and Model, with what each part is responsible for.",
+          ),
+        ],
       },
       {
         id: "testing",
-        label: "Usability testing",
-        title: "Usability testing",
-        body: "Ran usability testing and iterated based on feedback.",
-        tags: ["Usability testing", "Iteration"],
-        media: [slot("Testing session"), slot("Revised screen")],
+        label: "Testing",
+        title: "Testing like an industry team",
+        body: "We wrote test cases for login and registration, both positive (the flow works) and negative (bad input is caught), and tracked defects in a log with the expected behavior, the fix and its status.",
+        tags: ["Test cases", "Defect tracking"],
+        media: [
+          savvy(
+            "defect-log.jpg",
+            "Defect log table with columns for type, feature, description, expected behavior, solution and status, showing three login and sidebar defects.",
+          ),
+        ],
       },
     ],
     solution:
-      "A final interactive prototype of a student budgeting dashboard, refined across multiple rounds of testing.",
+      "Savvy, a desktop budgeting dashboard for college students. Income and expenses sit big at the top, next to recent transactions, spending guidance, a bill calendar and card management. Bank notifications become transactions students can edit (merchant, category, fixed or variable expense, amount), so the numbers match their real life. A monthly budget page sets a goal for every category.",
+    solutionMedia: [
+      savvy(
+        "transactions.jpg",
+        "Transaction history screen with filters for date, merchant, category, financial allocation and type, above a table of transactions.",
+        { caption: "Transaction history, filterable by category and fixed vs. variable expenses." },
+      ),
+      savvy(
+        "budget.jpg",
+        "Budget screen titled Set your goals, with a monthly table of categories, goal amounts and actual amounts.",
+        { caption: "Monthly budget goals by category." },
+      ),
+    ],
     outcome:
-      "Presented to a 50+ person audience, achieved 90% usability satisfaction, and delivered all milestones on time.",
+      "I built and delivered our final presentation to our JPMorgan Chase mentors. Their feedback was strong across our process, architecture, testing and presentation. Our weak spot was research: our validation was informal conversations with other students, and as first-semester freshmen, our visual design got little direct critique. The project taught me how agile teams work, how front end, back end and APIs connect, and how to lead a team.",
+    change:
+      "Run structured usability tests with real students instead of informal feedback, and set clear task ownership from week one. Next, on my own time, I'm turning Savvy into a mobile app, starting with usability testing and more accessible design: higher-contrast text, clearer type and charts that don't rely on color alone. Planned start: winter break, December 2026.",
     // "#" shows the icon as "coming soon" on the Projects card; replace with a real URL, or "" to hide it.
-    repo_url: "#",
-    live_url: "#",
-    file_url: "#",
+    repo_url: "",
+    // The clickable Moqups prototype.
+    live_url: "https://app.moqups.com/itQS6OnSvvjSwjJ6cXPfT26jrj3leOdH/view/page/ad6ad54b7",
+    file_url: "",
   },
   {
     slug: "portfolio-website",
