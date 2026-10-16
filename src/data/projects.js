@@ -162,7 +162,7 @@ export const projects = [
         label: "Rewards bonus",
         title: "The bonus: a rewards program",
         dates: "Phase III",
-        body: "We also built the optional rewards program for extra credit. Renters earn points equal to the rental price of each booking, so a $2,100 booking shows 2,100 points, and renters can be enrolled or have points adjusted from the Rewards tab.",
+        body: "We also built the optional rewards program for extra credit. Renters earn points equal to the rental price of each booking, so a $2,100 booking shows 2,100 points, and renters can be enrolled or have points adjusted from the Rewards tab. Its RewardProgram table brought our final schema to 10 tables.",
         tags: ["Bonus feature"],
         media: [
           re(
@@ -199,11 +199,19 @@ export const projects = [
     title: "Beauty Formula Decoder",
     subtitle: "An AI concept for Ulta Beauty",
     summary:
-      "I came up with the idea, chose Ulta and interviewed an Ulta executive for a 6-person team designing an AI tool that checks a shopper's routine for ingredient conflicts.",
+      "I led a 6-person team, created both of our AI concepts, chose Ulta, interviewed an Ulta executive and helped build the working prototype. Our class voted us #1 of 6 to present at Innovation Day.",
     year: "2025",
-    role: "Concept lead & researcher",
+    role: "Team lead, concept lead, researcher & prototyper",
     client: "Ulta Beauty (student concept, not affiliated)",
-    tools: ["Playing to Win", "WWHTBT analysis", "Stakeholder interview"],
+    tools: [
+      "Playing to Win",
+      "WWHTBT analysis",
+      "Stakeholder interview",
+      "Lovable",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+    ],
     team: "6 students",
     coverImage: `${ULTA}/title-slide.jpg`,
     coverCaption: "Our Innovation Day title slide.",
@@ -229,7 +237,7 @@ export const projects = [
       ),
     ],
     process:
-      "Chose Ulta, mapped its strategy and competitors, wrote four AI strategies, interviewed an Ulta executive, drafted an AI ethics policy and structured the prototype.",
+      "Chose Ulta, mapped its strategy and three competitors, wrote four AI strategies, created both hero moments, interviewed an Ulta executive, drafted an AI ethics policy, then structured and built the prototype in Lovable.",
     processIntro: "6 steps, from picking the client to the prototype. Pick one.",
     processMediaAspect: "wide",
     processSteps: [
@@ -238,7 +246,7 @@ export const projects = [
         label: "Why Ulta",
         title: "Choosing the client",
         dates: "My idea",
-        body: "Our IPRO course asked for a generative AI strategy for a real company, and I proposed Ulta: a US beauty retailer with 1,300+ stores, a huge loyalty program and personalization as a stated goal. We mapped Ulta's strategy with the Playing to Win framework, then did the same for Sally Beauty, CVS/Walgreens and Bluemercury to see where AI could set Ulta apart.",
+        body: "Our IPRO course asked for a generative AI strategy for a real company, and I proposed Ulta: a US beauty retailer with 1,300+ stores, a huge loyalty program and personalization as a stated goal. We mapped Ulta's strategy with the Playing to Win framework, then did the same for Sally Beauty, CVS/Walgreens and Bluemercury to see where AI could set Ulta apart. The interview later showed how big that loyalty program is: about 43–44 million members, driving about 95% of sales.",
         tags: ["Playing to Win", "Competitive analysis"],
         media: [
           ulta(
@@ -272,9 +280,10 @@ export const projects = [
         id: "hero-moments",
         label: "Hero moments",
         title: "Two hero moments",
-        body: "Each direction got a hero moment: one experience that shows the whole strategy. The first became the Beauty Formula Decoder. I proposed the second, Complete Color Ecosystem: photos in three kinds of light find a shopper's color season, and Ulta's app, site and stores filter every product to that palette.",
+        dates: "My ideas",
+        body: "Each direction needed a hero moment: one experience that shows the whole strategy. I came up with both. The Beauty Formula Decoder checks a shopper's routine for ingredient conflicts and builds a bundle that works together. Complete Color Ecosystem uses photos in three kinds of light to find a shopper's color season, then Ulta's app, site and stores filter every product to that palette. The Decoder became our prototype.",
         tags: ["Concept design"],
-        note: "Complete Color Ecosystem was my hero moment.",
+        note: "Both hero moments were my ideas.",
         media: [
           ulta(
             "hero-moments.jpg",
@@ -325,10 +334,10 @@ export const projects = [
       {
         id: "prototype",
         label: "Prototype",
-        title: "Structuring the prototype",
-        body: "I set up the prototype's structure: the flow from a shopper's concerns to an ingredient check to a safe, personalized bundle. My teammates designed and built the screens.",
-        tags: ["Information architecture", "Prototyping"],
-        note: "Visual design by my teammates.",
+        title: "Building the prototype",
+        body: "I structured the prototype's flow: a shopper's concerns, then an ingredient check, then a safe, personalized bundle. Then I built much of it in Lovable, with React, TypeScript and Tailwind CSS, so we could show a working prototype instead of static screens.",
+        tags: ["Information architecture", "Prototyping", "Lovable"],
+        note: "My teammates tested for bugs, built some screens, added visual design and made the final edits.",
         media: [
           ulta(
             "prototype.jpg",
@@ -360,7 +369,7 @@ export const projects = [
       ),
     ],
     outcome:
-      "We presented the Decoder at Illinois Tech Innovation Day with a research deck, a poster and a working prototype. It taught me that the strongest AI idea is the one people can trust, and that one interview can change a whole pitch.",
+      "In the Innovation Day auditions, our class voted our team #1 of 6, and only two teams were picked. We then presented the Decoder at Illinois Tech Innovation Day with our research deck, poster and working prototype. I wrote the content for our final presentation slides. It taught me that the strongest AI idea is the one people can trust, and that one interview can change a whole pitch.",
     outcomeExtrasLabel: "From Innovation Day",
     outcomeExtras: [
       ulta("poster.jpg", "Our full Innovation Day poster.", { caption: "Our poster" }),
@@ -382,7 +391,7 @@ export const projects = [
     timeline: "Fall 2023 · 9 weeks",
     role: "Team lead & product designer",
     client: "JPMorgan Chase × Illinois Tech (industry project)",
-    tools: ["Moqups", "Agile sprints", "Test cases"],
+    tools: ["Moqups", "Agile/Scrum", "Test cases"],
     team: "5 students",
     coverImage: `${SAVVY}/cover.jpg`,
     coverCaption: "My final dashboard, designed in Moqups.",
@@ -432,7 +441,7 @@ export const projects = [
         label: "High-fidelity",
         title: "Designing the final screens",
         dates: "My design",
-        body: "I took our wireframes and designed the final high-fidelity version in Moqups, adding real hierarchy, a consistent navigation system and the data-rich dashboard the brief called for. Each budget category tracks spending against a goal, and the ones closest to their limits show up as warnings with tips. Savings goals, like a new laptop, show saved vs. needed.",
+        body: "I took our wireframes and designed the final high-fidelity version in Moqups: five core screens (log in, dashboard, transactions, budget and settings) with real hierarchy, a consistent navigation system and the data-rich dashboard the brief called for. Each budget category tracks spending against a goal, and the top 3 categories closest to or over their budget show up as warnings with tips. Savings goals, like a new laptop, show saved vs. needed.",
         tags: ["Moqups", "Visual design", "Dashboard design"],
         note: "The high-fidelity screens are my design.",
         media: [
@@ -489,7 +498,7 @@ export const projects = [
       },
     ],
     solution:
-      "Savvy, a desktop budgeting dashboard for college students. Income and expenses sit big at the top, next to recent transactions, spending guidance, a bill calendar and card management. Bank notifications become transactions students can edit (merchant, category, fixed or variable expense, amount), so the numbers match their real life. A monthly budget page sets a goal for every category.",
+      "Savvy, a desktop budgeting dashboard for college students. Income and expenses sit big at the top, next to recent transactions, spending guidance, a bill calendar and card management. Bank notifications become transactions students can edit (merchant, category, fixed or variable expense, amount), so the numbers match their real life. A monthly budget page sets a goal for every category. In all, six feature modules: expense tracking, spending visualizations, reports, bill management, income management and accessibility.",
     solutionMedia: [
       savvy(
         "transactions.jpg",
@@ -503,7 +512,7 @@ export const projects = [
       ),
     ],
     outcome:
-      "I built and delivered our final presentation to our JPMorgan Chase mentors. Their feedback was strong across our process, architecture, testing and presentation. Our weak spot was research: our validation was informal conversations with other students, and as first-semester freshmen, our visual design got little direct critique. The project taught me how agile teams work, how front end, back end and APIs connect, and how to lead a team.",
+      "I built and delivered our final presentation to our JPMorgan Chase mentors. Their feedback was strong across our process, architecture, testing and presentation. Our weak spot was research: our validation was informal conversations with other students, and as first-semester freshmen, our visual design got little direct critique. The project taught me how Agile and Scrum teams work, how front end, back end and APIs connect, and how to lead a team.",
     change:
       "Run structured usability tests with real students instead of informal feedback, and set clear task ownership from week one. Next, on my own time, I'm turning Savvy into a mobile app, starting with usability testing and more accessible design: higher-contrast text, clearer type and charts that don't rely on color alone. Planned start: winter break, December 2026.",
     // "#" shows the icon as "coming soon" on the Projects card; replace with a real URL, or "" to hide it.
