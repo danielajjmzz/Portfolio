@@ -18,15 +18,15 @@ describe("Projects-page curation", () => {
       featuredProjectCards.map((entry) => entry.title),
       [
         "Real Estate Management Database",
-        "JP Morgan Chase — Student Finance Dashboard",
         "Beauty Formula Decoder — AI Concept for Ulta Beauty",
+        "JP Morgan Chase — Student Finance Dashboard",
       ],
     );
   });
   test("featured cards label their number and year", () => {
     assert.deepEqual(
       featuredProjectCards.map((entry) => entry.meta),
-      ["01 · 2025 · Featured", "02 · 2023 · Featured", "03 · 2025 · Featured"],
+      ["01 · 2025 · Featured", "02 · 2025 · Featured", "03 · 2023 · Featured"],
     );
   });
   test("teaching shows Python, Design Principles and Circuits first, with Portfolio and the AI workshop behind Show more", () => {

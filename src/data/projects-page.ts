@@ -2,8 +2,11 @@ import { designs, documentDesigns, type DesignEntry } from "./designs";
 import { sortedTeaching, type TeachingEntry } from "./teaching";
 import { sortedProjects } from "./projects";
 
-/** Featured project cards on /projects, in this order, using each project's real title, summary and year. */
-const featuredOrder = ["real-estate-database", "jp-morgan-dashboard", "ulta-beauty-ai"];
+/**
+ * Featured project cards on /projects, most recent first (same order as Home).
+ * Each card uses the project's real title, summary and year.
+ */
+const featuredOrder = ["real-estate-database", "ulta-beauty-ai", "jp-morgan-dashboard"];
 
 export const featuredProjectCards = featuredOrder
   .map((slug) => sortedProjects.find((project) => project.slug === slug))
