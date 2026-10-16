@@ -1,6 +1,16 @@
-import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { CornerFrame, SectionRule } from "@/components/CornerFrame";
+import {
+  MetaCell,
+  Section,
+  SectionChips,
+  StickySectionBar,
+  bodyText,
+  useStickyBar,
+  type DetailSection,
+} from "@/components/DetailPage";
+import { MediaFrame } from "@/components/MediaFrame";
+import { StepGallery } from "@/components/StepGallery";
 import { getProjectBySlug } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
@@ -35,12 +45,12 @@ export const Route = createFileRoute("/projects/$slug")({
   component: ProjectDetail,
 });
 
-const sections = [
+const sections: DetailSection[] = [
   { id: "problem", label: "Problem", title: "01 The Problem" },
   { id: "process", label: "Process", title: "02 My Process" },
   { id: "solution", label: "Solution", title: "03 The Solution" },
   { id: "outcome", label: "Outcome", title: "04 The Outcome" },
-] as const;
+];
 
 function ProjectNotFound() {
   return (
@@ -56,96 +66,40 @@ function ProjectNotFound() {
   );
 }
 
-function MetaCell({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="hairline-t pt-3">
-      <dt className="label-tech">{label}</dt>
-      <dd className="mt-1 text-sm text-foreground">{value}</dd>
-    </div>
-  );
-}
-
-function SubNav({ className }: { className?: string }) {
-  return (
-    <nav
-      aria-label="Project sections"
-      className={cn("-mx-5 flex gap-2 overflow-x-auto px-5 md:mx-0 md:px-0", className)}
-    >
-      {sections.map((s) => (
-        <a
-          key={s.id}
-          href={`#${s.id}`}
-          className="hairline shrink-0 rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-link"
-        >
-          {s.label}
-        </a>
-      ))}
-    </nav>
-  );
-}
-
-function CaseSection({ id, title, body }: { id: string; title: string; body: string }) {
-  return (
-    <section
-      id={id}
-      className="grid scroll-mt-32 gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12"
-    >
-      <div>
-        <h2 className="font-display leading-tight text-foreground">{title}</h2>
-      </div>
-      <p className="text-base leading-relaxed text-muted-foreground">{body}</p>
-    </section>
-  );
-}
-
 function ProjectDetail() {
   const { project } = Route.useLoaderData();
-  const heroRef = useRef<HTMLDivElement>(null);
-  const [pinned, setPinned] = useState(false);
-
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setPinned(entry ? !entry.isIntersecting : false),
-      { rootMargin: "-72px 0px 0px 0px", threshold: 0 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const bar = useStickyBar();
+  const steps = project.processSteps ?? [];
+  const extras = project.outcomeExtras ?? [];
+  const solutionMedia = project.solutionMedia ?? [];
 
   return (
     <>
-      <div
-        className={cn(
-          "hairline-b fixed inset-x-0 top-[64px] z-20 bg-background/95 backdrop-blur-[2px] transition-all duration-300 md:top-[76px]",
-          pinned
-            ? "pointer-events-auto translate-y-0 opacity-100"
-            : "pointer-events-none -translate-y-2 opacity-0",
-        )}
-        aria-hidden={!pinned}
-      >
-        <div className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-2.5 md:px-8">
-          <p className="min-w-0 truncate font-display text-lg leading-none text-foreground">
-            {project.title}
-          </p>
-          <SubNav className="ml-auto min-w-0" />
-        </div>
-      </div>
+      {/* Sticky section bar: appears once the hero scrolls away, same as teaching pages. */}
+      <StickySectionBar
+        title={project.title}
+        sections={sections}
+        ariaLabel="Project sections"
+        bar={bar}
+      />
 
       <article className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20">
         <Link to="/projects" className="label-tech hover:text-link">
           ← Projects
         </Link>
 
-        <div ref={heroRef}>
+        <div ref={bar.heroRef}>
           <CornerFrame className="mt-6 overflow-hidden bg-card">
-            <img
-              src={project.coverImage}
-              alt={project.title}
-              width={1600}
-              height={1000}
-              className="aspect-[16/9] w-full object-cover"
+            <MediaFrame
+              media={{
+                type: "image",
+                src: project.coverImage,
+                alt: project.coverAlt ?? project.title,
+                label: "Cover image",
+              }}
+              rounded="rounded-none"
+              eager
+              className="aspect-[16/9] border-0"
             />
           </CornerFrame>
         </div>
@@ -155,24 +109,101 @@ function ProjectDetail() {
           <p className="mt-5 max-w-2xl text-lg text-muted-foreground">{project.summary}</p>
         </div>
 
-        <dl className="mt-12 grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-4">
+        <dl className="mt-12 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 md:grid-cols-4">
           <MetaCell label="Year" value={project.year} />
           <MetaCell label="Role" value={project.role} />
           <MetaCell label="Client" value={project.client} />
           <MetaCell label="Tools" value={project.tools.join(", ")} />
         </dl>
 
-        <SubNav className="mt-10" />
-
+        <SectionChips sections={sections} ariaLabel="Project sections" className="mt-10" />
         <SectionRule className="mt-8" />
 
         <div className="mt-14 grid gap-14">
-          {sections.map((s, i) => (
-            <div key={s.id} className="grid gap-14">
-              {i > 0 && <SectionRule />}
-              <CaseSection id={s.id} title={s.title} body={project[s.id]} />
-            </div>
-          ))}
+          <Section id="problem" title={sections[0]!.title}>
+            <p className={bodyText}>{project.problem}</p>
+            {project.problemMedia && (
+              <figure className="mt-5 flex items-center gap-4">
+                <MediaFrame
+                  media={project.problemMedia.media}
+                  className="aspect-[4/3] w-40 shrink-0 sm:w-48"
+                />
+                <figcaption className="text-sm text-muted-foreground">
+                  {project.problemMedia.caption}
+                </figcaption>
+              </figure>
+            )}
+          </Section>
+
+          <SectionRule />
+
+          {steps.length > 0 ? (
+            /* Sticks just under the site header and the section bar. */
+            <StepGallery
+              id="process"
+              title={sections[1]!.title}
+              intro={project.processIntro ?? `${steps.length} steps. Pick one.`}
+              steps={steps}
+              ariaLabel="Process steps"
+              itemLabel="Step"
+              mediaAspect={project.processMediaAspect}
+              stickyTop={bar.stickyTop}
+            />
+          ) : (
+            <Section id="process" title={sections[1]!.title}>
+              <p className={bodyText}>{project.process}</p>
+            </Section>
+          )}
+
+          <SectionRule />
+
+          <Section id="solution" title={sections[2]!.title}>
+            <p className={bodyText}>{project.solution}</p>
+            {solutionMedia.length > 0 && (
+              <ul className="mt-5 grid grid-cols-2 gap-3">
+                {solutionMedia.map((media, index) => (
+                  <li
+                    key={index}
+                    className={cn(solutionMedia.length % 2 === 1 && index === 0 && "col-span-2")}
+                  >
+                    <MediaFrame media={media} className="aspect-[16/9]" />
+                    {media.caption && (
+                      <p className="mt-1.5 text-xs text-muted-foreground">{media.caption}</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Section>
+
+          <SectionRule />
+
+          <Section id="outcome" title={sections[3]!.title}>
+            <p className={bodyText}>{project.outcome}</p>
+            {extras.length > 0 && (
+              <>
+                <p className="label-tech mt-6">
+                  {project.outcomeExtrasLabel ?? "From the project"}
+                </p>
+                <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {extras.map((media, index) => (
+                    <li key={index}>
+                      <MediaFrame media={media} className="aspect-[4/3]" rounded="rounded-tile" />
+                      {media.caption && (
+                        <p className="mt-1.5 text-xs text-muted-foreground">{media.caption}</p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {project.change && (
+              <p className={cn(bodyText, "mt-6")}>
+                <strong className="font-bold text-foreground">What I'd change:</strong>{" "}
+                {project.change}
+              </p>
+            )}
+          </Section>
         </div>
 
         <SectionRule className="mt-16" />
