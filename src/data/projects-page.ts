@@ -2,33 +2,17 @@ import { designs, documentDesigns, type DesignEntry } from "./designs";
 import { sortedTeaching, type TeachingEntry } from "./teaching";
 import { sortedProjects } from "./projects";
 
-const realEstate = sortedProjects.find((project) => project.slug === "real-estate-database");
-const finance = sortedProjects.find((project) => project.slug === "jp-morgan-dashboard");
-const retail = sortedProjects.find((project) => project.slug === "ulta-beauty-ai");
+/** Featured project cards on /projects, in this order, using each project's real title, summary and year. */
+const featuredOrder = ["real-estate-database", "jp-morgan-dashboard", "ulta-beauty-ai"];
 
-export const featuredProjectCards = [
-  ...(realEstate ? [{ ...realEstate, meta: "01 · 2025 · Featured" }] : []),
-  ...(finance
-    ? [
-        {
-          ...finance,
-          title: "[Featured project 2 — finance]",
-          summary: "Placeholder — finance research, design process, and outcomes coming soon.",
-          meta: "02 · [YEAR]",
-        },
-      ]
-    : []),
-  ...(retail
-    ? [
-        {
-          ...retail,
-          title: "[Featured project 3 — retail AI]",
-          summary: "Placeholder — retail AI research, design process, and outcomes coming soon.",
-          meta: "03 · [YEAR]",
-        },
-      ]
-    : []),
-];
+export const featuredProjectCards = featuredOrder
+  .map((slug) => sortedProjects.find((project) => project.slug === slug))
+  .filter((project) => project !== undefined)
+  .map((project, index) => ({
+    ...project,
+    // Card label, e.g. "01 · 2025 · Featured" (the year is pulled from values like "Fall 2025").
+    meta: `${String(index + 1).padStart(2, "0")} · ${project.year.match(/\d{4}/)?.[0] ?? project.year} · Featured`,
+  }));
 
 /** Teaching cards on /projects, curated from the shared teaching catalog (src/data/teaching.js). */
 export const teaching: TeachingEntry[] = [

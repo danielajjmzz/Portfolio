@@ -18,9 +18,15 @@ describe("Projects-page curation", () => {
       featuredProjectCards.map((entry) => entry.title),
       [
         "Real Estate Management Database",
-        "[Featured project 2 — finance]",
-        "[Featured project 3 — retail AI]",
+        "JP Morgan Chase — Student Finance Dashboard",
+        "Beauty Formula Decoder — AI Concept for Ulta Beauty",
       ],
+    );
+  });
+  test("featured cards label their number and year", () => {
+    assert.deepEqual(
+      featuredProjectCards.map((entry) => entry.meta),
+      ["01 · 2025 · Featured", "02 · 2023 · Featured", "03 · 2025 · Featured"],
     );
   });
   test("teaching shows Python, Design Principles and Circuits first, with Portfolio and the AI workshop behind Show more", () => {
@@ -94,9 +100,14 @@ describe("Projects-page curation", () => {
       }
     }
   });
-  test("featured project cards hold the GitHub, live and file links", () => {
+  test('featured project links are a real URL, "#" (coming soon) or empty (hidden)', () => {
     for (const card of featuredProjectCards) {
-      assert.ok(card.repo_url && card.live_url && card.file_url, `${card.title} is missing a link`);
+      for (const link of [card.repo_url, card.live_url, card.file_url]) {
+        assert.ok(
+          link === undefined || link === "" || link === "#" || /^https?:\/\//.test(link),
+          `${card.title} has an unexpected link: ${link}`,
+        );
+      }
     }
   });
 });
