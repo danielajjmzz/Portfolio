@@ -22,6 +22,8 @@ export interface Project {
   problem: string;
   /** Optional photo beside the problem text, like a teaching page's context photo. */
   problemMedia?: { media: TeachingMedia; caption: string };
+  /** Optional photos under the problem text (slides, screenshots). */
+  problemGallery?: TeachingMedia[];
 
   /** 02 My Process: shown as plain text when there are no steps. */
   process: string;

@@ -12,6 +12,7 @@ import {
 import { MediaFrame } from "@/components/MediaFrame";
 import { StepGallery } from "@/components/StepGallery";
 import { getProjectBySlug } from "@/data/projects";
+import type { TeachingMedia } from "@/data/teaching";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/projects/$slug")({
@@ -63,6 +64,21 @@ function ProjectNotFound() {
         ← Back to projects
       </Link>
     </section>
+  );
+}
+
+/** Two-column photo grid with captions; an odd count lets the first photo lead at full width. */
+function MediaGrid({ items }: { items: TeachingMedia[] }) {
+  if (items.length === 0) return null;
+  return (
+    <ul className="mt-5 grid grid-cols-2 gap-3">
+      {items.map((media, index) => (
+        <li key={index} className={cn(items.length % 2 === 1 && index === 0 && "col-span-2")}>
+          <MediaFrame media={media} className="aspect-[16/9]" />
+          {media.caption && <p className="mt-1.5 text-xs text-muted-foreground">{media.caption}</p>}
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -133,6 +149,7 @@ function ProjectDetail() {
                 </figcaption>
               </figure>
             )}
+            <MediaGrid items={project.problemGallery ?? []} />
           </Section>
 
           <SectionRule />
@@ -159,21 +176,7 @@ function ProjectDetail() {
 
           <Section id="solution" title={sections[2]!.title}>
             <p className={bodyText}>{project.solution}</p>
-            {solutionMedia.length > 0 && (
-              <ul className="mt-5 grid grid-cols-2 gap-3">
-                {solutionMedia.map((media, index) => (
-                  <li
-                    key={index}
-                    className={cn(solutionMedia.length % 2 === 1 && index === 0 && "col-span-2")}
-                  >
-                    <MediaFrame media={media} className="aspect-[16/9]" />
-                    {media.caption && (
-                      <p className="mt-1.5 text-xs text-muted-foreground">{media.caption}</p>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
+            <MediaGrid items={solutionMedia} />
           </Section>
 
           <SectionRule />
