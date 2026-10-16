@@ -47,13 +47,22 @@ export const projects = [
   {
     slug: "real-estate-database",
     title: "Real Estate Management Database",
+    subtitle: "A rental app on a PostgreSQL database, built for CS 425",
     summary:
-      "A rental app where agents list properties and renters search, book and pay for them, built for CS 425 Database Organization. I led a 3-person team that designed the PostgreSQL database from the ER model up.",
+      "I led a 3-person team from ER diagram to working app: agents list properties, renters search, book and pay, and the database blocks double bookings.",
     year: "Fall 2025",
-    role: "Team lead (3-person team)",
+    role: "Team lead",
     client: "CS 425 Database Organization — Illinois Tech",
     tools: ["Microsoft Visio", "PostgreSQL", "Python (Tkinter)", "DataGrip", "PyCharm"],
+    timeline: "Fall 2025 · 1 semester",
+    team: "3 students",
+    highlights: [
+      { value: "95.79%", label: "schema score" },
+      { value: "7", label: "working app tabs" },
+      { value: "5", label: "property types modeled" },
+    ],
     coverImage: `${RE}/er-diagram-cover.jpg`,
+    coverCaption: "Our ER diagram, drawn in Microsoft Visio.",
     coverAlt:
       "Our entity-relationship diagram: User, Address, CreditCard, Booking, Property and Neighborhood entities, with House, Apartment, Commercial Building, Vacation Home and Land property types.",
     mediaNote: "All names, emails and cards in the screenshots are test data.",
@@ -184,14 +193,22 @@ export const projects = [
   },
   {
     slug: "ulta-beauty-ai",
-    title: "Beauty Formula Decoder — AI Concept for Ulta Beauty",
+    title: "Beauty Formula Decoder",
+    subtitle: "An AI concept for Ulta Beauty",
     summary:
-      "A generative AI concept that checks a shopper's skincare and makeup routine for ingredient conflicts and builds safe, personalized bundles. I came up with the idea, chose Ulta, interviewed an Ulta executive and wrote much of the research for a 6-person team.",
+      "I came up with the idea, chose Ulta and interviewed an Ulta executive for a 6-person team designing an AI tool that checks a shopper's routine for ingredient conflicts.",
     year: "2025",
     role: "Concept lead & researcher",
     client: "Ulta Beauty (student concept, not affiliated)",
     tools: ["Playing to Win", "WWHTBT analysis", "Stakeholder interview"],
+    team: "6 students",
+    highlights: [
+      { value: "1", label: "executive interview" },
+      { value: "4", label: "AI strategies compared" },
+      { value: "2", label: "hero concepts, 1 mine" },
+    ],
     coverImage: `${ULTA}/title-slide.jpg`,
+    coverCaption: "Our Innovation Day title slide.",
     coverAlt:
       "Title slide: Beauty Formula Decoder, by Aahil Penwalla, Chandler Besse, Daniela Jimenez, Sara Pec, Shree Meher and Zachary Yujnovich, above Ulta Beauty Collection products on orange.",
     mediaNote:
@@ -359,13 +376,18 @@ export const projects = [
   },
   {
     slug: "jp-morgan-dashboard",
-    title: "JP Morgan Chase — Student Finance Dashboard",
+    title: "Student Finance Dashboard",
+    subtitle: "For JP Morgan Chase's P33 program",
     summary:
-      "Designed a student budgeting dashboard and identified pain points through user research.",
+      "I led the project, taking a student budgeting dashboard from user research through wireframes, prototypes and usability testing.",
     year: "2023",
     role: "Project Lead",
     client: "JP Morgan Chase (P33 program)",
     tools: ["Moqups", "Figma"],
+    highlights: [
+      { value: "90%", label: "usability satisfaction" },
+      { value: "50+", label: "person audience" },
+    ],
     coverImage: jpmCover,
     tags: ["Technical project", "UX research"],
     order: 3,

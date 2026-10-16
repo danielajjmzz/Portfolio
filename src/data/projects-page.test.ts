@@ -16,11 +16,7 @@ describe("Projects-page curation", () => {
   test("shows three featured projects in the requested order", () => {
     assert.deepEqual(
       featuredProjectCards.map((entry) => entry.title),
-      [
-        "Real Estate Management Database",
-        "Beauty Formula Decoder — AI Concept for Ulta Beauty",
-        "JP Morgan Chase — Student Finance Dashboard",
-      ],
+      ["Real Estate Management Database", "Beauty Formula Decoder", "Student Finance Dashboard"],
     );
   });
   test("featured cards label their number and year", () => {

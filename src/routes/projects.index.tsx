@@ -223,45 +223,40 @@ function ProjectsIndex() {
             title="Featured Projects"
             label="UX research · product · data systems"
           />
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-16 md:gap-20">
             {featuredProjectCards.map((project, index) => {
-              const [meta, ...tags] = project.meta.split(" · Featured");
+              const flip = index % 2 === 1;
               return (
                 <article
                   key={project.slug}
-                  className={cn(cardClass, interactiveCard, "group min-w-0 p-3")}
+                  className="group relative grid items-center gap-6 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:gap-12"
                 >
-                  <div className="relative">
-                    <div className="overflow-hidden rounded-frame border border-border">
+                  {/* Large image; every other row puts it on the right. */}
+                  <div className={cn("relative min-w-0", flip && "md:order-2")}>
+                    <div className="overflow-hidden rounded-frame border border-border bg-card">
                       <img
                         src={project.coverImage}
                         alt=""
-                        width={900}
-                        height={600}
+                        width={1600}
+                        height={900}
                         loading={index === 0 ? "eager" : "lazy"}
-                        className={cn("aspect-[3/2] w-full object-cover", cardImageZoom)}
+                        className={cn("aspect-[16/10] w-full object-cover", cardImageZoom)}
                       />
                     </div>
-                    {/* Sits above the full-card link so each icon stays clickable on its own. */}
+                    {/* Sits above the full-row link so each icon stays clickable on its own. */}
                     <ProjectLinks
                       repoUrl={project.repo_url}
                       liveUrl={project.live_url}
                       fileUrl={project.file_url}
-                      className="absolute right-2.5 top-2.5 z-10"
+                      className="absolute right-3 top-3 z-10"
                     />
                   </div>
-                  <div className="px-2 pb-3 pt-4">
+
+                  <div className={cn("min-w-0", flip && "md:order-1")}>
                     <p className="label-tech">
-                      {meta}
-                      {tags.length > 0 && (
-                        <>
-                          {" "}
-                          · <span className="text-link">Featured</span>
-                        </>
-                      )}
+                      {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
                     </p>
-                    <ProjectTags tags={project.tags} className="mt-3" />
-                    <h3 className="mt-3 text-[1.75rem]">
+                    <h3 className="mt-3 text-[2rem] leading-tight">
                       <Link
                         to="/projects/$slug"
                         params={{ slug: project.slug }}
@@ -270,14 +265,18 @@ function ProjectsIndex() {
                         {project.title}
                       </Link>
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {project.subtitle && (
+                      <p className="mt-2 text-lg text-muted-foreground">{project.subtitle}</p>
+                    )}
+                    <p className="mt-4 text-base leading-relaxed text-foreground">
                       {project.summary}
                     </p>
+                    <ProjectTags tags={project.tags} className="mt-5" />
                     <p
                       aria-hidden
-                      className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link"
+                      className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-link"
                     >
-                      View featured project <ArrowRight className={cn("size-4", arrowNudge)} />
+                      Read the project <ArrowRight className={cn("size-4", arrowNudge)} />
                     </p>
                   </div>
                 </article>

@@ -1,9 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { CornerFrame, SectionRule } from "@/components/CornerFrame";
 import {
-  MetaCell,
   Section,
-  SectionChips,
   StickySectionBar,
   bodyText,
   useStickyBar,
@@ -83,10 +81,20 @@ function MediaGrid({ items }: { items: TeachingMedia[] }) {
   );
 }
 
+function Fact({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="text-xs text-muted-foreground">{label}</dt>
+      <dd className="mt-1 text-sm text-foreground">{value}</dd>
+    </div>
+  );
+}
+
 function ProjectDetail() {
   const { project } = Route.useLoaderData();
   const bar = useStickyBar();
   const steps = project.processSteps ?? [];
+  const highlights = project.highlights ?? [];
   const extras = project.outcomeExtras ?? [];
   const solutionMedia = project.solutionMedia ?? [];
 
@@ -101,12 +109,61 @@ function ProjectDetail() {
       />
 
       <article className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20">
-        <Link to="/projects" className="label-tech hover:text-link">
-          ← Projects
-        </Link>
+        {/* 1 · Back link and tags */}
+        <div ref={bar.heroRef} className="flex flex-wrap items-center gap-x-4 gap-y-3">
+          <Link to="/projects" className="label-tech hover:text-link">
+            ← Projects
+          </Link>
+          <ProjectTags tags={project.tags} />
+        </div>
 
-        <div ref={bar.heroRef}>
-          <CornerFrame className="mt-6 overflow-hidden bg-card">
+        <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] md:gap-14">
+          <div>
+            {/* 2 · Short title and plain subtitle */}
+            <h1 className="font-display text-foreground">{project.title}</h1>
+            {project.subtitle && (
+              <p className="mt-3 text-xl text-muted-foreground">{project.subtitle}</p>
+            )}
+            {/* 3 · One sentence: what I did and what it does */}
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-foreground">
+              {project.summary}
+            </p>
+          </div>
+
+          {/* 4 · At a glance */}
+          <aside aria-label="At a glance" className="md:border-l md:border-border md:pl-8">
+            <p className="label-tech">At a glance</p>
+            <dl className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-1">
+              <Fact label="My role" value={project.role} />
+              {project.team && <Fact label="Team" value={project.team} />}
+              <Fact label="Timeline" value={project.timeline ?? project.year} />
+              <Fact label="Tools" value={project.tools.join(", ")} />
+            </dl>
+          </aside>
+        </div>
+
+        {/* 5 · Results up front */}
+        {highlights.length > 0 && (
+          <dl
+            className={cn(
+              "mt-12 grid gap-4 sm:gap-6",
+              highlights.length === 3 ? "grid-cols-3" : "grid-cols-2",
+            )}
+          >
+            {highlights.map((item) => (
+              <div key={item.label} className="hairline-t pt-4">
+                <dd className="font-display text-[1.75rem] leading-none text-foreground sm:text-4xl">
+                  {item.value}
+                </dd>
+                <dt className="mt-2 text-xs text-muted-foreground sm:text-sm">{item.label}</dt>
+              </div>
+            ))}
+          </dl>
+        )}
+
+        {/* 6 · Cover image after the facts */}
+        <figure className="mt-12">
+          <CornerFrame className="overflow-hidden bg-card">
             <MediaFrame
               media={{
                 type: "image",
@@ -119,30 +176,30 @@ function ProjectDetail() {
               className="aspect-[16/9] border-0"
             />
           </CornerFrame>
-        </div>
+          {(project.coverCaption || project.mediaNote) && (
+            <figcaption className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+              {project.coverCaption}
+              {project.coverCaption && project.mediaNote && " "}
+              {project.mediaNote}
+            </figcaption>
+          )}
+        </figure>
 
-        <div className="mt-10 max-w-4xl">
-          <ProjectTags tags={project.tags} className="mb-4" />
-          <h1 className="font-display text-foreground">{project.title}</h1>
-          <p className="mt-5 max-w-2xl text-lg text-muted-foreground">{project.summary}</p>
-        </div>
-
-        <dl className="mt-12 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 md:grid-cols-4">
-          <MetaCell label="Year" value={project.year} />
-          <MetaCell label="Role" value={project.role} />
-          <MetaCell label="Client" value={project.client} />
-          <MetaCell label="Tools" value={project.tools.join(", ")} />
-        </dl>
-
-        {project.mediaNote && (
-          <p className="mt-6 max-w-2xl text-xs leading-relaxed text-muted-foreground">
-            <strong className="font-semibold text-foreground">About the images:</strong>{" "}
-            {project.mediaNote}
-          </p>
-        )}
-
-        <SectionChips sections={sections} ariaLabel="Project sections" className="mt-10" />
-        <SectionRule className="mt-8" />
+        {/* 7 · Section links as plain text */}
+        <nav
+          aria-label="Project sections"
+          className="mt-12 flex flex-wrap gap-x-6 gap-y-2 border-t border-border pt-4"
+        >
+          {sections.map((s) => (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              className="text-sm text-muted-foreground transition-colors hover:text-link"
+            >
+              {s.label}
+            </a>
+          ))}
+        </nav>
 
         <div className="mt-14 grid gap-14">
           <Section id="problem" title={sections[0]!.title}>

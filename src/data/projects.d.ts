@@ -7,14 +7,24 @@ export type ProjectStep = GalleryStep;
 export interface Project {
   slug: string;
   title: string;
+  /** Short line under the title (what it is, for whom). */
+  subtitle?: string;
+  /** One sentence in first person: what I did and what it does. */
   summary: string;
   year: string;
   role: string;
   client: string;
   tools: string[];
+  /** "At a glance" extras. `timeline` falls back to `year`. */
+  timeline?: string;
+  team?: string;
+  /** Two or three headline results shown before the cover image. */
+  highlights?: { value: string; label: string }[];
   coverImage: string;
   /** Alt text for the cover image (defaults to the project title). */
   coverAlt?: string;
+  /** Short caption under the cover image. */
+  coverCaption?: string;
   /** Small note under the meta row about the page's images (e.g. AI-generated visuals). */
   mediaNote?: string;
   /** Card and page tags: the project type first ("Case study", "Technical project"), then its topic. */
