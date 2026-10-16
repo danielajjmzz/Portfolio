@@ -1,6 +1,7 @@
 import { useId, useRef, useState } from "react";
 import { MediaFrame } from "@/components/MediaFrame";
 import type { TeachingMedia } from "@/data/teaching";
+import { bodyText, cardTitle } from "@/lib/ui";
 import { cn } from "@/lib/utils";
 
 /** One tab in a StepGallery: a lesson on a teaching page, a process step on a project page. */
@@ -19,8 +20,6 @@ export interface GalleryStep {
   /** Overrides the gallery's mediaAspect for this step only. */
   mediaAspect?: "square" | "wide";
 }
-
-const bodyText = "text-base leading-relaxed text-muted-foreground";
 
 /**
  * Numbered section with a sticky step picker on the left and the selected step's photos,
@@ -109,7 +108,7 @@ export function StepGallery({
       */}
       <div className="contents md:block md:self-start md:sticky" style={{ top: stickyTop }}>
         <div>
-          <h2 id={`${id}-heading`} className="font-display leading-tight text-foreground">
+          <h2 id={`${id}-heading`} className="font-display text-foreground">
             {title}
           </h2>
           <p className="label-tech mt-3">{intro}</p>
@@ -192,7 +191,7 @@ export function StepGallery({
           {itemLabel} {String(active + 1).padStart(2, "0")}
           {step.dates ? ` · ${step.dates}` : ""}
         </p>
-        <h3 className="mt-2 text-[1.625rem] text-foreground">{step.title}</h3>
+        <h3 className={cn("mt-2 text-foreground", cardTitle)}>{step.title}</h3>
         <p className={cn(bodyText, "mt-3")}>{step.body}</p>
         {step.tags.length > 0 && (
           <ul className="mt-4 flex flex-wrap gap-2" aria-label="Skills">

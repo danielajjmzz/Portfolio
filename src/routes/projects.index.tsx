@@ -27,6 +27,8 @@ import {
   sectionHeadRow,
   stretchedLink,
   tintCardClass,
+  cardTitle,
+  cardTitleLg,
 } from "@/lib/ui";
 import { cn } from "@/lib/utils";
 
@@ -132,7 +134,7 @@ function FeaturedRow({ project, index }: { project: FeaturedCard; index: number 
         <p className="label-tech">
           {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
         </p>
-        <h3 className="mt-3 text-[2rem] leading-tight">
+        <h3 className={cn("mt-3", cardTitleLg)}>
           <Link
             to="/projects/$slug"
             params={{ slug: project.slug }}
@@ -177,7 +179,7 @@ function TeachingCard({ entry, index }: { entry: (typeof teaching)[number]; inde
       </div>
       <div className="px-2 pb-3 pt-4">
         <CardMeta text={entry.cardMeta} />
-        <h3 className="mt-2 text-[1.75rem]">
+        <h3 className={cn("mt-2", cardTitle)}>
           <Link
             to="/teaching/$slug"
             params={{ slug: entry.slug }}

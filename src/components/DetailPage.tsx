@@ -15,8 +15,6 @@ export interface DetailSection {
   title: string;
 }
 
-export const bodyText = "text-base leading-relaxed text-muted-foreground";
-
 export function MetaCell({ label, value }: { label: string; value: string }) {
   return (
     <div className="hairline-t pt-3">
@@ -72,7 +70,7 @@ export function Section({
       className="grid scroll-mt-36 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12"
     >
       <div className="min-w-0">
-        <h2 id={`${id}-heading`} className="font-display leading-tight text-foreground">
+        <h2 id={`${id}-heading`} className="font-display text-foreground">
           {title}
         </h2>
         {aside}

@@ -2,6 +2,20 @@ import { cn } from "@/lib/utils";
 
 /** Shared class recipes so buttons, chips and cards look identical on every page. */
 
+/*
+ * Title sizes for cards and lists (page and section headings use the h1/h2 scale in styles.css):
+ *   cardTitleLg — large featured rows (Projects page featured projects)
+ *   cardTitle   — every grid card and panel: Home project cards, Teaching cards,
+ *                 Education, Resume, and a process step's title
+ *   itemTitle   — list entries (Leadership & Experience roles)
+ */
+export const cardTitleLg = "text-[2rem]";
+export const cardTitle = "text-[1.75rem]";
+export const itemTitle = "text-[1.5rem]";
+
+/** Body copy on content pages. */
+export const bodyText = "text-base leading-relaxed text-muted-foreground";
+
 /** Accent (pink) button — square corners. */
 export const accentButton =
   "inline-flex items-center justify-center gap-2 bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";

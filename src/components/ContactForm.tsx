@@ -67,9 +67,7 @@ export function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} className="flex h-full flex-col" aria-describedby={`${id}-status`}>
-      <h2 className="text-[2.5rem] leading-none text-form-foreground md:text-5xl">
-        Tell me what you're working on.
-      </h2>
+      <h2 className="text-form-foreground">Tell me what you're working on.</h2>
       <p className="mt-3 text-sm text-form-foreground">
         A few lines is plenty. I'll get back to you by email.
       </p>

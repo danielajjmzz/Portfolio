@@ -167,20 +167,24 @@
   h4 {
     font-family: var(--font-display);
     font-weight: 600;
-    line-height: 1.02;
     letter-spacing: -0.005em;
   }
 
-  /* One heading scale, site-wide. */
+  /*
+   * One heading scale, site-wide. Card and list titles pick a size from the
+   * title recipes in src/lib/ui.ts (cardTitleLg / cardTitle / itemTitle).
+   */
   h1 {
     font-size: clamp(2.5rem, 6vw, 3.5rem); /* 56px max */
+    line-height: 1.05;
   }
   h2 {
-    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-size: clamp(2rem, 4vw, 2.5rem); /* section headings: 32px phone, 40px desktop */
+    line-height: 1.15;
   }
   h3 {
     font-size: 1.5rem;
-    line-height: 1.08;
+    line-height: 1.2;
   }
   h4 {
     font-size: 1.25rem;

@@ -14,6 +14,8 @@ import {
   sectionHeadRow,
   stretchedLink,
   tintCardClass,
+  cardTitle,
+  itemTitle,
 } from "@/lib/ui";
 import { cn } from "@/lib/utils";
 
@@ -133,7 +135,7 @@ function HomeProjectCard({ project, index }: { project: Project; index: number }
         <p className="label-tech">
           {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
         </p>
-        <h3 className="mt-2 text-[1.5rem] leading-tight">
+        <h3 className={cn("mt-2", cardTitle)}>
           <Link
             to="/projects/$slug"
             params={{ slug: project.slug }}
@@ -216,7 +218,12 @@ function Home() {
             {education.map((entry) => (
               <div key={entry.level} className={`${tintCardClass} px-6 py-5`}>
                 <dt className="label-tech">{entry.level}</dt>
-                <dd className="mt-2 font-display text-[1.75rem] font-semibold leading-tight text-foreground">
+                <dd
+                  className={cn(
+                    "mt-2 font-display font-semibold leading-[1.2] text-foreground",
+                    cardTitle,
+                  )}
+                >
                   {entry.school}
                 </dd>
                 <dd className="mt-3 text-[0.9375rem] font-semibold text-foreground">
@@ -257,10 +264,10 @@ function Home() {
                   key={entry.role}
                   className="border-t border-border py-5 first:border-t-0 first:pt-0 last:pb-0"
                 >
-                  <h3 className="text-[1.5rem] leading-snug text-foreground">{entry.role}</h3>
+                  <h3 className={cn(itemTitle, "text-foreground")}>{entry.role}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">{entry.org}</p>
                   {entry.body && (
-                    <p className="mt-3 max-w-xl text-sm leading-relaxed text-foreground/85">
+                    <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
                       {entry.body}
                     </p>
                   )}

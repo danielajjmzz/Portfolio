@@ -5,10 +5,10 @@ import {
   Section,
   SectionChips,
   StickySectionBar,
-  bodyText,
   useStickyBar,
 } from "@/components/DetailPage";
 import { MediaFrame } from "@/components/MediaFrame";
+import { bodyText } from "@/lib/ui";
 import { StepGallery } from "@/components/StepGallery";
 import { getTeachingBySlug, type TeachingEntry } from "@/data/teaching";
 import { cn } from "@/lib/utils";

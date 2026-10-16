@@ -3,11 +3,11 @@ import { CornerFrame, SectionRule } from "@/components/CornerFrame";
 import {
   Section,
   StickySectionBar,
-  bodyText,
   useStickyBar,
   type DetailSection,
 } from "@/components/DetailPage";
 import { MediaFrame } from "@/components/MediaFrame";
+import { bodyText } from "@/lib/ui";
 import { ProjectTags } from "@/components/ProjectTags";
 import { StepGallery } from "@/components/StepGallery";
 import { getProjectBySlug } from "@/data/projects";

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Github, Linkedin, Mail, MapPin, type LucideIcon } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 import { PageHero } from "@/components/PageHero";
-import { accentButton } from "@/lib/ui";
+import { accentButton, cardTitle } from "@/lib/ui";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -73,7 +73,7 @@ function Contact() {
           {/* Left: availability, contact cards, resume */}
           {/* No inner padding, so its first line and last edge line up with the form panel. */}
           <div className="flex flex-col gap-3">
-            <p className="mb-2 text-[0.9375rem] leading-relaxed text-muted-foreground">
+            <p className="mb-2 text-base leading-relaxed text-muted-foreground">
               Open to internships, entry-level jobs, freelance, design collaborations, and community
               projects in Chicago, Boston, Mexico (Acapulco, San Luis Potosi) or remote. I usually
               reply within a couple of days.
@@ -116,8 +116,8 @@ function Contact() {
 
             {/* Grows to fill the column, so there's no gap above it and the button lines up with the form's bottom. */}
             <div className="flex flex-1 flex-col items-start rounded-frame bg-tint p-5 sm:p-6">
-              <h2 className="text-[1.75rem]">Resume</h2>
-              <p className="mb-5 mt-2 text-[0.9375rem] leading-relaxed text-muted-foreground">
+              <h2 className={cardTitle}>Resume</h2>
+              <p className="mb-5 mt-2 text-base leading-relaxed text-muted-foreground">
                 A one-page PDF covering design work, engineering coursework, and leadership roles.
               </p>
               <a href="#" className={`${accentButton} mt-auto`}>
