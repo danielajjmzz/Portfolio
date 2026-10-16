@@ -154,6 +154,7 @@ export function DesignMediaCarousel({
                 type="button"
                 onClick={onOpen}
                 aria-label={`Open ${entry.title}`}
+                data-view-cursor
                 className="block w-full cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
               >
                 <MediaSlide item={item} fit={fit} aspect={aspect} zoom={controls === "hover"} />
@@ -177,6 +178,7 @@ export function DesignMediaCarousel({
           <button
             type="button"
             onClick={() => api?.scrollPrev()}
+            data-view-cursor-ignore
             aria-label="Previous photo"
             className={cn(
               controlButton,
@@ -189,6 +191,7 @@ export function DesignMediaCarousel({
           <button
             type="button"
             onClick={() => api?.scrollNext()}
+            data-view-cursor-ignore
             aria-label="Next photo"
             className={cn(
               controlButton,
@@ -202,6 +205,7 @@ export function DesignMediaCarousel({
             <div
               role="group"
               aria-label="Choose photo"
+              data-view-cursor-ignore
               className={cn(
                 "absolute left-2.5 top-2.5 z-20 flex gap-1 bg-media-scrim px-2 py-2 backdrop-blur-[2px]",
                 visibility,

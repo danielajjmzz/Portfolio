@@ -44,10 +44,6 @@ export const cardImageZoom =
 export const stretchedLink =
   "after:absolute after:inset-0 after:z-0 after:rounded-card after:content-[''] focus-visible:outline-none";
 
-/** Card title with a pink underline, as on the teaching cards. */
-export const underlinedTitle =
-  "underline decoration-primary decoration-[3px] underline-offset-[6px] transition-colors group-hover:text-link";
-
 /** Nudges a trailing arrow while the card is hovered. */
 export const arrowNudge =
   "transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none";

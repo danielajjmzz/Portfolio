@@ -275,3 +275,9 @@
 :root:not(.dark) .bg-tint {
   --muted-foreground: #626469;
 }
+
+/* The "View" circle replaces the mouse cursor over openable images (see ViewCursor.tsx). */
+.view-cursor-active,
+.view-cursor-active * {
+  cursor: none !important;
+}

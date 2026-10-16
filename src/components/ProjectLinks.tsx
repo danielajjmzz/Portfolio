@@ -36,7 +36,7 @@ export function ProjectLinks({
   if (links.length === 0) return null;
   return (
     <TooltipProvider delayDuration={250}>
-      <div className={cn("flex gap-1.5", className)}>
+      <div data-view-cursor-ignore className={cn("flex gap-1.5", className)}>
         {links.map(({ href, label, Icon }) => {
           const placeholder = isPlaceholder(href);
           const tip = placeholder ? `${label} — coming soon` : label;

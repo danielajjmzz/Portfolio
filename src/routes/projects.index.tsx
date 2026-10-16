@@ -15,6 +15,7 @@ import { PageHero } from "@/components/PageHero";
 import { MediaFrame } from "@/components/MediaFrame";
 import { DesignMediaCarousel, type MediaEntry } from "@/components/DesignMediaCarousel";
 import { ProjectTags } from "@/components/ProjectTags";
+import { useViewCursor } from "@/components/ViewCursor";
 import { ProjectLinks } from "@/components/ProjectLinks";
 import {
   arrowNudge,
@@ -26,7 +27,6 @@ import {
   sectionHeadRow,
   stretchedLink,
   tintCardClass,
-  underlinedTitle,
 } from "@/lib/ui";
 import { cn } from "@/lib/utils";
 
@@ -83,6 +83,153 @@ function SectionHeading({ id, title, label }: { id: string; title: string; label
       <h2 id={id}>{title}</h2>
       <p className="label-tech">{label}</p>
     </div>
+  );
+}
+
+type FeaturedCard = (typeof featuredProjectCards)[number];
+
+/** One large featured project row; every other row puts the image on the right. */
+function FeaturedRow({ project, index }: { project: FeaturedCard; index: number }) {
+  const view = useViewCursor();
+  const flip = index % 2 === 1;
+  return (
+    <article
+      {...view.handlers}
+      className={cn(
+        cardClass,
+        interactiveCard,
+        view.activeClass,
+        "group grid items-center gap-6 p-3 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:gap-10 md:p-4",
+      )}
+    >
+      <div ref={view.zoneRef} className={cn("relative min-w-0", flip && "md:order-2")}>
+        <div className="overflow-hidden rounded-frame border border-border bg-card">
+          <img
+            src={project.coverImage}
+            alt=""
+            width={1600}
+            height={900}
+            loading={index === 0 ? "eager" : "lazy"}
+            className={cn("aspect-[16/10] w-full object-cover", cardImageZoom)}
+          />
+        </div>
+        {/* Sits above the full-card link so each icon stays clickable on its own. */}
+        <ProjectLinks
+          repoUrl={project.repo_url}
+          liveUrl={project.live_url}
+          fileUrl={project.file_url}
+          className="absolute right-3 top-3 z-10"
+        />
+        {view.bubble}
+      </div>
+
+      <div
+        className={cn("min-w-0 px-2 pb-3 md:px-0 md:pb-0", flip ? "md:order-1 md:pl-4" : "md:pr-4")}
+      >
+        <p className="label-tech">
+          {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
+        </p>
+        <h3 className="mt-3 text-[2rem] leading-tight">
+          <Link
+            to="/projects/$slug"
+            params={{ slug: project.slug }}
+            className={cn(stretchedLink, "transition-colors group-hover:text-link")}
+          >
+            {project.title}
+          </Link>
+        </h3>
+        {project.subtitle && (
+          <p className="mt-2 text-lg text-muted-foreground">{project.subtitle}</p>
+        )}
+        <p className="mt-4 text-base leading-relaxed text-foreground">{project.summary}</p>
+        <ProjectTags tags={project.tags} className="mt-5" />
+        <p
+          aria-hidden
+          className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-link"
+        >
+          Read the project <ArrowRight className={cn("size-4", arrowNudge)} />
+        </p>
+      </div>
+    </article>
+  );
+}
+
+function TeachingCard({ entry, index }: { entry: (typeof teaching)[number]; index: number }) {
+  const view = useViewCursor();
+  return (
+    <article
+      {...view.handlers}
+      className={cn(tintCardClass, interactiveCard, view.activeClass, "group min-w-0 p-3")}
+    >
+      <div ref={view.zoneRef} className="relative">
+        <div className="overflow-hidden rounded-frame">
+          <MediaFrame
+            media={entry.cover}
+            className={cn("aspect-[3/2]", cardImageZoom)}
+            eager={index === 0}
+            still
+          />
+        </div>
+        {view.bubble}
+      </div>
+      <div className="px-2 pb-3 pt-4">
+        <CardMeta text={entry.cardMeta} />
+        <h3 className="mt-2 text-[1.75rem]">
+          <Link
+            to="/teaching/$slug"
+            params={{ slug: entry.slug }}
+            className={cn(stretchedLink, "transition-colors group-hover:text-link")}
+          >
+            {entry.title}
+          </Link>
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{entry.summary}</p>
+        <p
+          aria-hidden
+          className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link"
+        >
+          View the material <ArrowRight className={cn("size-4", arrowNudge)} />
+        </p>
+      </div>
+    </article>
+  );
+}
+
+function VisualCard({ entry, onOpen }: { entry: (typeof visualWork)[number]; onOpen: () => void }) {
+  const view = useViewCursor({ match: "[data-view-cursor]" });
+  return (
+    <article
+      {...view.handlers}
+      className={cn(
+        view.activeClass,
+        "group/card min-w-0 transition-transform duration-200 ease-out hover:-translate-y-1 focus-within:-translate-y-1 motion-reduce:transform-none",
+      )}
+    >
+      <div ref={view.zoneRef} className="relative">
+        <DesignMediaCarousel
+          entry={entry}
+          aspect="aspect-square"
+          onOpen={onOpen}
+          className="transition-[border-color,box-shadow] group-hover/card:border-primary group-hover/card:shadow-[0_14px_30px_-16px_rgba(0,0,0,0.35)]"
+        />
+        {view.bubble}
+      </div>
+      <div className="mt-3 px-0.5">
+        {entry.method && <p className="label-tech text-link">{entry.method}</p>}
+        <h3 className="mt-1 font-sans text-sm font-semibold leading-snug">
+          <button
+            type="button"
+            onClick={onOpen}
+            className="text-left transition-colors hover:text-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover/card:text-link"
+          >
+            {entry.title}
+          </button>
+        </h3>
+        <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+          {entry.description}
+        </p>
+      </div>
+    </article>
   );
 }
 
@@ -224,64 +371,9 @@ function ProjectsIndex() {
             label="UX research · product · data systems"
           />
           <div className="grid gap-16 md:gap-20">
-            {featuredProjectCards.map((project, index) => {
-              const flip = index % 2 === 1;
-              return (
-                <article
-                  key={project.slug}
-                  className="group relative grid items-center gap-6 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:gap-12"
-                >
-                  {/* Large image; every other row puts it on the right. */}
-                  <div className={cn("relative min-w-0", flip && "md:order-2")}>
-                    <div className="overflow-hidden rounded-frame border border-border bg-card">
-                      <img
-                        src={project.coverImage}
-                        alt=""
-                        width={1600}
-                        height={900}
-                        loading={index === 0 ? "eager" : "lazy"}
-                        className={cn("aspect-[16/10] w-full object-cover", cardImageZoom)}
-                      />
-                    </div>
-                    {/* Sits above the full-row link so each icon stays clickable on its own. */}
-                    <ProjectLinks
-                      repoUrl={project.repo_url}
-                      liveUrl={project.live_url}
-                      fileUrl={project.file_url}
-                      className="absolute right-3 top-3 z-10"
-                    />
-                  </div>
-
-                  <div className={cn("min-w-0", flip && "md:order-1")}>
-                    <p className="label-tech">
-                      {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
-                    </p>
-                    <h3 className="mt-3 text-[2rem] leading-tight">
-                      <Link
-                        to="/projects/$slug"
-                        params={{ slug: project.slug }}
-                        className={cn(stretchedLink, "transition-colors group-hover:text-link")}
-                      >
-                        {project.title}
-                      </Link>
-                    </h3>
-                    {project.subtitle && (
-                      <p className="mt-2 text-lg text-muted-foreground">{project.subtitle}</p>
-                    )}
-                    <p className="mt-4 text-base leading-relaxed text-foreground">
-                      {project.summary}
-                    </p>
-                    <ProjectTags tags={project.tags} className="mt-5" />
-                    <p
-                      aria-hidden
-                      className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-link"
-                    >
-                      Read the project <ArrowRight className={cn("size-4", arrowNudge)} />
-                    </p>
-                  </div>
-                </article>
-              );
-            })}
+            {featuredProjectCards.map((project, index) => (
+              <FeaturedRow key={project.slug} project={project} index={index} />
+            ))}
           </div>
         </div>
       </section>
@@ -300,40 +392,7 @@ function ProjectsIndex() {
             className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
           >
             {visibleTeaching.entries.map((entry, index) => (
-              <article
-                key={entry.slug}
-                className={cn(tintCardClass, interactiveCard, "group min-w-0 p-3")}
-              >
-                <div className="overflow-hidden rounded-frame">
-                  <MediaFrame
-                    media={entry.cover}
-                    className={cn("aspect-[3/2]", cardImageZoom)}
-                    eager={index === 0}
-                    still
-                  />
-                </div>
-                <div className="px-2 pb-3 pt-4">
-                  <CardMeta text={entry.cardMeta} />
-                  <h3 className="mt-2 text-[1.75rem]">
-                    <Link
-                      to="/teaching/$slug"
-                      params={{ slug: entry.slug }}
-                      className={cn(stretchedLink, underlinedTitle)}
-                    >
-                      {entry.title}
-                    </Link>
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {entry.summary}
-                  </p>
-                  <p
-                    aria-hidden
-                    className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-link"
-                  >
-                    View the material <ArrowRight className={cn("size-4", arrowNudge)} />
-                  </p>
-                </div>
-              </article>
+              <TeachingCard key={entry.slug} entry={entry} index={index} />
             ))}
           </div>
           {(visibleTeaching.hasMore || visibleTeaching.canCollapse) && (
@@ -387,32 +446,7 @@ function ProjectsIndex() {
             className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4 lg:gap-x-5"
           >
             {visible.entries.map((entry) => (
-              <article
-                key={entry.id}
-                className="group/card min-w-0 transition-transform duration-200 ease-out hover:-translate-y-1 focus-within:-translate-y-1 motion-reduce:transform-none"
-              >
-                <DesignMediaCarousel
-                  entry={entry}
-                  aspect="aspect-square"
-                  onOpen={() => setPreview(entry)}
-                  className="transition-[border-color,box-shadow] group-hover/card:border-primary group-hover/card:shadow-[0_14px_30px_-16px_rgba(0,0,0,0.35)]"
-                />
-                <div className="mt-3 px-0.5">
-                  {entry.method && <p className="label-tech text-link">{entry.method}</p>}
-                  <h3 className="mt-1 font-sans text-sm font-semibold leading-snug">
-                    <button
-                      type="button"
-                      onClick={() => setPreview(entry)}
-                      className="text-left underline decoration-primary decoration-2 underline-offset-4 transition-colors hover:text-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover/card:text-link"
-                    >
-                      {entry.title}
-                    </button>
-                  </h3>
-                  <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
-                    {entry.description}
-                  </p>
-                </div>
-              </article>
+              <VisualCard key={entry.id} entry={entry} onOpen={() => setPreview(entry)} />
             ))}
           </div>
           {(visible.hasMore || visible.canCollapse) && (

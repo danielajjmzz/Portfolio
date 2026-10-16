@@ -43,17 +43,17 @@ const leadership = [
   {
     role: "Assistant Program Manager",
     org: "Exelon Summer Institute",
-    body: "Placeholder — experience description coming soon.",
+    body: "",
   },
   {
     role: "SHPEtinas Director",
     org: "Society of Hispanic Professional Engineers",
-    body: "Placeholder — experience description coming soon.",
+    body: "",
   },
   {
     role: "Audio & Visual Technician",
     org: "Illinois Institute of Technology — Event Services",
-    body: "Placeholder — experience description coming soon.",
+    body: "",
   },
 ];
 
@@ -181,23 +181,39 @@ function Home() {
           <h2 id="leadership-heading" className="mb-7">
             Leadership &amp; Experience
           </h2>
-          <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {leadership.map((entry, index) => (
-              <li key={entry.role} className={`${cardClass} flex flex-col p-6`}>
-                <span className="text-xs font-semibold tracking-wide text-link">
-                  {String(index + 1).padStart(2, "0")}/
-                </span>
-                <h3 className="mt-3 text-[1.625rem] text-foreground">{entry.role}</h3>
-                <p className="mt-2 text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-link">
-                  {entry.org}
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{entry.body}</p>
-              </li>
-            ))}
-            <li aria-hidden className="placeholder-frame min-h-[180px] rounded-card">
-              Photo · coming soon
-            </li>
-          </ol>
+          <div className="grid gap-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-12">
+            <figure className="m-0">
+              <img
+                src="/images/home/shpetinas-team.jpg"
+                alt="The SHPEtinas team at Illinois Tech in matching pink polos on white steps; Daniela is in the front row, on the right."
+                width={983}
+                height={1400}
+                loading="lazy"
+                className="h-auto w-full rounded-frame border border-border"
+              />
+              <figcaption className="mt-3 text-sm text-muted-foreground">
+                The SHPEtinas team at Illinois Tech. I'm front row, on the right.
+              </figcaption>
+            </figure>
+
+            {/* Role and organization on every line; a description only where one is written. */}
+            <ol className="self-start">
+              {leadership.map((entry) => (
+                <li
+                  key={entry.role}
+                  className="border-t border-border py-5 first:border-t-0 first:pt-0 last:pb-0"
+                >
+                  <h3 className="text-[1.5rem] leading-snug text-foreground">{entry.role}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{entry.org}</p>
+                  {entry.body && (
+                    <p className="mt-3 max-w-xl text-sm leading-relaxed text-foreground/85">
+                      {entry.body}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </section>
 
