@@ -1,8 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { SkillsExplorer } from "@/components/SkillsExplorer";
-import { featuredProjects } from "@/data/projects";
-import { accentButton, cardClass, outlineButton, sectionHeadRow, tintCardClass } from "@/lib/ui";
+import { ProjectLinks } from "@/components/ProjectLinks";
+import { ProjectTags } from "@/components/ProjectTags";
+import { useViewCursor } from "@/components/ViewCursor";
+import { featuredProjects, type Project } from "@/data/projects";
+import {
+  accentButton,
+  cardClass,
+  cardImageZoom,
+  interactiveCard,
+  outlineButton,
+  sectionHeadRow,
+  stretchedLink,
+  tintCardClass,
+} from "@/lib/ui";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -73,6 +86,67 @@ const education = [
 ];
 
 const homeFeaturedProjects = featuredProjects.slice(0, 3);
+
+/**
+ * A Selected Work card: the same effects as the Projects page cards (lift, pink ring, image
+ * zoom, "View" cursor, project link icons), in a compact 3-across layout. The project's short
+ * description slides up over the image on hover or keyboard focus, and stays visible on touch.
+ */
+function HomeProjectCard({ project, index }: { project: Project; index: number }) {
+  const view = useViewCursor();
+  return (
+    <article
+      {...view.handlers}
+      className={cn(
+        cardClass,
+        interactiveCard,
+        view.activeClass,
+        "group flex min-w-0 flex-col p-3",
+      )}
+    >
+      <div ref={view.zoneRef} className="relative">
+        <div className="relative overflow-hidden rounded-frame border border-border bg-card">
+          <img
+            src={project.coverImage}
+            alt=""
+            width={1600}
+            height={900}
+            loading={index === 0 ? "eager" : "lazy"}
+            className={cn("aspect-[16/10] w-full object-cover", cardImageZoom)}
+          />
+          {project.subtitle && (
+            <p className="absolute inset-x-0 bottom-0 translate-y-full border-t-2 border-primary bg-background/90 px-4 py-3 text-sm leading-snug text-foreground opacity-0 backdrop-blur-[2px] transition-[transform,opacity] duration-200 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100">
+              {project.subtitle}
+            </p>
+          )}
+        </div>
+        {/* Sits above the full-card link so each icon stays clickable on its own. */}
+        <ProjectLinks
+          repoUrl={project.repo_url}
+          liveUrl={project.live_url}
+          fileUrl={project.file_url}
+          className="absolute right-3 top-3 z-10"
+        />
+        {view.bubble}
+      </div>
+      <div className="flex flex-1 flex-col px-1 pb-1 pt-4">
+        <p className="label-tech">
+          {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
+        </p>
+        <h3 className="mt-2 text-[1.5rem] leading-tight">
+          <Link
+            to="/projects/$slug"
+            params={{ slug: project.slug }}
+            className={cn(stretchedLink, "transition-colors group-hover:text-link")}
+          >
+            {project.title}
+          </Link>
+        </h3>
+        <ProjectTags tags={project.tags} className="mt-auto pt-4" />
+      </div>
+    </article>
+  );
+}
 const container = "mx-auto max-w-6xl px-5 md:px-8";
 
 function Home() {
@@ -123,27 +197,7 @@ function Home() {
           </div>
           <div className="grid gap-5 md:grid-cols-3">
             {homeFeaturedProjects.map((project, i) => (
-              <Link
-                key={project.slug}
-                to="/projects/$slug"
-                params={{ slug: project.slug }}
-                className={`${cardClass} group block p-3 transition-colors hover:border-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`}
-              >
-                <img
-                  src={project.coverImage}
-                  alt={project.title}
-                  width={1600}
-                  height={1000}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  className="aspect-[16/10] w-full rounded-frame border border-border object-cover"
-                />
-                <div className="mt-4 flex items-baseline justify-between gap-4 px-1 pb-1">
-                  <h3 className="text-[1.375rem] text-foreground group-hover:text-link">
-                    {project.title}
-                  </h3>
-                  <span className="label-tech shrink-0">{project.year}</span>
-                </div>
-              </Link>
+              <HomeProjectCard key={project.slug} project={project} index={i} />
             ))}
           </div>
         </div>

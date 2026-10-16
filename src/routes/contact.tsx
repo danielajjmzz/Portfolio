@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Linkedin, Mail, MapPin, type LucideIcon } from "lucide-react";
+import { Github, Linkedin, Mail, MapPin, type LucideIcon } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 import { PageHero } from "@/components/PageHero";
 import { accentButton } from "@/lib/ui";
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Get in touch with Daniela Jimenez — UI/UX designer and Computer Science student in Chicago. Email, LinkedIn, and resume.",
+          "Get in touch with Daniela Jimenez — UI/UX designer and Computer Science student in Chicago. Email, LinkedIn, GitHub, and resume.",
       },
       { property: "og:title", content: "Contact — Daniela Jimenez" },
       {
@@ -43,6 +43,13 @@ const links: {
     value: "linkedin.com/in/djjimenz/",
     href: "https://www.linkedin.com/in/djjimenz/",
     Icon: Linkedin,
+    external: true,
+  },
+  {
+    label: "GitHub",
+    value: "github.com/danielajjmzz",
+    href: "https://github.com/danielajjmzz",
+    Icon: Github,
     external: true,
   },
   {
@@ -107,12 +114,13 @@ function Contact() {
               );
             })}
 
-            <div className="mt-auto rounded-frame bg-tint p-5 sm:p-6">
+            {/* Grows to fill the column, so there's no gap above it and the button lines up with the form's bottom. */}
+            <div className="flex flex-1 flex-col items-start rounded-frame bg-tint p-5 sm:p-6">
               <h2 className="text-[1.75rem]">Resume</h2>
-              <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted-foreground">
+              <p className="mb-5 mt-2 text-[0.9375rem] leading-relaxed text-muted-foreground">
                 A one-page PDF covering design work, engineering coursework, and leadership roles.
               </p>
-              <a href="#" className={`${accentButton} mt-5`}>
+              <a href="#" className={`${accentButton} mt-auto`}>
                 Download resume <span aria-hidden>↓</span>
               </a>
             </div>

@@ -34,11 +34,11 @@ export const sectionHeadRow = "mb-7 flex flex-wrap items-baseline justify-betwee
  * The card must be `relative`; one link inside uses `stretchedLink` to make the whole card clickable.
  */
 export const interactiveCard =
-  "relative transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_14px_30px_-16px_rgba(0,0,0,0.35)] hover:ring-2 hover:ring-primary/60 focus-within:-translate-y-1 focus-within:ring-2 focus-within:ring-primary/60 motion-reduce:transform-none motion-reduce:transition-none";
+  "relative transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-1.5 hover:border-primary hover:shadow-[0_22px_40px_-18px_rgba(0,0,0,0.55)] hover:ring-2 hover:ring-primary focus-within:-translate-y-1.5 focus-within:ring-2 focus-within:ring-primary motion-reduce:transform-none motion-reduce:transition-none";
 
-/** Slight zoom on a card's image while the card is hovered or focused. */
+/** Zoom on a card's image while the card is hovered or focused. */
 export const cardImageZoom =
-  "transition-transform duration-300 ease-out group-hover:scale-[1.04] group-focus-within:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none";
+  "transition-transform duration-300 ease-out group-hover:scale-[1.06] group-focus-within:scale-[1.06] motion-reduce:transform-none motion-reduce:transition-none";
 
 /** Turns a link into a full-card click target (the card needs `relative`). */
 export const stretchedLink =
