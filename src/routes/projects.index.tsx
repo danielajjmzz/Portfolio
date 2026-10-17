@@ -30,6 +30,7 @@ import {
   cardTitle,
   cardTitleLg,
 } from "@/lib/ui";
+import { responsiveImage } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/projects/")({
@@ -108,6 +109,7 @@ function FeaturedRow({ project, index }: { project: FeaturedCard; index: number 
         <div className="overflow-hidden rounded-frame border border-border bg-card">
           <img
             src={project.coverImage}
+            {...responsiveImage(project.coverImage, index !== 0)}
             alt=""
             width={1600}
             height={900}
@@ -131,9 +133,7 @@ function FeaturedRow({ project, index }: { project: FeaturedCard; index: number 
           flip ? "lg:order-1 lg:pl-4" : "lg:pr-4",
         )}
       >
-        <p className="label-tech">
-          {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
-        </p>
+        <ProjectTags tags={project.tags} />
         <h3 className={cn("mt-3", cardTitleLg)}>
           <Link
             to="/projects/$slug"
@@ -147,7 +147,9 @@ function FeaturedRow({ project, index }: { project: FeaturedCard; index: number 
           <p className="mt-2 text-lg text-muted-foreground">{project.subtitle}</p>
         )}
         <p className="mt-4 text-base leading-relaxed text-foreground">{project.summary}</p>
-        <ProjectTags tags={project.tags} className="mt-5" />
+        <p className="label-tech mt-5">
+          {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
+        </p>
         <p
           aria-hidden
           className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-link"
@@ -296,7 +298,10 @@ function ProjectsIndex() {
   const revealGridTop = () => {
     requestAnimationFrame(() => {
       const grid = gridRef.current;
-      const bar = filterBarRef.current;
+      // The filter bar when it's shown, otherwise the jump bar above it.
+      const bar =
+        filterBarRef.current ??
+        document.querySelector<HTMLElement>('[aria-label="Project sections"]');
       if (!grid || !bar) return;
       const barBottom = bar.getBoundingClientRect().bottom;
       const gridTop = grid.getBoundingClientRect().top;
@@ -419,31 +424,38 @@ function ProjectsIndex() {
       {/* Visual work */}
       <section id="visual" aria-labelledby="visual-heading" className="py-14 md:py-16">
         <div className={container}>
-          <SectionHeading id="visual-heading" title="Visual work" label="Physical · document" />
-          {/* Filters stick under the jump bar while you scroll through Visual work, then leave with the section. */}
-          <div
-            ref={filterBarRef}
-            style={offsets ? { top: offsets.filters } : undefined}
-            className="sticky top-[130px] z-10 mb-5 bg-background py-3 md:top-[138px]"
-          >
-            <div role="group" aria-label="Filter visual work" className="flex flex-wrap gap-2">
-              {visualFilters.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  aria-pressed={filter === item}
-                  className={chipClass(filter === item)}
-                  onClick={() => {
-                    setFilter(item);
-                    setExpanded(false);
-                    revealGridTop();
-                  }}
-                >
-                  {item}
-                </button>
-              ))}
+          <SectionHeading
+            id="visual-heading"
+            title="Visual work"
+            label="Laser cutting · 3D printing · vinyl · carving"
+          />
+          {/* Filters stick under the jump bar while you scroll through Visual work, then leave with the section.
+              With only one category (plus "All"), there's nothing to filter, so the bar is hidden. */}
+          {visualFilters.length > 2 && (
+            <div
+              ref={filterBarRef}
+              style={offsets ? { top: offsets.filters } : undefined}
+              className="sticky top-[130px] z-10 mb-5 bg-background py-3 md:top-[138px]"
+            >
+              <div role="group" aria-label="Filter visual work" className="flex flex-wrap gap-2">
+                {visualFilters.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    aria-pressed={filter === item}
+                    className={chipClass(filter === item)}
+                    onClick={() => {
+                      setFilter(item);
+                      setExpanded(false);
+                      revealGridTop();
+                    }}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
           <div
             ref={gridRef}
             id="visual-grid"

@@ -63,8 +63,12 @@ describe("Projects-page curation", () => {
     assert.equal(expanded.hasMore, false);
     assert.equal(expanded.canCollapse, true);
   });
-  test("no toggle when a filter fits in one row", () => {
-    assert.equal(selectVisualWork("Document designs").hasMore, false);
+  test("Document designs are hidden for now", () => {
+    assert.equal(visualFilters.includes("Document designs" as never), false);
+    assert.equal(
+      visualWork.some((entry) => (entry.category as string) === "Document designs"),
+      false,
+    );
   });
   test("every visual work card has photos for the carousel", () => {
     for (const entry of visualWork) {
@@ -73,7 +77,6 @@ describe("Projects-page curation", () => {
   });
   test("filters visual work without including teaching", () => {
     assert.equal(selectVisualWork("Physical designs", true).entries.length, 6);
-    assert.equal(selectVisualWork("Document designs").entries.length, 2);
     assert.equal(visualFilters.includes("Photography" as never), false);
     assert.equal(
       visualWork.some((entry) =>
@@ -82,9 +85,7 @@ describe("Projects-page curation", () => {
       false,
     );
     assert.equal(
-      visualWork.every((entry) =>
-        ["Physical designs", "Document designs"].includes(entry.category),
-      ),
+      visualWork.every((entry) => ["Physical designs"].includes(entry.category)),
       true,
     );
   });

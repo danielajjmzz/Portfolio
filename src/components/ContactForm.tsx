@@ -18,7 +18,7 @@ const contactTopics = [
   "Something else",
 ] as const;
 
-type Status = "idle" | "sending" | "sent" | "error";
+type Status = "idle" | "sending" | "sent" | "error" | "mailto";
 
 const fieldClass =
   "w-full border-0 border-b border-form-foreground/45 bg-transparent px-0 py-2 text-[0.9375rem] text-form-foreground placeholder:text-form-muted focus:border-form-foreground focus:outline-none focus-visible:ring-0";
@@ -40,6 +40,7 @@ export function ContactForm() {
     if (!FORMSPREE_FORM_ID) {
       const body = `${message}\n\nFrom: ${name} <${email}>${topics.length ? `\nAbout: ${topics.join(", ")}` : ""}`;
       window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Portfolio message from ${name}`)}&body=${encodeURIComponent(body)}`;
+      setStatus("mailto");
       return;
     }
 
@@ -157,6 +158,15 @@ export function ContactForm() {
       </button>
       <p id={`${id}-status`} role="status" className="mt-3 min-h-5 text-sm text-form-foreground">
         {status === "sent" && "Thanks! Your message is on its way."}
+        {status === "mailto" && (
+          <>
+            Your email app should open with this message ready to send. If it doesn't, email me at{" "}
+            <a className="underline" href={`mailto:${CONTACT_EMAIL}`}>
+              {CONTACT_EMAIL}
+            </a>
+            .
+          </>
+        )}
         {status === "error" && (
           <>
             Something went wrong. Please email me at{" "}

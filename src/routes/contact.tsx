@@ -120,7 +120,11 @@ function Contact() {
               <p className="mb-5 mt-2 text-base leading-relaxed text-muted-foreground">
                 A one-page PDF covering design work, engineering coursework, and leadership roles.
               </p>
-              <a href="#" className={`${accentButton} mt-auto`}>
+              <a
+                href="/resume/Daniela-Jimenez-Resume.pdf"
+                download
+                className={`${accentButton} mt-auto`}
+              >
                 Download resume <span aria-hidden>↓</span>
               </a>
             </div>

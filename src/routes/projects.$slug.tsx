@@ -109,16 +109,19 @@ function ProjectDetail() {
 
       <article className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20">
         {/* 1 · Back link and tags */}
-        <div ref={bar.heroRef} className="flex flex-wrap items-center gap-x-4 gap-y-3">
-          <Link to="/projects" className="label-tech hover:text-link">
+        <div ref={bar.heroRef}>
+          <Link
+            to="/projects"
+            className="label-tech relative before:absolute before:-inset-x-2 before:-inset-y-3 before:content-[''] hover:text-link"
+          >
             ← Projects
           </Link>
-          <ProjectTags tags={project.tags} />
         </div>
 
         <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] md:gap-14">
           <div>
-            {/* 2 · Short title and plain subtitle */}
+            {/* 2 · Tags above the title (same as the cards), short title and plain subtitle */}
+            <ProjectTags tags={project.tags} className="mb-3" />
             <h1 className="font-display text-foreground">{project.title}</h1>
             {project.subtitle && (
               <p className="mt-3 text-xl text-muted-foreground">{project.subtitle}</p>
@@ -244,7 +247,10 @@ function ProjectDetail() {
           <Link to="/projects" className="text-link hover:text-foreground">
             ← Back to all projects
           </Link>
-          <Link to="/contact" className="label-tech hover:text-link">
+          <Link
+            to="/contact"
+            className="label-tech relative before:absolute before:-inset-x-2 before:-inset-y-3 before:content-[''] hover:text-link"
+          >
             Work with me →
           </Link>
         </div>

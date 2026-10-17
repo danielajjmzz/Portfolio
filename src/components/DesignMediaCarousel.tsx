@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/carousel";
 import type { MediaItem } from "@/data/designs";
 import { cn } from "@/lib/utils";
+import { responsiveImage } from "@/lib/images";
 
 /** Anything with photos: visual work entries. Links live on the featured project cards. */
 export interface MediaEntry {
@@ -72,7 +73,15 @@ function MediaSlide({
     );
   }
   return (
-    <img src={item.src} alt={item.alt} width={1200} height={800} loading="lazy" className={media} />
+    <img
+      src={item.src}
+      {...responsiveImage(item.src)}
+      alt={item.alt}
+      width={1200}
+      height={800}
+      loading="lazy"
+      className={media}
+    />
   );
 }
 

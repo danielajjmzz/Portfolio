@@ -378,8 +378,9 @@ export const projects = [
       "Test with real shoppers and Ulta beauty advisors instead of relying on secondary research and AI stand-in feedback. Next, I'm designing a mobile version of the prototype on my own.",
     // "#" shows the icon as "coming soon" on the Projects card; replace with a real URL, or "" to hide it.
     repo_url: "",
-    live_url: "#",
-    file_url: "#",
+    // The working Lovable prototype.
+    live_url: "https://beauty-formula-decoder.lovable.app",
+    file_url: "",
   },
   {
     slug: "jp-morgan-dashboard",
@@ -518,7 +519,7 @@ export const projects = [
     // "#" shows the icon as "coming soon" on the Projects card; replace with a real URL, or "" to hide it.
     repo_url: "",
     // The clickable Moqups prototype.
-    live_url: "https://app.moqups.com/itQS6OnSvvjSwjJ6cXPfT26jrj3leOdH/view/page/ad6ad54b7",
+    live_url: "https://app.moqups.com/itQS6OnSvvjSwjJ6cXPfT26jrj3leOdH/view/page/ac9638c44",
     file_url: "",
   },
   {
@@ -578,7 +579,7 @@ export const projects = [
     // "#" shows the icon as "coming soon" on the Projects card; replace with a real URL, or "" to hide it.
     repo_url: "#",
     live_url: "#",
-    file_url: "#",
+    file_url: "",
   },
 ];
 

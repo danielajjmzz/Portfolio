@@ -1,4 +1,4 @@
-import { designs, documentDesigns, type DesignEntry } from "./designs";
+import { designs, type DesignEntry } from "./designs";
 import { sortedTeaching, type TeachingEntry } from "./teaching";
 import { sortedProjects } from "./projects";
 
@@ -35,8 +35,8 @@ export function selectTeaching(expanded = false, limit: number = TEACHING_INITIA
   };
 }
 
-// Photography is hidden for now; add "Photography" back here (and to visualWork) to show it again.
-export const visualFilters = ["All", "Physical designs", "Document designs"] as const;
+// Photography and Document designs are hidden for now; add them back here (and to visualWork) to show them again.
+export const visualFilters = ["All", "Physical designs"] as const;
 export type VisualFilter = (typeof visualFilters)[number];
 export interface VisualEntry extends DesignEntry {
   category: Exclude<VisualFilter, "All">;
@@ -44,7 +44,6 @@ export interface VisualEntry extends DesignEntry {
 
 export const visualWork: VisualEntry[] = [
   ...designs.map((entry) => ({ ...entry, category: "Physical designs" as const })),
-  ...documentDesigns.map((entry) => ({ ...entry, category: "Document designs" as const })),
 ];
 
 /** Visual work shows one row of four before "Show more". */

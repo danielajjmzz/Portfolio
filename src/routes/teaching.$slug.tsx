@@ -84,7 +84,11 @@ function TeachingDetail() {
       />
 
       <article className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20">
-        <Link to="/projects" hash="teaching" className="label-tech hover:text-link">
+        <Link
+          to="/projects"
+          hash="teaching"
+          className="label-tech relative before:absolute before:-inset-x-2 before:-inset-y-3 before:content-[''] hover:text-link"
+        >
           ← Projects
         </Link>
 
@@ -191,7 +195,10 @@ function TeachingDetail() {
           <Link to="/projects" hash="teaching" className="text-link hover:text-foreground">
             ← Back to all projects
           </Link>
-          <Link to="/contact" className="label-tech hover:text-link">
+          <Link
+            to="/contact"
+            className="label-tech relative before:absolute before:-inset-x-2 before:-inset-y-3 before:content-[''] hover:text-link"
+          >
             Work with me →
           </Link>
         </div>

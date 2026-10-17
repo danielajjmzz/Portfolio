@@ -13,10 +13,10 @@ import {
   outlineButton,
   sectionHeadRow,
   stretchedLink,
-  tintCardClass,
   cardTitle,
   itemTitle,
 } from "@/lib/ui";
+import { responsiveImage } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -44,31 +44,43 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+/** Leadership & Experience, from the resume. Most recent first. */
 const leadership = [
   {
-    role: "Computer Science & Design Lead",
-    org: "Exelon Summer Institute",
-    body: "Built a four-week Python, AI, and design curriculum and led a TA team, guiding 20+ students from coding fundamentals through Figma and Framer wireframing to a completed portfolio site.",
-  },
-  {
-    role: "Professional Development Chair",
-    org: "SHPEtinas",
-    body: "Lead 3+ events per semester engaging 160+ STEM and architecture students, and built partnerships with 3+ companies including Fortune 500 firms.",
-  },
-  {
-    role: "Assistant Program Manager",
-    org: "Exelon Summer Institute",
-    body: "",
-  },
-  {
     role: "SHPEtinas Director",
-    org: "Society of Hispanic Professional Engineers",
-    body: "",
+    org: "Society of Hispanic Professional Engineers (SHPE-IIT)",
+    dates: "May 2026 – Present",
+    body: "Built a $2.6K budget proposing 11 events for 2026–27, nearly doubling the 6 funded in Spring 2026. Launched our social media (120+ followers) and opened a semester-based exec role to freshmen.",
   },
   {
     role: "Audio & Visual Technician",
     org: "Illinois Institute of Technology — Event Services",
-    body: "",
+    dates: "May 2026 – Present",
+    body: "Joined the Event Services crew in May 2024 and moved up to AV technician in May 2026.",
+  },
+  {
+    role: "Computer Science & Design Lead",
+    org: "Exelon Summer Institute",
+    dates: "Jul – Aug 2026",
+    body: "Designed a four-week Python, AI and design curriculum for 21 students, reaching 95% concept mastery. Led 2 TAs through coding, design principles and Figma and Framer wireframing, so every student presented a portfolio.",
+  },
+  {
+    role: "Assistant Program Manager",
+    org: "Exelon Summer Institute",
+    dates: "Jul – Aug 2025",
+    body: "Managed an $89K budget after funding cuts while keeping all 28 staff roles. Coordinated 3 trainings with 92% attendance, and planned 11 student outings, 6 of them free, within an $8.5K budget.",
+  },
+  {
+    role: "Professional Development Chair",
+    org: "Society of Hispanic Professional Engineers (SHPE-IIT)",
+    dates: "Sept 2024 – May 2026",
+    body: "Co-developed SHPEtinas' first professional development events, running 3+ per semester for 160+ STEM and architecture students, and built partnerships with 3+ companies, including Fortune 500 firms.",
+  },
+  {
+    role: "Computer Science Teaching Assistant",
+    org: "Exelon Summer Institute",
+    dates: "Jul – Aug 2024",
+    body: "Taught 15+ Python and circuit fundamentals lectures to 30+ students through hands-on projects, and helped each student debug their code and circuits.",
   },
 ];
 
@@ -78,12 +90,16 @@ const education = [
     school: "Albert G. Lane Technical College Preparatory High School",
     detail: "Concentration in Computer Science",
     note: "Graduated May 2023 · Summa Cum Laude",
+    image: "/images/home/lane-tech-campus.jpg",
+    alt: "Aerial view of Lane Tech's red-brick campus and football field, with the Chicago skyline behind it.",
   },
   {
     level: "University",
     school: "Illinois Institute of Technology",
     detail: "B.S. in Computer Science",
     note: "Expected graduation May 2027",
+    image: "/images/home/illinois-tech-campus.jpg",
+    alt: "Aerial view of Illinois Tech's campus at dusk, with S.R. Crown Hall lit up in front and the Chicago skyline behind it.",
   },
 ];
 
@@ -110,6 +126,7 @@ function HomeProjectCard({ project, index }: { project: Project; index: number }
         <div className="relative overflow-hidden rounded-frame border border-border bg-card">
           <img
             src={project.coverImage}
+            {...responsiveImage(project.coverImage, index !== 0)}
             alt=""
             width={1600}
             height={900}
@@ -132,9 +149,7 @@ function HomeProjectCard({ project, index }: { project: Project; index: number }
         {view.bubble}
       </div>
       <div className="flex flex-1 flex-col px-1 pb-1 pt-4 md:max-lg:py-2">
-        <p className="label-tech">
-          {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
-        </p>
+        <ProjectTags tags={project.tags} />
         <h3 className={cn("mt-2", cardTitle)}>
           <Link
             to="/projects/$slug"
@@ -144,7 +159,9 @@ function HomeProjectCard({ project, index }: { project: Project; index: number }
             {project.title}
           </Link>
         </h3>
-        <ProjectTags tags={project.tags} className="mt-auto pt-4 md:max-lg:mt-0" />
+        <p className="label-tech mt-auto pt-4 md:max-lg:mt-0">
+          {project.year.match(/\d{4}/)?.[0] ?? project.year} · {project.role}
+        </p>
       </div>
     </article>
   );
@@ -167,6 +184,8 @@ function Home() {
               alt="Daniela Jimenez"
               width={360}
               height={450}
+              // Lazy so dark mode (the default) never downloads this hidden photo.
+              loading="lazy"
               className="h-full w-full rounded-frame border border-border object-cover object-[50%_25%] dark:hidden"
             />
             <img
@@ -214,25 +233,38 @@ function Home() {
           <h2 id="education-heading" className="mb-7">
             Education
           </h2>
-          <dl className="grid gap-5 md:grid-cols-2">
+          {/*
+            No cards: both entries sit on the page side by side, each with a small campus photo.
+            On desktop the two entries sit side by side and share one row grid (subgrid), so the label, school,
+            degree and dates line up across both columns even when one name wraps.
+          */}
+          <ul className="grid gap-y-10 lg:grid-cols-2 lg:grid-rows-[repeat(4,auto)] lg:gap-x-24 lg:gap-y-0">
             {education.map((entry) => (
-              <div key={entry.level} className={`${tintCardClass} px-6 py-5`}>
-                <dt className="label-tech">{entry.level}</dt>
-                <dd
-                  className={cn(
-                    "mt-2 font-display font-semibold leading-[1.2] text-foreground",
-                    cardTitle,
-                  )}
-                >
+              <li
+                key={entry.level}
+                className="grid grid-cols-[5.5rem_minmax(0,1fr)] content-start gap-x-5 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-x-6 lg:row-span-4 lg:grid-rows-subgrid"
+              >
+                <img
+                  src={entry.image}
+                  alt={entry.alt}
+                  width={640}
+                  height={640}
+                  loading="lazy"
+                  className="row-span-4 aspect-square w-full self-start rounded-frame border border-border object-cover"
+                />
+                <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                  {entry.level}
+                </p>
+                <h3 className={cn("mt-2 text-balance text-foreground", itemTitle)}>
                   {entry.school}
-                </dd>
-                <dd className="mt-3 text-[0.9375rem] font-semibold text-foreground">
+                </h3>
+                <p className="mt-3 text-[0.9375rem] font-semibold text-foreground">
                   {entry.detail}
-                </dd>
-                <dd className="mt-1 text-sm text-muted-foreground">{entry.note}</dd>
-              </div>
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">{entry.note}</p>
+              </li>
             ))}
-          </dl>
+          </ul>
         </div>
       </section>
 
@@ -265,7 +297,10 @@ function Home() {
                   className="border-t border-border py-5 first:border-t-0 first:pt-0 last:pb-0"
                 >
                   <h3 className={cn(itemTitle, "text-foreground")}>{entry.role}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{entry.org}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {entry.org}
+                    <span className="text-dimmed"> · {entry.dates}</span>
+                  </p>
                   {entry.body && (
                     <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
                       {entry.body}

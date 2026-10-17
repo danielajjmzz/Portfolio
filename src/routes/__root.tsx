@@ -9,30 +9,34 @@ import {
   useRouterState,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
+import { accentButton, outlineButton } from "@/lib/ui";
 
 import appCss from "../styles.css?url";
 import { ThemeToggle } from "../components/ThemeToggle";
 
+/** Shown for any address that doesn't match a page. Same type, buttons and voice as the rest of the site. */
 function NotFoundComponent() {
+  useEffect(() => {
+    document.title = "Page not found — Daniela Jimenez";
+  }, []);
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
+    <section className="mx-auto flex min-h-[60vh] max-w-6xl flex-col justify-center px-5 py-20 md:px-8">
+      <p className="label-tech text-link">Error 404</p>
+      <h1 className="mt-3 font-display text-foreground">This page doesn't exist.</h1>
+      <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+        The link may be old, or the address has a typo. My projects and teaching work are one click
+        away.
+      </p>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Link to="/projects" className={accentButton}>
+          See my projects <span aria-hidden>→</span>
+        </Link>
+        <Link to="/" className={outlineButton}>
+          Go home
+        </Link>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -55,14 +59,11 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className={accentButton}
           >
             Try again
           </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
+          <a href="/" className={outlineButton}>
             Go home
           </a>
         </div>
@@ -84,7 +85,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Daniela Jimenez" },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Daniela Jimenez" },
       { property: "og:image", content: "/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content:
+          "Daniela Jimenez, UI/UX Design and Computer Science: creating spaces where people feel seen, supported, and informed.",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: "/og-image.png" },
     ],

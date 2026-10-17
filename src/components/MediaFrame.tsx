@@ -1,5 +1,7 @@
-import { Play } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Pause, Play } from "lucide-react";
 import type { TeachingMedia } from "@/data/teaching";
+import { responsiveImage } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
 /**
@@ -51,7 +53,13 @@ export function MediaFrame({
   );
   if (media.type === "video" && still && media.poster) {
     return (
-      <img src={media.poster} alt={media.alt} loading={eager ? "eager" : "lazy"} className={base} />
+      <img
+        src={media.poster}
+        {...responsiveImage(media.poster, !eager)}
+        alt={media.alt}
+        loading={eager ? "eager" : "lazy"}
+        className={base}
+      />
     );
   }
   if (media.type === "video" && media.sound) {
@@ -68,21 +76,84 @@ export function MediaFrame({
     );
   }
   if (media.type === "video") {
-    return (
+    return <AutoplayVideo src={media.src} poster={media.poster} alt={media.alt} className={base} />;
+  }
+  return (
+    <img
+      src={media.src}
+      {...responsiveImage(media.src, !eager)}
+      alt={media.alt}
+      loading={eager ? "eager" : "lazy"}
+      className={base}
+    />
+  );
+}
+
+/**
+ * Silent looping clip with a pause button, so motion can be stopped (WCAG 2.2.2).
+ * Visitors who ask for reduced motion see it paused on its first frame until they press play.
+ */
+function AutoplayVideo({
+  src,
+  poster,
+  alt,
+  className,
+}: {
+  src: string;
+  poster?: string | undefined;
+  alt: string;
+  className: string;
+}) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(true);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      ref.current?.pause();
+      setPlaying(false);
+    }
+  }, []);
+
+  const toggle = () => {
+    const video = ref.current;
+    if (!video) return;
+    if (video.paused) {
+      void video.play();
+      setPlaying(true);
+    } else {
+      video.pause();
+      setPlaying(false);
+    }
+  };
+
+  return (
+    // The frame classes (size, aspect, border, grid span) go on the wrapper so the clip
+    // sits in layouts exactly like a photo; the video fills it.
+    <div className={cn("relative overflow-hidden", className)}>
       <video
-        src={media.src}
-        poster={media.poster}
-        aria-label={media.alt}
+        ref={ref}
+        src={src}
+        poster={poster}
+        aria-label={alt}
         muted
         loop
         autoPlay
         playsInline
         preload="metadata"
-        className={base}
+        className="absolute inset-0 size-full object-cover"
       />
-    );
-  }
-  return (
-    <img src={media.src} alt={media.alt} loading={eager ? "eager" : "lazy"} className={base} />
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={playing ? "Pause video" : "Play video"}
+        className="absolute bottom-2 right-2 z-10 flex size-9 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      >
+        {playing ? (
+          <Pause aria-hidden className="size-4" />
+        ) : (
+          <Play aria-hidden className="size-4" />
+        )}
+      </button>
+    </div>
   );
 }

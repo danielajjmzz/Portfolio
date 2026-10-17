@@ -194,12 +194,18 @@ export function StepGallery({
         <h3 className={cn("mt-2 text-foreground", cardTitle)}>{step.title}</h3>
         <p className={cn(bodyText, "mt-3")}>{step.body}</p>
         {step.tags.length > 0 && (
-          <ul className="mt-4 flex flex-wrap gap-2" aria-label="Skills">
+          // Same quiet, non-button style as the project tags.
+          <ul
+            className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground"
+            aria-label="Skills"
+          >
             {step.tags.map((tag, index) => (
-              <li
-                key={`${tag}-${index}`}
-                className="border border-border-strong bg-card px-2.5 py-1 text-xs text-foreground"
-              >
+              <li key={`${tag}-${index}`} className="flex items-center gap-2">
+                {index > 0 && (
+                  <span aria-hidden className="text-dimmed">
+                    ·
+                  </span>
+                )}
                 {tag}
               </li>
             ))}
