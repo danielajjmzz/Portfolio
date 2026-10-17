@@ -12,6 +12,9 @@ import {
 import { useEffect, type ReactNode } from "react";
 import { accentButton, outlineButton } from "@/lib/ui";
 
+/** The live address. Share images need the full URL for LinkedIn and Facebook previews. */
+const SITE_URL = "https://danielajimenezz.com";
+
 import appCss from "../styles.css?url";
 import { ThemeToggle } from "../components/ThemeToggle";
 
@@ -86,7 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "Daniela Jimenez" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Daniela Jimenez" },
-      { property: "og:image", content: "/og-image.png" },
+      { property: "og:image", content: `${SITE_URL}/og-image.png` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       {
@@ -95,7 +98,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Daniela Jimenez, UI/UX Design and Computer Science: creating spaces where people feel seen, supported, and informed.",
       },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "/og-image.png" },
+      { name: "twitter:image", content: `${SITE_URL}/og-image.png` },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
