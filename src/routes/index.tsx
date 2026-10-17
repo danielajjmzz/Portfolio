@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ChevronDown } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { SkillsExplorer } from "@/components/SkillsExplorer";
 import { ProjectLinks } from "@/components/ProjectLinks";
@@ -275,7 +276,7 @@ function Home() {
             Leadership &amp; Experience
           </h2>
           <div className="grid gap-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-12">
-            <figure className="m-0">
+            <figure className="m-0 md:sticky md:top-28 md:self-start">
               <img
                 src="/images/home/shpetinas-team.jpg"
                 alt="The SHPEtinas team at Illinois Tech in matching pink polos on white steps; Daniela is in the front row, on the right."
@@ -289,26 +290,42 @@ function Home() {
               </figcaption>
             </figure>
 
-            {/* Role and organization on every line; a description only where one is written. */}
-            <ol className="self-start">
+            {/*
+              Each role is a dropdown: title, organization and dates show; the description opens on
+              click. Closed, the list is no taller than the photo. Opening one closes the others
+              (same `name`), and the photo stays in view beside it on wider screens.
+            */}
+            <ul className="self-start">
               {leadership.map((entry) => (
-                <li
-                  key={entry.role}
-                  className="border-t border-border py-5 first:border-t-0 first:pt-0 last:pb-0"
-                >
-                  <h3 className={cn(itemTitle, "text-foreground")}>{entry.role}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {entry.org}
-                    <span className="text-dimmed"> · {entry.dates}</span>
-                  </p>
-                  {entry.body && (
-                    <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
+                <li key={entry.role} className="border-t border-border first:border-t-0">
+                  <details name="leadership" className="group">
+                    <summary className="flex cursor-pointer list-none items-start justify-between gap-4 py-4 transition-colors hover:text-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
+                      <span className="min-w-0">
+                        <h3
+                          className={cn(
+                            itemTitle,
+                            "text-foreground transition-colors group-hover:text-link",
+                          )}
+                        >
+                          {entry.role}
+                        </h3>
+                        <span className="mt-1 block text-sm text-muted-foreground">
+                          {entry.org}
+                          <span className="text-dimmed"> · {entry.dates}</span>
+                        </span>
+                      </span>
+                      <ChevronDown
+                        aria-hidden
+                        className="mt-2 size-5 shrink-0 text-link transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
+                      />
+                    </summary>
+                    <p className="max-w-xl pb-5 text-sm leading-relaxed text-muted-foreground">
                       {entry.body}
                     </p>
-                  )}
+                  </details>
                 </li>
               ))}
-            </ol>
+            </ul>
           </div>
         </div>
       </section>
